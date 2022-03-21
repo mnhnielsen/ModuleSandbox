@@ -1,4 +1,5 @@
 org/example/spi/IPlayerService.class
+org/example/spi/IBulletService.class
 org/example/helper/Boot.class
 org/example/spi/IObstacleService.class
 org/example/helper/BodyHelper.class

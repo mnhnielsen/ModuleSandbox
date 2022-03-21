@@ -66,6 +66,7 @@
         <module>Services</module>
         <module>Enemy</module>
         <module>Collision</module>
+        <module>Bullet</module>
     </modules>
 
     <properties>
