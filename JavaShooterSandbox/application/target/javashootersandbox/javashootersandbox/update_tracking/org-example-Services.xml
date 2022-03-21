@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="org.example.Services">
+    <module_version install_time="1647803293390" last="true" origin="installer" specification_version="1.0">
+        <file crc="1629054193" name="config/Modules/org-example-Services.xml"/>
+        <file crc="2488665527" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-backend-lwjgl.jar"/>
+        <file crc="2933476186" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-box2d-platform-natives-desktop.jar"/>
+        <file crc="3989081260" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-box2d.jar"/>
+        <file crc="1825961012" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-freetype-platform-natives-desktop.jar"/>
+        <file crc="2089937641" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-freetype.jar"/>
+        <file crc="456878805" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx-platform-natives-desktop.jar"/>
+        <file crc="1015876392" name="modules/ext/org.example.Services/com-badlogicgames-gdx/gdx.jar"/>
+        <file crc="1146210713" name="modules/ext/org.example.Services/com-badlogicgames-jlayer/jlayer.jar"/>
+        <file crc="426864957" name="modules/ext/org.example.Services/net-java-jinput/jinput.jar"/>
+        <file crc="1529865491" name="modules/ext/org.example.Services/net-java-jutils/jutils.jar"/>
+        <file crc="2846045197" name="modules/ext/org.example.Services/org-jcraft/jorbis.jar"/>
+        <file crc="3894734527" name="modules/ext/org.example.Services/org-lwjgl-lwjgl/lwjgl-platform-natives-linux.jar"/>
+        <file crc="2888251747" name="modules/ext/org.example.Services/org-lwjgl-lwjgl/lwjgl-platform-natives-osx.jar"/>
+        <file crc="1629828147" name="modules/ext/org.example.Services/org-lwjgl-lwjgl/lwjgl-platform-natives-windows.jar"/>
+        <file crc="1810775593" name="modules/ext/org.example.Services/org-lwjgl-lwjgl/lwjgl.jar"/>
+        <file crc="1003691195" name="modules/ext/org.example.Services/org-lwjgl-lwjgl/lwjgl_util.jar"/>
+        <file crc="2036847529" name="modules/org-example-Services.jar"/>
+    </module_version>
+</module>

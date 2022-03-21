@@ -1,0 +1,6 @@
+org/example/spi/IPlayerService.class
+org/example/helper/Boot.class
+org/example/helper/BodyHelper.class
+org/example/helper/GameScreen.class
+org/example/helper/Const.class
+org/example/helper/ContactType.class
