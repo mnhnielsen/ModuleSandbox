@@ -1,3 +1,2 @@
 META-INF/services/org.example.spi.IPlayerService
 org/example/PlayerControl.class
-org/example/Player.class

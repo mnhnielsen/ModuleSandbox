@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="org.example.JavaShooterSandbox.branding">
-    <module_version install_time="1647850536266" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1647856162064" last="true" origin="installer" specification_version="1.0">
         <file crc="3463479246" name="config/Modules/org-example-JavaShooterSandbox-branding.xml"/>
-        <file crc="2095332539" name="core/locale/core_javashootersandbox.jar"/>
-        <file crc="775347863" name="modules/locale/org-netbeans-core-windows_javashootersandbox.jar"/>
-        <file crc="683037124" name="modules/locale/org-netbeans-core_javashootersandbox.jar"/>
-        <file crc="3348941713" name="modules/org-example-JavaShooterSandbox-branding.jar"/>
+        <file crc="3847451459" name="core/locale/core_javashootersandbox.jar"/>
+        <file crc="3518504029" name="modules/locale/org-netbeans-core-windows_javashootersandbox.jar"/>
+        <file crc="1041114884" name="modules/locale/org-netbeans-core_javashootersandbox.jar"/>
+        <file crc="3853342961" name="modules/org-example-JavaShooterSandbox-branding.jar"/>
     </module_version>
 </module>

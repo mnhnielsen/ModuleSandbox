@@ -64,6 +64,8 @@
         <module>Client</module>
         <module>Player</module>
         <module>Services</module>
+        <module>Enemy</module>
+        <module>Collision</module>
     </modules>
 
     <properties>

@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import org.example.spi.ICollisionService;
+import org.example.spi.IEnemyService;
+import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
-import java.util.Collection;
+
 
 public class GameScreen extends ScreenAdapter
 {
@@ -21,6 +24,9 @@ public class GameScreen extends ScreenAdapter
     private World world;
     private final Lookup lookup = Lookup.getDefault();
     IPlayerService playerService = lookup.lookup(IPlayerService.class);
+    IEnemyService enemyService = lookup.lookup(IEnemyService.class);
+    ICollisionService collisionService = lookup.lookup(ICollisionService.class);
+    IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
 
 
     public GameScreen(OrthographicCamera cam)
@@ -29,7 +35,10 @@ public class GameScreen extends ScreenAdapter
         this.cam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
+
         playerService.player(16, Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
+        obstacleService.obstacle(32,this);
 
     }
 
@@ -41,6 +50,7 @@ public class GameScreen extends ScreenAdapter
         batch.setProjectionMatrix(cam.combined);
 
         playerService.update();
+        enemyService.update();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
@@ -56,6 +66,8 @@ public class GameScreen extends ScreenAdapter
         batch.begin();
 
         playerService.render(batch);
+        enemyService.render(batch);
+        obstacleService.render(batch);
 
         batch.end();
     }

@@ -8,9 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Services" />
         <module name="Player" />
+        <module name="JavaShooterSandbox-app" />
+        <module name="Enemy" />
+        <module name="Collision" />
         <module name="Client" />
         <module name="JavaShooterSandbox-branding" />
-        <module name="JavaShooterSandbox-app" />
       </profile>
     </annotationProcessing>
   </component>

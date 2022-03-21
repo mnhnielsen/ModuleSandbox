@@ -2,7 +2,8 @@ package org.example.helper;
 
 public enum ContactType
 {
-    WALL,
-    BALL,
+    OBSTACLE,
+    BULLET,
+    ENEMY,
     PLAYER
 }

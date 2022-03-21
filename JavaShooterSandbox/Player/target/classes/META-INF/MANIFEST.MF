@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: org/example/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 OpenIDE-Module-Implementation-Version: 1.0-20220321
-OpenIDE-Module-Build-Version: 202203210815
+OpenIDE-Module-Build-Version: 202203210949
 OpenIDE-Module: org.example.Player
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1

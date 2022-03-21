@@ -20,7 +20,7 @@ public class PlayerControl implements IPlayerService
 
 
     protected Body body;
-    protected float x, y, speed, velY;
+    protected float x, y, speed, velY, velX;
     protected int width, height, score;
     protected Texture texture, textureOne;
     protected GameScreen gameScreen;
@@ -33,25 +33,48 @@ public class PlayerControl implements IPlayerService
         this.gameScreen = gameScreen;
         speed = 6;
         width = 32;
-        height = 64;
+        height = 32;
         //textureOne = new Texture("/home/mathias/Documents/Projects/Semester4/javashooter/Project/Player/src/main/resources/org/example/player/Ship.png");
-        texture = new Texture("org/example/color.png");
+        texture = new Texture("/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Player/src/main/resources/org/example/color.png");
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
 
     @Override
     public void update()
     {
+        boolean isMoving = false;
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
+        velX = 0;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W))
+        {
             velY = 1;
+            isMoving = true;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.S))
+        {
             velY = -1;
+            isMoving = true;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D))
+        {
+            velX = 1;
+            isMoving = true;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        {
+            velX = -1;
+            isMoving = true;
 
-        body.setLinearVelocity(0, velY * speed);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving)
+            speed = 10;
+        else
+            speed = 6;
+
+        body.setLinearVelocity(velX * speed, velY * speed);
     }
 
     @Override

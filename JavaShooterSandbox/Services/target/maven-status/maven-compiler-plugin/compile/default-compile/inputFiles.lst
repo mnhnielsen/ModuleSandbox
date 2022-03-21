@@ -2,5 +2,8 @@
 /home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/GameScreen.java
 /home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/ContactType.java
 /home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/Const.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/spi/IEnemyService.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/spi/IObstacleService.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/spi/ICollisionService.java
 /home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/spi/IPlayerService.java
 /home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/BodyHelper.java

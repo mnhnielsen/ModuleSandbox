@@ -9,9 +9,8 @@ public class Boot extends Game
 
     public static Boot INSTANCE;
     private int screenWidth;
-
-
     private int screenHeight;
+
     private OrthographicCamera cam;
 
     public Boot()
