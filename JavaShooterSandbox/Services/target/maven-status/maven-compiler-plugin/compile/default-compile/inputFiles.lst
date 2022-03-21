@@ -1,6 +1,6 @@
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/spi/IPlayerService.java
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/helper/ContactType.java
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/helper/BodyHelper.java
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/helper/GameScreen.java
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/helper/Const.java
-/home/mathias/Desktop/JavaShooterSandbox/Services/src/main/java/org/example/helper/Boot.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/Boot.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/GameScreen.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/ContactType.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/Const.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/spi/IPlayerService.java
+/home/mathias/Desktop/ModuleSandbox/JavaShooterSandbox/Services/src/main/java/org/example/helper/BodyHelper.java

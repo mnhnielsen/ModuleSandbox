@@ -32,10 +32,10 @@ public class PlayerControl implements IPlayerService
         this.y = y;
         this.gameScreen = gameScreen;
         speed = 6;
-        width = 16;
+        width = 32;
         height = 64;
         //textureOne = new Texture("/home/mathias/Documents/Projects/Semester4/javashooter/Project/Player/src/main/resources/org/example/player/Ship.png");
-        texture = new Texture("/home/mathias/Desktop/Pong/Client/src/main/resources/org/pong/white.png");
+        texture = new Texture("org/example/color.png");
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
 
