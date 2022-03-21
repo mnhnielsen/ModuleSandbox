@@ -21,3 +21,5 @@ buildNumber.properties
 Project/.idea/encodings.xml
 Project/.idea/misc.xml
 Project/.idea/compiler.xml
+*.zip
+target/
