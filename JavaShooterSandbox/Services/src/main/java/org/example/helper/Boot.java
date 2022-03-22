@@ -26,6 +26,7 @@ public class Boot extends Game
         cam = new OrthographicCamera();
         cam.setToOrtho(false, screenWidth, screenHeight);
         setScreen(new GameScreen(cam));
+        new AssetLoader();
     }
 
     public int getScreenWidth()

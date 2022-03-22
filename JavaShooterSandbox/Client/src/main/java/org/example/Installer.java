@@ -2,6 +2,7 @@ package org.example;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.example.helper.AssetLoader;
 import org.example.helper.Boot;
 import org.openide.modules.ModuleInstall;
 
@@ -16,6 +17,7 @@ public class Installer extends ModuleInstall
         cfg.height = 800;
         cfg.useGL30 = false;
         cfg.resizable = false;
+        new AssetLoader();
         new LwjglApplication(new Boot(), cfg);
     }
 }

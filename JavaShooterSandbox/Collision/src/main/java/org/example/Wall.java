@@ -1,15 +1,15 @@
 package org.example;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import org.example.helper.BodyHelper;
-import org.example.helper.Boot;
-import org.example.helper.ContactType;
-import org.example.helper.GameScreen;
+import org.example.helper.*;
 import org.example.spi.IObstacleService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
+
+import java.io.File;
 
 @ServiceProviders(value = {@ServiceProvider(service = IObstacleService.class)
 })
@@ -19,7 +19,7 @@ public class Wall implements IObstacleService
     private Body body;
     private float x, y;
     private int width, height;
-    private Texture texture;
+    private Sprite sprite;
 
     @Override
     public void obstacle(float y, GameScreen gameScreen)
@@ -29,12 +29,18 @@ public class Wall implements IObstacleService
         width = Boot.INSTANCE.getScreenWidth();
         height = 64;
 
-        texture = new Texture("/home/mathias/Desktop/Pong/Client/src/main/resources/org/pong/white.png");
+        File file = new File(this.getClass().getResource("color.png").getPath());
+        String path = file.getPath().substring(5);
+
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+
+        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         body = BodyHelper.createBody(x, y, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
     }
 
     public void render(SpriteBatch batch)
     {
-        batch.draw(texture, x - (width / 2), y - (height / 2), width, height);
+        batch.draw(sprite, x - (width / 2), y - (height / 2), width, height);
     }
 }
