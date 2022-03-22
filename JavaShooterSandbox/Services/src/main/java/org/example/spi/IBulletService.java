@@ -6,5 +6,4 @@ public interface IBulletService
 {
     void update();
     void render(SpriteBatch batch);
-
 }

@@ -17,13 +17,16 @@ import org.openide.util.lookup.ServiceProviders;
 })
 public class PlayerControl implements IPlayerService
 {
-
-
     protected Body body;
     protected float x, y, speed, velY, velX;
     protected int width, height, score;
     protected Texture texture, textureOne;
     protected GameScreen gameScreen;
+
+    float laserWidth, laserHeight;
+    float laserMovementSpeed;
+    float timeBetweenShots;
+    float timeSinceLastShot = 0;
 
     @Override
     public void player(float x, float y, GameScreen gameScreen)
