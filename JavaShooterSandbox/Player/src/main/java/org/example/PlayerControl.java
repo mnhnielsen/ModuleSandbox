@@ -17,8 +17,6 @@ import org.openide.util.lookup.ServiceProviders;
 })
 public class PlayerControl implements IPlayerService
 {
-
-
     protected Body body;
     protected float x, y, speed, velY, velX;
     protected int width, height, score;
