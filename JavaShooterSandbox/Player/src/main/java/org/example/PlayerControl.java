@@ -13,6 +13,8 @@ import org.example.spi.IPlayerService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+import java.util.LinkedList;
+
 @ServiceProviders(value = {@ServiceProvider(service = IPlayerService.class)
 })
 public class PlayerControl implements IPlayerService
@@ -28,6 +30,7 @@ public class PlayerControl implements IPlayerService
     float timeBetweenShots;
     float timeSinceLastShot = 0;
 
+    LinkedList<Bullet> bulletList;
     @Override
     public void player(float x, float y, GameScreen gameScreen)
     {
@@ -45,6 +48,7 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
+        bulletList = new LinkedList<>();
         boolean isMoving = false;
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
@@ -76,6 +80,14 @@ public class PlayerControl implements IPlayerService
             speed = 10;
         else
             speed = 6;
+
+        //Shoot with left click
+        //Should maybe shoot with spacebar?
+        if (Gdx.input.isKeyPressed(Input.Buttons.LEFT))
+        {
+            //Shoot
+            System.out.println("Bang!");
+        }
 
         body.setLinearVelocity(velX * speed, velY * speed);
     }
