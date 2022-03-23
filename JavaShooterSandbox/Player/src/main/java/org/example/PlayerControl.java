@@ -77,6 +77,11 @@ public class PlayerControl implements IPlayerService
             speed = 10;
         else
             speed = 6;
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            //shoot
+            System.out.println("Bang!");
+        }
 
         body.setLinearVelocity(velX * speed, velY * speed);
     }
