@@ -78,5 +78,8 @@ public class GameScreen extends ScreenAdapter
         return world;
     }
 
-
+    public IPlayerService getPlayerService()
+    {
+        return playerService;
+    }
 }

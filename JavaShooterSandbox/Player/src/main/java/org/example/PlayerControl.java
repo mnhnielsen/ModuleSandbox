@@ -95,12 +95,17 @@ public class PlayerControl implements IPlayerService
     {
         batch.draw(texture, x, y, width, height);
     }
+    
 
     @Override
-    public void score()
+    public float getX()
     {
-        this.score++;
+        return x;
     }
 
-
+    @Override
+    public float getY()
+    {
+        return y;
+    }
 }
