@@ -48,6 +48,9 @@ public class Enemy implements IEnemyService
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
+        System.out.println("X " + gameScreen.getPlayerService().getX());
+        System.out.println("Y " + gameScreen.getPlayerService().getY());
+
     }
 
     @Override

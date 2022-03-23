@@ -7,8 +7,9 @@ public interface IPlayerService
 {
     void update();
     void render(SpriteBatch batch);
-    void score();
     void player(float x, float y, GameScreen gameScreen);
+    float getX();
+    float getY();
 
 
 }
