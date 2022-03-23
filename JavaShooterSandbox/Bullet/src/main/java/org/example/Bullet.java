@@ -3,13 +3,13 @@ package org.example;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.example.helper.GameScreen;
-import org.example.spi.IBulletSPI;
+import org.example.spi.IBulletService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {@ServiceProvider(service = IBulletSPI.class)
+@ServiceProviders(value = {@ServiceProvider(service = IBulletService.class)
 })
-public class IBullet implements IBulletSPI
+public class Bullet implements IBulletService
 {
     float xPosition, yPosition;
     float width, height, speed;

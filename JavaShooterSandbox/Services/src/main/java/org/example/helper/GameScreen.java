@@ -9,10 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
-import org.example.spi.ICollisionService;
-import org.example.spi.IEnemyService;
-import org.example.spi.IObstacleService;
-import org.example.spi.IPlayerService;
+import org.example.spi.*;
 import org.openide.util.Lookup;
 
 
@@ -27,6 +24,7 @@ public class GameScreen extends ScreenAdapter
     IEnemyService enemyService = lookup.lookup(IEnemyService.class);
     ICollisionService collisionService = lookup.lookup(ICollisionService.class);
     IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+    IBulletService bulletService = lookup.lookup(IBulletService.class);
 
 
     public GameScreen(OrthographicCamera cam)
@@ -68,6 +66,7 @@ public class GameScreen extends ScreenAdapter
         playerService.render(batch);
         enemyService.render(batch);
         obstacleService.render(batch);
+        bulletService.render(batch);
 
         batch.end();
     }
