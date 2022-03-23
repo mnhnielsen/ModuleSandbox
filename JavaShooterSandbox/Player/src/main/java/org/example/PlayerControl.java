@@ -81,9 +81,7 @@ public class PlayerControl implements IPlayerService
         else
             speed = 6;
 
-        //Shoot with left click
-        //Should maybe shoot with spacebar?
-        if (Gdx.input.isKeyPressed(Input.Buttons.LEFT))
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
             //Shoot
             System.out.println("Bang!");
