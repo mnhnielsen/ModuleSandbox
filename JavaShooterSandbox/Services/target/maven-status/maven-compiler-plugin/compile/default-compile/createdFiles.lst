@@ -2,6 +2,7 @@ org/example/spi/IObstacleService.class
 org/example/helper/AssetFileResolver.class
 org/example/spi/IEnemyService.class
 org/example/helper/GameScreen.class
+org/example/spi/BulletSPI.class
 org/example/helper/Const.class
 org/example/helper/ContactType.class
 org/example/spi/IPlayerService.class

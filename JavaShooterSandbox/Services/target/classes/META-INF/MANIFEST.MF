@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: org/example/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20220322
-OpenIDE-Module-Build-Version: 202203221811
+OpenIDE-Module-Implementation-Version: 1.0-20220323
+OpenIDE-Module-Build-Version: 202203231836
 OpenIDE-Module: org.example.Services
 OpenIDE-Module-Public-Packages: org.example.spi.*, org.example.helper.
  *, com.badlogic.**
