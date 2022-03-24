@@ -86,7 +86,7 @@ public class PlayerControl implements IPlayerService
     {
         batch.draw(sprite, x, y, width, height);
     }
-    
+
 
     @Override
     public float getX()

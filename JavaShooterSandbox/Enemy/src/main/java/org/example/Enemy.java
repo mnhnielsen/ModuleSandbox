@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
 import org.example.spi.IEnemyService;
@@ -17,7 +18,7 @@ public class Enemy implements IEnemyService
 {
     protected Body body;
     protected float x, y, speed, velY;
-    protected int width, height, score;
+    protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
 
@@ -48,8 +49,6 @@ public class Enemy implements IEnemyService
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
-        System.out.println("X " + gameScreen.getPlayerService().getX());
-        System.out.println("Y " + gameScreen.getPlayerService().getY());
 
     }
 

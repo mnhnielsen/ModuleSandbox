@@ -17,30 +17,42 @@ public class Wall implements IObstacleService
 {
 
     private Body body;
-    private float x, y;
-    private int width, height;
     private Sprite sprite;
+    private Perimeter upperWall, lowerWall, leftWall, rightWall;
 
     @Override
-    public void obstacle(float y, GameScreen gameScreen)
+    public void obstacle(GameScreen gameScreen)
     {
-        x = Boot.INSTANCE.getScreenWidth() / 2;
-        this.y = y;
-        width = Boot.INSTANCE.getScreenWidth();
-        height = 64;
 
-        File file = new File(this.getClass().getResource("color.png").getPath());
+        upperWall = createPerimeter(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() - 32, Boot.INSTANCE.getScreenWidth(), 64, "color.png", gameScreen);
+        lowerWall = createPerimeter(Boot.INSTANCE.getScreenWidth() / 2, 32, Boot.INSTANCE.getScreenWidth(), 64, "color.png", gameScreen);
+        leftWall = createPerimeter(16, Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
+        rightWall = createPerimeter(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
+
+
+    }
+
+    private Perimeter createPerimeter(float spawnX, float spawnY, int width, int height, String textureName, GameScreen gameScreen)
+    {
+        File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
 
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);
         AssetLoader.INSTANCE.getAm().finishLoading();
 
         sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-        body = BodyHelper.createBody(x, y, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
+
+        body = BodyHelper.createBody(spawnX, spawnY, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
+
+        Perimeter p = new Perimeter(spawnX, spawnY, width, height, textureName, gameScreen);
+        System.out.println("Loaded");
+        return p;
+
     }
+
 
     public void render(SpriteBatch batch)
     {
-        batch.draw(sprite, x - (width / 2), y - (height / 2), width, height);
+        //batch.draw(sprite, x - (width / 2), y - (height / 2), width, height);
     }
 }
