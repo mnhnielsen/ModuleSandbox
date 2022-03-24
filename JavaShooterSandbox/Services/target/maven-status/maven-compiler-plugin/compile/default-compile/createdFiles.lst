@@ -1,3 +1,4 @@
+org/example/spi/IBulletService.class
 org/example/spi/IObstacleService.class
 org/example/helper/AssetFileResolver.class
 org/example/spi/IEnemyService.class
@@ -8,6 +9,5 @@ org/example/spi/IPlayerService.class
 org/example/helper/JarFileResolver.class
 org/example/helper/Boot.class
 org/example/helper/BodyHelper.class
-org/example/spi/IBulletSPI.class
 org/example/helper/AssetLoader.class
 org/example/spi/ICollisionService.class

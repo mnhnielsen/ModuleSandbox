@@ -66,7 +66,7 @@ public class GameScreen extends ScreenAdapter
         playerService.render(batch);
         enemyService.render(batch);
         obstacleService.render(batch);
-        bulletService.render(batch);
+        //bulletService.render(batch);
 
         batch.end();
     }

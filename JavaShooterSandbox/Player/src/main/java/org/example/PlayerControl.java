@@ -24,7 +24,11 @@ public class PlayerControl implements IPlayerService
     protected Sprite sprite;
     protected GameScreen gameScreen;
 
-    LinkedList<Bullet> bulletList;
+    float bulletWidth, bulletHeight;
+    float bulletMovementSpeed;
+    float timeBetweenShots;
+    float timeSinceLastShot = 0;
+
     @Override
     public void player(float x, float y, GameScreen gameScreen)
     {
@@ -48,7 +52,6 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
-        bulletList = new LinkedList<>();
         boolean isMoving = false;
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
@@ -83,7 +86,7 @@ public class PlayerControl implements IPlayerService
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
             //shoot
-            System.out.println("Bang!");
+            System.out.println("Shoot!");
         }
 
         body.setLinearVelocity(velX * speed, velY * speed);
@@ -106,5 +109,9 @@ public class PlayerControl implements IPlayerService
     public float getY()
     {
         return y;
+    }
+    public boolean canFireBullet()
+    {
+        return (timeSinceLastShot - timeBetweenShots >=0);
     }
 }

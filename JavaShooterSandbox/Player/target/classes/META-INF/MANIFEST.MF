@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 OpenIDE-Module-Localizing-Bundle: org/example/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20220323
-OpenIDE-Module-Build-Version: 202203231842
+OpenIDE-Module-Implementation-Version: 1.0-20220324
+OpenIDE-Module-Build-Version: 202203240947
 OpenIDE-Module: org.example.Player
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1
@@ -12,5 +12,5 @@ OpenIDE-Module-Short-Description: <undefined>
 OpenIDE-Module-Long-Description: <undefined>
 OpenIDE-Module-Module-Dependencies: org.netbeans.api.annotations.commo
  n/1 > 1.33, org.example.Services > 1.0, org.openide.util.lookup > 8.3
- 9
+ 9, org.example.Bullet > 1.0
 
