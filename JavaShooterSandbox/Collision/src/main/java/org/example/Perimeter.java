@@ -10,7 +10,6 @@ public class Perimeter
     private int width, height;
     private String filename;
     private GameScreen gameScreen;
-    private Body body;
 
     public Perimeter(float x, float y, int width, int height, String filename, GameScreen gameScreen)
     {
@@ -20,40 +19,5 @@ public class Perimeter
         this.height = height;
         this.filename = filename;
         this.gameScreen = gameScreen;
-    }
-
-    public Body getBody()
-    {
-        return body;
-    }
-
-    public GameScreen getGameScreen()
-    {
-        return gameScreen;
-    }
-
-    public float getX()
-    {
-        return x;
-    }
-
-    public float getY()
-    {
-        return y;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public String getFilename()
-    {
-        return filename;
     }
 }
