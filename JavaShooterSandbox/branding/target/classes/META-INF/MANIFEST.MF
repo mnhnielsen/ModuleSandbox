@@ -3,8 +3,8 @@ OpenIDE-Module-Localizing-Bundle: org/example/branding/Bundle.properti
  es
 AutoUpdate-Essential-Module: true
 OpenIDE-Module-Specification-Version: 1.0
-OpenIDE-Module-Implementation-Version: 1.0-20220322
-OpenIDE-Module-Build-Version: 202203221811
+OpenIDE-Module-Implementation-Version: 1.0-20220324
+OpenIDE-Module-Build-Version: 202203241034
 OpenIDE-Module: org.example.JavaShooterSandbox.branding
 OpenIDE-Module-Public-Packages: -
 OpenIDE-Module-Requires: org.openide.modules.ModuleFormat1

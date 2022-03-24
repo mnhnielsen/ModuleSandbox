@@ -1,5 +1,7 @@
 package org.example;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +19,8 @@ import java.io.File;
 public class Enemy implements IEnemyService
 {
     protected Body body;
-    protected float x, y, speed, velY;
+    protected float x, y, speed, velY, velX, dirY, dirX;
+    protected double hyp;
     protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
@@ -28,7 +31,7 @@ public class Enemy implements IEnemyService
         this.x = x;
         this.y = y;
         this.gameScreen = gameScreen;
-        speed = 6;
+        speed = 3;
         width = 32;
         height = 32;
 
@@ -49,7 +52,36 @@ public class Enemy implements IEnemyService
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
+        velX = 0;
 
+        //Difference in coordinates
+        dirX = gameScreen.getPlayerService().getX() - x;
+        dirY = gameScreen.getPlayerService().getY() - y;
+
+        //If statements to decide what direction zombie goes, based on dirX and dirY
+        if (dirX < 0)
+        {
+            velX = -1;
+        }
+        if (dirX > 0)
+        {
+            velX = 1;
+        }
+        if (dirY > 0)
+        {
+            velY = 1;
+        }
+        if (dirY < 0)
+        {
+            velY = -1;
+            
+        }
+
+        body.setLinearVelocity(velX * speed, velY * speed);
+
+
+        //Enemy rotation
+        System.out.println("Enemy angle: " + body.getAngle());
     }
 
     @Override
