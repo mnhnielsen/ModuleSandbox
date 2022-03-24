@@ -59,22 +59,55 @@ public class Enemy implements IEnemyService
         dirY = gameScreen.getPlayerService().getY() - y;
 
         //If statements to decide what direction zombie goes, based on dirX and dirY
+
+        //Left
         if (dirX < 0)
         {
             velX = -1;
         }
+        //Right
         if (dirX > 0)
         {
             velX = 1;
         }
+        //Up
         if (dirY > 0)
         {
             velY = 1;
         }
+        //Down
         if (dirY < 0)
         {
             velY = -1;
-            
+        }
+
+        //Cap diagonal speed
+        //Left down
+        if(dirX < 0 && dirY < 0)
+        {
+            velY = -1;
+            velX = -1;
+        }
+
+        //Right up
+        if(dirX > 0 && dirY > 0)
+        {
+            velY = 1;
+            velX = 1;
+        }
+
+        //Right down
+        if(dirX > 0 && dirY < 0)
+        {
+            velY = -1;
+            velX = 1;
+        }
+
+        //Left up
+        if(dirX < 0 && dirY > 0)
+        {
+            velY = 1;
+            velX = -1;
         }
 
         body.setLinearVelocity(velX * speed, velY * speed);
@@ -82,6 +115,17 @@ public class Enemy implements IEnemyService
 
         //Enemy rotation
         System.out.println("Enemy angle: " + body.getAngle());
+
+        //Set angle (1 degree = 0.0174532925 radian)
+
+        /*body.setTransform(x,y,45*0.0174532925f);
+        body.setTransform(x,y,90*0.0174532925f);
+        body.setTransform(x,y,135*0.0174532925f);
+        body.setTransform(x,y,180*0.0174532925f);
+        body.setTransform(x,y,225*0.0174532925f);
+        body.setTransform(x,y,270*0.0174532925f);
+        body.setTransform(x,y,315*0.0174532925f);
+        body.setTransform(x,y,360*0.0174532925f);*/
     }
 
     @Override
