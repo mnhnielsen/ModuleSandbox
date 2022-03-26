@@ -45,7 +45,6 @@ public class Wall implements IObstacleService
         body = BodyHelper.createBody(spawnX, spawnY, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
 
         Perimeter p = new Perimeter(spawnX, spawnY, width, height, textureName, gameScreen);
-        System.out.println("Loaded");
         return p;
 
     }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.ObjectMap;
+import org.example.spi.ICollisionService;
 import org.example.spi.IEnemyService;
 import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
@@ -25,7 +27,10 @@ public class GameScreen extends ScreenAdapter
     IPlayerService playerService = lookup.lookup(IPlayerService.class);
     IEnemyService enemyService = lookup.lookup(IEnemyService.class);
     IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+    ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
+    ObjectMap<String, IPlayerService> objectMap = new ObjectMap<>();
     private Box2DDebugRenderer box2DDebugRenderer;
+
 
 
 
@@ -36,9 +41,10 @@ public class GameScreen extends ScreenAdapter
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
+        world.setContactListener(collisionService.contactListener(this));
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
+
         enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
         obstacleService.obstacle(this);
 
