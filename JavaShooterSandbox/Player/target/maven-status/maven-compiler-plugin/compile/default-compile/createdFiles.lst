@@ -1,2 +1,0 @@
-META-INF/services/org.example.spi.IPlayerService
-org/example/PlayerControl.class
