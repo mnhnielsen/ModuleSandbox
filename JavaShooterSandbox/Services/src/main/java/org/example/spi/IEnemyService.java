@@ -7,5 +7,5 @@ public interface IEnemyService
 {
     void update();
     void render(SpriteBatch batch);
-    void enemy(GameScreen gameScreen);
+    void enemy(int numberOfEnemies,GameScreen gameScreen);
 }

@@ -21,13 +21,13 @@ import java.util.Random;
 })
 public class Enemy implements IEnemyService
 {
-    protected GameScreen gameScreen;
-    protected double attackRange = 32.48322;
-    public int numberOfEnemies = 5;
+    private GameScreen gameScreen;
+    private double attackRange = 32.48322;
+    private float maxSpeed = 3;
     ArrayList<EnemyObject> enemies = new ArrayList<>();
 
     @Override
-    public void enemy(GameScreen gameScreen)
+    public void enemy(int numberOfEnemies, GameScreen gameScreen)
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {
@@ -44,7 +44,8 @@ public class Enemy implements IEnemyService
         float y = new Random().nextFloat() * Gdx.graphics.getHeight();
 
         this.gameScreen = gameScreen;
-        float speed = 3;
+
+        int speed = new Random().nextInt(5-2)+2;
         int width = 32;
         int height = 32;
 

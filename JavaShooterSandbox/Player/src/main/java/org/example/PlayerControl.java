@@ -29,7 +29,6 @@ public class PlayerControl implements IPlayerService
     @Override
     public void player(float x, float y, GameScreen gameScreen)
     {
-        System.out.println("spawned");
         this.x = x;
         this.y = y;
         this.gameScreen = gameScreen;
@@ -56,14 +55,12 @@ public class PlayerControl implements IPlayerService
         if (lifePart.dead())
         {
             canMove = false;
-            fileName = "red.png";
             try
             {
                 Thread.sleep(2500);
                 lifePart.setHealth(100);
                 lifePart.setDead(false);
                 body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
-                fileName = "color.png";
                 canMove = true;
             } catch (InterruptedException e)
             {
