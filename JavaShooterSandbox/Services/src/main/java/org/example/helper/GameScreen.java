@@ -50,9 +50,6 @@ public class GameScreen extends ScreenAdapter
 
         enemyService.enemy( this);
         obstacleService.obstacle(this);
-
-
-        enemyService.enemy(this);
         obstacleService.obstacle(this);
     }
 

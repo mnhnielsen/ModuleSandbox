@@ -12,38 +12,39 @@ import org.example.spi.IEnemyService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+import java.awt.font.FontRenderContext;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEnemyService.class)
 })
 public class Enemy implements IEnemyService
 {
-    protected Body body;
-    protected float x, y, speed, velY, velX, dirY, dirX;
-    protected double hyp;
-    protected int width, height;
-    protected Sprite sprite;
     protected GameScreen gameScreen;
     protected double attackRange = 32.48322;
-    private EnemyObject e1, e2, e3, e4;
+    private EnemyObject e1, e2;
+    ArrayList<EnemyObject> enemies = new ArrayList<>();
 
     @Override
     public void enemy(GameScreen gameScreen)
     {
         e1 = createEnemy("red.png", gameScreen);
-        e2 = createEnemy("red.png", gameScreen);
+        e2 = createEnemy("red.png",gameScreen);
+        enemies.add(e1);
+        enemies.add(e2);
 
     }
 
     private EnemyObject createEnemy(String textureName, GameScreen gameScreen)
     {
-        x = new Random().nextFloat() * Gdx.graphics.getWidth();
-        y = new Random().nextFloat() * Gdx.graphics.getHeight();
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
+
         this.gameScreen = gameScreen;
-        speed = 3;
-        width = 32;
-        height = 32;
+        float speed = 3;
+        int width = 32;
+        int height = 32;
 
         File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
@@ -51,43 +52,49 @@ public class Enemy implements IEnemyService
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);
         AssetLoader.INSTANCE.getAm().finishLoading();
 
-        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-        body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.ENEMY);
+        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.ENEMY);
 
-        return new EnemyObject(x, y, width, height, textureName, gameScreen);
+        return new EnemyObject(x, y, speed, width, height, body, sprite, gameScreen);
     }
 
     @Override
     public void update()
     {
-        x = body.getPosition().x * Const.PPM - (width / 2);
-        y = body.getPosition().y * Const.PPM - (height / 2);
-        velY = 0;
-        velX = 0;
-        //Enemy movement with vector
-        Vector2 zombiePos = new Vector2(x, y);
-        Vector2 playerPos = new Vector2(gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
-        Vector2 direction = new Vector2();
+        for (EnemyObject enemy : enemies)
+        {
+            enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));
+            enemy.setY(enemy.getBody().getPosition().y * Const.PPM - (enemy.getHeight() / 2));
+            enemy.setVelX(0);
+            enemy.setVelY(0);
+            //Enemy movement with vector
+            Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
+            Vector2 playerPos = new Vector2(gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
+            Vector2 direction = new Vector2();
 
-        //Difference in position to create vector with direction
-        direction.x = playerPos.x - zombiePos.x;
-        direction.y = playerPos.y - zombiePos.y;
+            //Difference in position to create vector with direction
+            direction.x = playerPos.x - zombiePos.x;
+            direction.y = playerPos.y - zombiePos.y;
 
-        //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
-        direction.nor();
+            //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
+            direction.nor();
 
 
-        float speedX = direction.x * speed;
-        float speedY = direction.y * speed;
+            float speedX = direction.x * enemy.getSpeed();
+            float speedY = direction.y * enemy.getSpeed();
 
-        body.setLinearVelocity(speedX, speedY);
+            enemy.getBody().setLinearVelocity(speedX, speedY);
+        }
 
     }
 
     @Override
     public void render(SpriteBatch batch)
     {
-        batch.draw(sprite, x, y, width, height);
+        for (EnemyObject enemy : enemies)
+        {
+            batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
+        }
     }
 
 }
