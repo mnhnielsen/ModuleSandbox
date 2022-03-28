@@ -18,8 +18,6 @@ import org.example.spi.IEnemyService;
 import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
-
-import javax.xml.soap.Text;
 import java.util.LinkedList;
 
 
@@ -80,7 +78,7 @@ public class GameScreen extends ScreenAdapter
         enemyService.render(batch);
         //obstacleService.render(batch);
 
-       // box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+       //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
     }
