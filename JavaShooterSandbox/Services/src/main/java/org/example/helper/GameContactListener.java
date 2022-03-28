@@ -1,4 +1,4 @@
-package org.example;
+package org.example.helper;
 
 import com.badlogic.gdx.physics.box2d.*;
 import org.example.helper.ContactType;
@@ -16,9 +16,11 @@ public class GameContactListener implements ContactListener, ICollisionService
 
 
     @Override
-    public void contactListener(GameScreen gameScreen)
+    public GameContactListener contactListener(GameScreen gameScreen)
     {
         this.gameScreen = gameScreen;
+
+        return this;
     }
 
     @Override
@@ -30,11 +32,9 @@ public class GameContactListener implements ContactListener, ICollisionService
         if (a == null || b == null) return;
         if (a.getUserData() == null || b.getUserData() == null) return;
 
-        if (a.getUserData() == ContactType.ENEMY || b.getUserData() == ContactType.ENEMY){
-            //Enemy - Player
-            if (a.getUserData() == ContactType.PLAYER || b.getUserData() == ContactType.PLAYER){
-                //Player damage -1
-            }
+        if (a.getUserData() == ContactType.PLAYER && b.getUserData() == ContactType.ENEMY)
+        {
+            gameScreen.getPlayerService().takeDamage(50);
         }
     }
 

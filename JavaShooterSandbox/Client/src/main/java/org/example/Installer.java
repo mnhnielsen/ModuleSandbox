@@ -12,7 +12,7 @@ public class Installer extends ModuleInstall
     public void restored()
     {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "Pong";
+        cfg.title = "Shooter game";
         cfg.width = 1200;
         cfg.height = 800;
         cfg.useGL30 = false;

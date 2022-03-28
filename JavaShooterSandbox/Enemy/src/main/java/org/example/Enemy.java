@@ -13,6 +13,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
+import java.util.Random;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEnemyService.class)
 })
@@ -24,26 +25,38 @@ public class Enemy implements IEnemyService
     protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
+    protected double attackRange = 32.48322;
+    private EnemyObject e1, e2, e3, e4;
 
     @Override
-    public void enemy(float x, float y, GameScreen gameScreen)
+    public void enemy(GameScreen gameScreen)
     {
-        this.x = x;
-        this.y = y;
+        e1 = createEnemy("red.png", gameScreen);
+        e2 = createEnemy("red.png", gameScreen);
+
+
+
+    }
+
+    private EnemyObject createEnemy(String textureName, GameScreen gameScreen)
+    {
+        x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        y = new Random().nextFloat() * Gdx.graphics.getHeight();
         this.gameScreen = gameScreen;
         speed = 3;
         width = 32;
         height = 32;
 
-        File file = new File(this.getClass().getResource("red.png").getPath());
+        File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
 
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);
         AssetLoader.INSTANCE.getAm().finishLoading();
 
         sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-        body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
+        body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.ENEMY);
 
+        return new EnemyObject(x, y, width, height, textureName, gameScreen);
     }
 
     @Override
@@ -53,7 +66,6 @@ public class Enemy implements IEnemyService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
-
         //Enemy movement with vector
         Vector2 zombiePos = new Vector2(x, y);
         Vector2 playerPos = new Vector2(gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());

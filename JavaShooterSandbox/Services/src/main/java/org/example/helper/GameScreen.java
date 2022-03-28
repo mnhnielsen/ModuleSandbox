@@ -5,17 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.ObjectMap;
+import org.example.spi.ICollisionService;
 import org.example.spi.IEnemyService;
 import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
+import javax.xml.soap.Text;
 import java.util.LinkedList;
+
 
 
 public class GameScreen extends ScreenAdapter
@@ -24,11 +30,11 @@ public class GameScreen extends ScreenAdapter
     private SpriteBatch batch;
     private World world;
     private final Lookup lookup = Lookup.getDefault();
-    IPlayerService playerService = lookup.lookup(IPlayerService.class);
-    IEnemyService enemyService = lookup.lookup(IEnemyService.class);
-    IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+    private IPlayerService playerService = lookup.lookup(IPlayerService.class);
+    private IEnemyService enemyService = lookup.lookup(IEnemyService.class);
+    private IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+    private ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
     private Box2DDebugRenderer box2DDebugRenderer;
-
 
 
     public GameScreen(OrthographicCamera cam)
@@ -38,14 +44,18 @@ public class GameScreen extends ScreenAdapter
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
+        world.setContactListener(collisionService.contactListener(this));
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
+
         enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
         enemyService.enemy(Boot.INSTANCE.getScreenWidth()/4, Boot.INSTANCE.getScreenHeight() / 2, this);
         enemyService.enemy(Boot.INSTANCE.getScreenWidth()/2, Boot.INSTANCE.getScreenHeight() / 2, this);
         obstacleService.obstacle(this);
 
+
+        enemyService.enemy(this);
+        obstacleService.obstacle(this);
     }
 
 
@@ -74,6 +84,7 @@ public class GameScreen extends ScreenAdapter
         playerService.render(batch);
         enemyService.render(batch);
         //obstacleService.render(batch);
+
         box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
