@@ -15,6 +15,8 @@ import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
+import java.util.LinkedList;
+
 
 public class GameScreen extends ScreenAdapter
 {
@@ -40,6 +42,8 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
         enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/4, Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/2, Boot.INSTANCE.getScreenHeight() / 2, this);
         obstacleService.obstacle(this);
 
     }
