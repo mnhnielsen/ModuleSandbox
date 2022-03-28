@@ -23,13 +23,10 @@ public class Wall implements IObstacleService
     @Override
     public void obstacle(GameScreen gameScreen)
     {
-
         upperWall = createPerimeter(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() - 32, Boot.INSTANCE.getScreenWidth(), 64, "color.png", gameScreen);
         lowerWall = createPerimeter(Boot.INSTANCE.getScreenWidth() / 2, 32, Boot.INSTANCE.getScreenWidth(), 64, "color.png", gameScreen);
         leftWall = createPerimeter(16, Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
         rightWall = createPerimeter(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
-
-
     }
 
     private Perimeter createPerimeter(float spawnX, float spawnY, int width, int height, String textureName, GameScreen gameScreen)

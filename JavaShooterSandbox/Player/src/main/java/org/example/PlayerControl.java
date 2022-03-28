@@ -29,6 +29,7 @@ public class PlayerControl implements IPlayerService
     @Override
     public void player(float x, float y, GameScreen gameScreen)
     {
+        System.out.println("spawned");
         this.x = x;
         this.y = y;
         this.gameScreen = gameScreen;

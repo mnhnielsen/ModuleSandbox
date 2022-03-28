@@ -28,10 +28,10 @@ public class GameScreen extends ScreenAdapter
     private SpriteBatch batch;
     private World world;
     private final Lookup lookup = Lookup.getDefault();
-    IPlayerService playerService = lookup.lookup(IPlayerService.class);
-    IEnemyService enemyService = lookup.lookup(IEnemyService.class);
-    IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
-    ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
+    private IPlayerService playerService = lookup.lookup(IPlayerService.class);
+    private IEnemyService enemyService = lookup.lookup(IEnemyService.class);
+    private IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+    private ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
     private Box2DDebugRenderer box2DDebugRenderer;
 
 
@@ -46,9 +46,8 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(this);
         obstacleService.obstacle(this);
-
     }
 
 
@@ -78,7 +77,7 @@ public class GameScreen extends ScreenAdapter
         enemyService.render(batch);
         //obstacleService.render(batch);
 
-        //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+        box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
     }
