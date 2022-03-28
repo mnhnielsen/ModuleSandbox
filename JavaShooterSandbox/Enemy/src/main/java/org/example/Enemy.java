@@ -66,38 +66,23 @@ public class Enemy implements IEnemyService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
+        //Enemy movement with vector
+        Vector2 zombiePos = new Vector2(x, y);
+        Vector2 playerPos = new Vector2(gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
+        Vector2 direction = new Vector2();
 
-        //Difference in coordinates
-        dirX = gameScreen.getPlayerService().getX() - x;
-        dirY = gameScreen.getPlayerService().getY() - y;
+        //Difference in position to create vector with direction
+        direction.x = playerPos.x - zombiePos.x;
+        direction.y = playerPos.y - zombiePos.y;
 
-        double distToPlayer = Vector2.dst(x, y, gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
+        //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
+        direction.nor();
 
 
-        //If statements to decide what direction zombie goes, based on dirX and dirY
-        if (dirX < 0)
-        {
-            velX = -1;
-        }
-        if (dirX > 0)
-        {
-            velX = 1;
-        }
-        if (dirY > 0)
-        {
-            velY = 1;
-        }
-        if (dirY < 0)
-        {
-            velY = -1;
-        }
-        if (distToPlayer <= attackRange)
-        {
-            velX = 0;
-            velY = 0;
-        }
+        float speedX = direction.x * speed;
+        float speedY = direction.y * speed;
 
-        body.setLinearVelocity(velX * speed, velY * speed);
+        body.setLinearVelocity(speedX, speedY);
 
     }
 

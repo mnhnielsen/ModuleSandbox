@@ -20,6 +20,8 @@ import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
 import javax.xml.soap.Text;
+import java.util.LinkedList;
+
 
 
 public class GameScreen extends ScreenAdapter
@@ -45,6 +47,12 @@ public class GameScreen extends ScreenAdapter
         world.setContactListener(collisionService.contactListener(this));
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
+
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/4, Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/2, Boot.INSTANCE.getScreenHeight() / 2, this);
+        obstacleService.obstacle(this);
+
 
         enemyService.enemy(this);
         obstacleService.obstacle(this);

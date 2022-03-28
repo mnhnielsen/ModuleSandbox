@@ -18,7 +18,7 @@ public class Wall implements IObstacleService
 
     private Body body;
     private Sprite sprite;
-    private Perimeter upperWall, lowerWall, leftWall, rightWall;
+    private Perimeter upperWall, lowerWall, leftWall, rightWall, midWall;
 
     @Override
     public void obstacle(GameScreen gameScreen)
@@ -27,6 +27,9 @@ public class Wall implements IObstacleService
         lowerWall = createPerimeter(Boot.INSTANCE.getScreenWidth() / 2, 32, Boot.INSTANCE.getScreenWidth(), 64, "color.png", gameScreen);
         leftWall = createPerimeter(16, Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
         rightWall = createPerimeter(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2,32,Boot.INSTANCE.getScreenHeight(),"color.png",gameScreen);
+
+        midWall = createPerimeter(Boot.INSTANCE.getScreenWidth()/2, Boot.INSTANCE.getScreenHeight() / 2,100,100,"color.png",gameScreen);
+
     }
 
     private Perimeter createPerimeter(float spawnX, float spawnY, int width, int height, String textureName, GameScreen gameScreen)
@@ -43,7 +46,6 @@ public class Wall implements IObstacleService
 
         Perimeter p = new Perimeter(spawnX, spawnY, width, height, textureName, gameScreen);
         return p;
-
     }
 
 
