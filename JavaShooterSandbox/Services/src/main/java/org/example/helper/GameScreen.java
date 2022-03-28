@@ -48,9 +48,7 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(Boot.INSTANCE.getScreenWidth(), Boot.INSTANCE.getScreenHeight() / 2, this);
-        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/4, Boot.INSTANCE.getScreenHeight() / 2, this);
-        enemyService.enemy(Boot.INSTANCE.getScreenWidth()/2, Boot.INSTANCE.getScreenHeight() / 2, this);
+        enemyService.enemy( this);
         obstacleService.obstacle(this);
 
 

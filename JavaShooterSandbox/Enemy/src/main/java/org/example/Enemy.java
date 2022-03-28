@@ -34,8 +34,6 @@ public class Enemy implements IEnemyService
         e1 = createEnemy("red.png", gameScreen);
         e2 = createEnemy("red.png", gameScreen);
 
-
-
     }
 
     private EnemyObject createEnemy(String textureName, GameScreen gameScreen)
