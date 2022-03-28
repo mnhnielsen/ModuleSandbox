@@ -23,13 +23,13 @@ public class Enemy implements IEnemyService
 {
     protected GameScreen gameScreen;
     protected double attackRange = 32.48322;
-    public int numberofEnemies = 5;
+    public int numberOfEnemies = 5;
     ArrayList<EnemyObject> enemies = new ArrayList<>();
 
     @Override
     public void enemy(GameScreen gameScreen)
     {
-        for (int i = 0; i < numberofEnemies; i++)
+        for (int i = 0; i < numberOfEnemies; i++)
         {
             EnemyObject e1 = createEnemy("red.png", gameScreen);
             enemies.add(e1);

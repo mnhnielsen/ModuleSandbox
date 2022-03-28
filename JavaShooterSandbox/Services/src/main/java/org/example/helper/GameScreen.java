@@ -18,7 +18,6 @@ import org.openide.util.Lookup;
 
 
 
-
 public class GameScreen extends ScreenAdapter
 {
     private OrthographicCamera cam;
@@ -75,7 +74,7 @@ public class GameScreen extends ScreenAdapter
         enemyService.render(batch);
         //obstacleService.render(batch);
 
-       // box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+       //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
     }
