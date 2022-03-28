@@ -13,7 +13,6 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
-import java.util.function.ToDoubleBiFunction;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEnemyService.class)
 })
@@ -55,34 +54,24 @@ public class Enemy implements IEnemyService
         velY = 0;
         velX = 0;
 
-        //Difference in coordinates
-        dirX = gameScreen.getPlayerService().getX() - x;
-        dirY = gameScreen.getPlayerService().getY() - y;
+        //Enemy movement with vector
+        Vector2 zombiePos = new Vector2(x, y);
+        Vector2 playerPos = new Vector2(gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
+        Vector2 direction = new Vector2();
 
-        //If statements to decide what direction zombie goes, based on dirX and dirY
+        //Difference in position to create vector with direction
+        direction.x = playerPos.x - zombiePos.x;
+        direction.y = playerPos.y - zombiePos.y;
 
-        //Left
-        if (dirX < 0)
-        {
-            velX = -1;
-        }
-        //Right
-        if (dirX > 0)
-        {
-            velX = 1;
-        }
-        //Up
-        if (dirY > 0)
-        {
-            velY = 1;
-        }
-        //Down
-        if (dirY < 0)
-        {
-            velY = -1;
-        }
-    
-        body.setLinearVelocity(velX * speed, velY * speed);
+        //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
+        direction.nor();
+
+
+        float speedX = direction.x * speed;
+        float speedY = direction.y * speed;
+
+        body.setLinearVelocity(speedX, speedY);
+
     }
 
     @Override
