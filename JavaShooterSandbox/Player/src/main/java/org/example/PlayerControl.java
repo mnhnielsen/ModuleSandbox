@@ -64,8 +64,8 @@ public class PlayerControl implements IPlayerService
                 body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
                 fileName = "color.png";
                 canMove = true;
-            }
-            catch (InterruptedException e){
+            } catch (InterruptedException e)
+            {
                 e.printStackTrace();
             }
         }

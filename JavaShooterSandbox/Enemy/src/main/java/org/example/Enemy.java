@@ -59,7 +59,8 @@ public class Enemy implements IEnemyService
         dirX = gameScreen.getPlayerService().getX() - x;
         dirY = gameScreen.getPlayerService().getY() - y;
 
-        double distToPlayer = Vector2.dst(x,y,gameScreen.getPlayerService().getX(),gameScreen.getPlayerService().getY());
+        double distToPlayer = Vector2.dst(x, y, gameScreen.getPlayerService().getX(), gameScreen.getPlayerService().getY());
+
 
         //If statements to decide what direction zombie goes, based on dirX and dirY
         if (dirX < 0)
@@ -78,16 +79,14 @@ public class Enemy implements IEnemyService
         {
             velY = -1;
         }
-        if (distToPlayer <= attackRange){
+        if (distToPlayer <= attackRange)
+        {
             velX = 0;
             velY = 0;
         }
 
         body.setLinearVelocity(velX * speed, velY * speed);
 
-
-        //Enemy rotation
-        //System.out.println("Enemy angle: " + body.getAngle());
     }
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><module codename="org.example.Player">
-    <module_version install_time="1648282216697" last="true" origin="installer" specification_version="1.0">
+    <module_version install_time="1648456260962" last="true" origin="installer" specification_version="1.0">
         <file crc="2898152238" name="config/Modules/org-example-Player.xml"/>
-        <file crc="3969334994" name="modules/org-example-Player.jar"/>
+        <file crc="3465970098" name="modules/org-example-Player.jar"/>
     </module_version>
 </module>

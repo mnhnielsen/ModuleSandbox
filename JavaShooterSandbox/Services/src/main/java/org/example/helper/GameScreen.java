@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -17,6 +19,8 @@ import org.example.spi.IObstacleService;
 import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
+import javax.xml.soap.Text;
+
 
 public class GameScreen extends ScreenAdapter
 {
@@ -28,10 +32,7 @@ public class GameScreen extends ScreenAdapter
     IEnemyService enemyService = lookup.lookup(IEnemyService.class);
     IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
     ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
-    ObjectMap<String, IPlayerService> objectMap = new ObjectMap<>();
     private Box2DDebugRenderer box2DDebugRenderer;
-
-
 
 
     public GameScreen(OrthographicCamera cam)
@@ -76,7 +77,8 @@ public class GameScreen extends ScreenAdapter
         playerService.render(batch);
         enemyService.render(batch);
         //obstacleService.render(batch);
-        box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+
+        //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
     }
