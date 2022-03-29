@@ -1,9 +1,12 @@
 package org.example.helper;
 
+import java.util.concurrent.TimeUnit;
+
 public class HealthPart
 {
     private int health;
     private boolean isDead;
+    private boolean isHit = false, tempDead;
 
 
     public HealthPart(int health)
@@ -11,6 +14,10 @@ public class HealthPart
         this.health = health;
     }
 
+    public int getHealth()
+    {
+        return health;
+    }
 
     public void setHealth(int health)
     {
@@ -22,13 +29,18 @@ public class HealthPart
         isDead = dead;
     }
 
+    public boolean isHit()
+    {
+        return isHit;
+    }
 
     public void takeDamage(int damage)
     {
+        isHit = true;
         health -= damage;
-        System.out.println(health);
         if (health <= 0)
             isDead = true;
+
     }
 
     public boolean dead()

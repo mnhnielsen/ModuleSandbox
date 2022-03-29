@@ -48,20 +48,44 @@ public class PlayerControl implements IPlayerService
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
 
+    public void updateTexture(String fname)
+    {
+
+        Gdx.app.postRunnable(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                File file = new File(this.getClass().getResource(fname).getPath());
+                String path = file.getPath().substring(5);
+
+                AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+                AssetLoader.INSTANCE.getAm().finishLoading();
+
+                sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+            }
+        });
+
+    }
+
 
     @Override
     public void update()
     {
+        if (lifePart.isHit() && lifePart.getHealth() <= 50)
+            updateTexture("injured.png");
         if (lifePart.dead())
         {
             canMove = false;
             try
             {
+
                 Thread.sleep(2500);
                 lifePart.setHealth(100);
                 lifePart.setDead(false);
                 body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
                 canMove = true;
+                updateTexture("color.png");
             } catch (InterruptedException e)
             {
                 e.printStackTrace();
@@ -74,11 +98,13 @@ public class PlayerControl implements IPlayerService
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
+
             velY = 1;
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
+
             velY = -1;
             isMoving = true;
         }
