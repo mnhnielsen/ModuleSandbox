@@ -67,6 +67,7 @@
         <module>Enemy</module>
         <module>Collision</module>
         <module>Health</module>
+        <module>Bullet</module>
     </modules>
 
     <properties>

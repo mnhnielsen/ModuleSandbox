@@ -8,4 +8,5 @@ public interface IEnemyService
     void update();
     void render(SpriteBatch batch);
     void enemy(int numberOfEnemies,GameScreen gameScreen);
+    void takeDamage(int damage);
 }

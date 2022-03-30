@@ -1,0 +1,36 @@
+package org.example;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Body;
+import org.example.helper.*;
+import org.example.spi.IBulletService;
+import org.openide.util.lookup.ServiceProvider;
+import org.openide.util.lookup.ServiceProviders;
+
+import java.io.File;
+import java.util.ArrayList;
+
+@ServiceProviders(value = {@ServiceProvider(service = IBulletService.class)})
+public class BulletController implements IBulletService
+{
+    private GameScreen gameScreen;
+
+
+    @Override
+    public BulletEntity createBullet(float x, float y, float speed, int width, int height, String textureName, GameScreen gameScreen)
+    {
+        this.gameScreen = gameScreen;
+        File file = new File(this.getClass().getResource(textureName).getPath());
+        String path = file.getPath().substring(5);
+
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+
+        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.BULLET);
+        body.setLinearVelocity(speed,0);
+        return new BulletEntity(x, y, speed, width, height, sprite, gameScreen, body);
+    }
+}

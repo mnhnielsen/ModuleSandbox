@@ -24,6 +24,8 @@ public class Enemy implements IEnemyService
     private GameScreen gameScreen;
     private double attackRange = 32.48322;
     private float maxSpeed = 3;
+    HealthPart healthPart;
+
     ArrayList<EnemyObject> enemies = new ArrayList<>();
 
     @Override
@@ -49,6 +51,8 @@ public class Enemy implements IEnemyService
         int width = 32;
         int height = 32;
 
+
+        healthPart = new HealthPart(100);
         File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
 
@@ -87,6 +91,10 @@ public class Enemy implements IEnemyService
             float speedY = direction.y * enemy.getSpeed();
 
             enemy.getBody().setLinearVelocity(speedX, speedY);
+
+            if (healthPart.dead()){
+
+            }
         }
 
     }
@@ -100,4 +108,8 @@ public class Enemy implements IEnemyService
         }
     }
 
+    public void takeDamage(int damage)
+    {
+        healthPart.takeDamage(damage);
+    }
 }

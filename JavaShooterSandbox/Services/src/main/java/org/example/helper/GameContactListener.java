@@ -36,6 +36,8 @@ public class GameContactListener implements ContactListener, ICollisionService
         {
             gameScreen.getPlayerService().takeDamage(50);
         }
+        if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
+            gameScreen.getEnemyService().takeDamage(50);
     }
 
     @Override

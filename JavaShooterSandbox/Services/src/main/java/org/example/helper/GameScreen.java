@@ -17,7 +17,6 @@ import org.example.spi.IPlayerService;
 import org.openide.util.Lookup;
 
 
-
 public class GameScreen extends ScreenAdapter
 {
     private OrthographicCamera cam;
@@ -42,7 +41,7 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy( 5,this);
+        enemyService.enemy(5, this);
         obstacleService.obstacle(this);
     }
 
@@ -71,9 +70,9 @@ public class GameScreen extends ScreenAdapter
 
         playerService.render(batch);
         enemyService.render(batch);
-        obstacleService.render(batch);
+        //obstacleService.render(batch);
 
-       //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+        box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
 
         batch.end();
     }
@@ -87,5 +86,10 @@ public class GameScreen extends ScreenAdapter
     public IPlayerService getPlayerService()
     {
         return playerService;
+    }
+
+    public IEnemyService getEnemyService()
+    {
+        return enemyService;
     }
 }

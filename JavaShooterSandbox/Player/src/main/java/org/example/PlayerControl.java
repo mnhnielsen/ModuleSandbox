@@ -5,9 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
+import org.example.spi.IBulletService;
 import org.example.spi.IPlayerService;
+import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -95,16 +99,18 @@ public class PlayerControl implements IPlayerService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            BulletEntity bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60,y+15,50,20,10,"red.png",gameScreen);
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
-
             velY = 1;
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
-
             velY = -1;
             isMoving = true;
         }
@@ -117,7 +123,6 @@ public class PlayerControl implements IPlayerService
         {
             velX = -1;
             isMoving = true;
-
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving && canMove)
             speed = 10;
@@ -131,6 +136,7 @@ public class PlayerControl implements IPlayerService
     @Override
     public void render(SpriteBatch batch)
     {
+
         batch.draw(sprite, x, y, width, height);
     }
 
