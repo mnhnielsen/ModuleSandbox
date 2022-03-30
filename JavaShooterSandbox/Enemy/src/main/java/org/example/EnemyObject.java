@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.GameScreen;
+import org.example.helper.HealthPart;
 
 public class EnemyObject
 {
@@ -12,8 +13,9 @@ public class EnemyObject
     private Sprite sprite;
     private GameScreen gameScreen;
     private Body body;
+    private HealthPart healthPart;
 
-    public EnemyObject(float x, float y, float speed, int width, int height, Body body, Sprite sprite, GameScreen gameScreen)
+    public EnemyObject(float x, float y, float speed, int width, int height, Body body, Sprite sprite, GameScreen gameScreen, HealthPart healthPart)
     {
         this.x = x;
         this.y = y;
@@ -23,6 +25,17 @@ public class EnemyObject
         this.body = body;
         this.gameScreen = gameScreen;
         this.sprite = sprite;
+        this.healthPart = healthPart;
+    }
+
+    public HealthPart getHealthPart()
+    {
+        return healthPart;
+    }
+
+    public void setHealthPart(HealthPart healthPart)
+    {
+        this.healthPart = healthPart;
     }
 
     public float getX()

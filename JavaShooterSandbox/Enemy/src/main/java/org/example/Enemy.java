@@ -24,7 +24,6 @@ public class Enemy implements IEnemyService
     private GameScreen gameScreen;
     private double attackRange = 32.48322;
     private float maxSpeed = 3;
-    HealthPart healthPart;
 
     ArrayList<EnemyObject> enemies = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public class Enemy implements IEnemyService
         int height = 32;
 
 
-        healthPart = new HealthPart(100);
+        HealthPart healthPart = new HealthPart(100);
         File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
 
@@ -62,7 +61,7 @@ public class Enemy implements IEnemyService
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.ENEMY);
 
-        return new EnemyObject(x, y, speed, width, height, body, sprite, gameScreen);
+        return new EnemyObject(x, y, speed, width, height, body, sprite, gameScreen, healthPart);
     }
 
     @Override
@@ -92,8 +91,8 @@ public class Enemy implements IEnemyService
 
             enemy.getBody().setLinearVelocity(speedX, speedY);
 
-            if (healthPart.dead()){
-
+            if (enemy.getHealthPart().dead()){
+                enemy.getBody().setLinearVelocity(0,0);
             }
         }
 
@@ -110,6 +109,7 @@ public class Enemy implements IEnemyService
 
     public void takeDamage(int damage)
     {
-        healthPart.takeDamage(damage);
+        for (EnemyObject o : enemies)
+            o.getHealthPart().takeDamage(50);
     }
 }
