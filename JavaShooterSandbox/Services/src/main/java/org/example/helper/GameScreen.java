@@ -10,11 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import org.example.spi.ICollisionService;
-import org.example.spi.IEnemyService;
-import org.example.spi.IObstacleService;
-import org.example.spi.IPlayerService;
+import org.example.spi.*;
 import org.openide.util.Lookup;
+
 
 
 public class GameScreen extends ScreenAdapter
@@ -27,8 +25,14 @@ public class GameScreen extends ScreenAdapter
     private IEnemyService enemyService = lookup.lookup(IEnemyService.class);
     private IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
     private ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
+    private ICollisionDetector collisionDetector = Lookup.getDefault().lookup(ICollisionDetector.class);
     private Box2DDebugRenderer box2DDebugRenderer;
+    private GameWorld gameWorld = new GameWorld();
 
+    public GameWorld getGameWorld()
+    {
+        return gameWorld;
+    }
 
     public GameScreen(OrthographicCamera cam)
     {
@@ -41,10 +45,9 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(1, this);
+        enemyService.enemy(1, this, gameWorld);
         obstacleService.obstacle(this);
     }
-
 
     public void update()
     {
@@ -53,23 +56,27 @@ public class GameScreen extends ScreenAdapter
         batch.setProjectionMatrix(cam.combined);
 
         playerService.update();
-        enemyService.update();
+
+        for (IEnemyService eService : Lookup.getDefault().lookupAll(IEnemyService.class))
+            eService.update();
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
+
     }
 
     @Override
     public void render(float delta)
     {
-        update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
 
         playerService.render(batch);
-        enemyService.render(batch);
+        update();
+
         //obstacleService.render(batch);
 
         box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
@@ -88,8 +95,8 @@ public class GameScreen extends ScreenAdapter
         return playerService;
     }
 
-    public IEnemyService getEnemyService()
+    public SpriteBatch getBatch()
     {
-        return enemyService;
+        return batch;
     }
 }

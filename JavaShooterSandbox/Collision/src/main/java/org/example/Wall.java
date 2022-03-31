@@ -18,8 +18,8 @@ public class Wall implements IObstacleService
 {
 
     protected GameScreen gameScreen;
-    private Perimeter upperWall, lowerWall, leftWall, rightWall;
-    private ArrayList<Perimeter> walls = new ArrayList<>();
+    private EntityObject upperWall, lowerWall, leftWall, rightWall;
+    private ArrayList<EntityObject> walls = new ArrayList<>();
 
 
     @Override
@@ -37,7 +37,7 @@ public class Wall implements IObstacleService
     }
 
 
-    private Perimeter createPerimeter(float spawnX, float spawnY, int width, int height, String textureName, GameScreen gameScreen)
+    private EntityObject createPerimeter(float spawnX, float spawnY, int width, int height, String textureName, GameScreen gameScreen)
     {
         this.gameScreen = gameScreen;
         File file = new File(this.getClass().getResource(textureName).getPath());
@@ -48,13 +48,13 @@ public class Wall implements IObstacleService
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(spawnX, spawnY, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
-        return new Perimeter(spawnX, spawnY, width, height, body, textureName, sprite, gameScreen);
+        return new EntityObject(spawnX, spawnY, width, height, body, textureName, sprite, gameScreen);
     }
 
 
     public void render(SpriteBatch batch)
     {
-        for (Perimeter perimeter : walls)
+        for (EntityObject perimeter : walls)
             batch.draw(perimeter.getSprite(), perimeter.getX() - (perimeter.getWidth() / 2), perimeter.getY() - (perimeter.getHeight() / 2), perimeter.getWidth(), perimeter.getHeight());
     }
 }

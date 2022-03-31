@@ -29,6 +29,8 @@ public class PlayerControl implements IPlayerService
     private HealthPart lifePart = new HealthPart(100);
     private boolean canMove = true, isMoving;
     private String fileName;
+    private boolean canShoot = true;
+
 
     @Override
     public void player(float x, float y, GameScreen gameScreen)
@@ -83,7 +85,6 @@ public class PlayerControl implements IPlayerService
             canMove = false;
             try
             {
-
                 Thread.sleep(2500);
                 lifePart.setHealth(100);
                 lifePart.setDead(false);
@@ -99,9 +100,11 @@ public class PlayerControl implements IPlayerService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
-            BulletEntity bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60,y+15,50,20,10,"red.png",gameScreen);
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+            canShoot = false;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
@@ -139,8 +142,6 @@ public class PlayerControl implements IPlayerService
 
         batch.draw(sprite, x, y, width, height);
     }
-
-
     @Override
     public float getX()
     {
@@ -158,13 +159,4 @@ public class PlayerControl implements IPlayerService
         lifePart.takeDamage(damage);
     }
 
-    public String getFileName()
-    {
-        return fileName;
-    }
-
-    public void setFileName(String fileName)
-    {
-        this.fileName = fileName;
-    }
 }

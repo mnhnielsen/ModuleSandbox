@@ -3,16 +3,39 @@ package org.example.helper;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class BulletEntity
+import java.io.Serializable;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class EntityObject implements Serializable
 {
-    private float x,y,speed;
+    private final UUID ID = UUID.randomUUID();
+    private float x, y, speed, velY, velX;
     private int width, height;
     private String filename;
     private Sprite sprite;
     private GameScreen gameScreen;
     private Body body;
+    private HealthPart healthPart;
 
-    public BulletEntity(float x, float y, float speed, int width, int height, Sprite sprite, GameScreen gameScreen, Body body)
+
+    //Enemy
+    public EntityObject(float x, float y, float speed, int width, int height, Body body, Sprite sprite, GameScreen gameScreen, HealthPart healthPart)
+    {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.width = width;
+        this.height = height;
+        this.body = body;
+        this.gameScreen = gameScreen;
+        this.sprite = sprite;
+        this.healthPart = healthPart;
+    }
+
+    //Bullet
+    public EntityObject(float x, float y, float speed, int width, int height, Sprite sprite, GameScreen gameScreen, Body body)
     {
         this.x = x;
         this.y = y;
@@ -22,6 +45,25 @@ public class BulletEntity
         this.sprite = sprite;
         this.gameScreen = gameScreen;
         this.body = body;
+    }
+
+    //Wall
+    public EntityObject(float x, float y, int width, int height, Body body, String filename, Sprite sprite, GameScreen gameScreen)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.body = body;
+        this.filename = filename;
+        this.gameScreen = gameScreen;
+        this.sprite = sprite;
+    }
+
+
+    public String getID()
+    {
+        return ID.toString();
     }
 
     public float getX()
@@ -52,6 +94,26 @@ public class BulletEntity
     public void setSpeed(float speed)
     {
         this.speed = speed;
+    }
+
+    public float getVelY()
+    {
+        return velY;
+    }
+
+    public void setVelY(float velY)
+    {
+        this.velY = velY;
+    }
+
+    public float getVelX()
+    {
+        return velX;
+    }
+
+    public void setVelX(float velX)
+    {
+        this.velX = velX;
     }
 
     public int getWidth()
@@ -113,4 +175,15 @@ public class BulletEntity
     {
         this.body = body;
     }
+
+    public HealthPart getHealthPart()
+    {
+        return healthPart;
+    }
+
+    public void setHealthPart(HealthPart healthPart)
+    {
+        this.healthPart = healthPart;
+    }
+
 }

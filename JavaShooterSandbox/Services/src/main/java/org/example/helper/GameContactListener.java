@@ -3,8 +3,11 @@ package org.example.helper;
 import com.badlogic.gdx.physics.box2d.*;
 import org.example.helper.ContactType;
 import org.example.helper.GameScreen;
+import org.example.spi.ICollisionDetector;
 import org.example.spi.ICollisionService;
+import org.example.spi.IEnemyService;
 import org.example.spi.IPlayerService;
+import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
@@ -13,6 +16,7 @@ import org.openide.util.lookup.ServiceProviders;
 public class GameContactListener implements ContactListener, ICollisionService
 {
     private GameScreen gameScreen;
+    private ICollisionDetector collisionDetector = Lookup.getDefault().lookup(ICollisionDetector.class);
 
 
     @Override
@@ -26,6 +30,7 @@ public class GameContactListener implements ContactListener, ICollisionService
     @Override
     public void beginContact(Contact contact)
     {
+
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
 
@@ -37,7 +42,11 @@ public class GameContactListener implements ContactListener, ICollisionService
             gameScreen.getPlayerService().takeDamage(50);
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
-            gameScreen.getEnemyService().takeDamage(50);
+            collisionDetector.process(gameScreen,gameScreen.getGameWorld());
+
+
+
+
     }
 
     @Override
