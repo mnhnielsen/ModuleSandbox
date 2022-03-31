@@ -38,7 +38,7 @@ public class CollisionDetector implements ICollisionDetector
                         if (entityLife.dead())
                         {
                             entity = entityObject;
-                            System.out.println("Hit");
+                            gameWorld.addObjectForDeletion(entity);
                         }
                     }
 

@@ -100,11 +100,12 @@ public class PlayerControl implements IPlayerService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
+
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
             EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
             gameScreen.getGameWorld().addEntity(bullet);
-            canShoot = false;
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)

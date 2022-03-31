@@ -186,13 +186,15 @@ public class EntityObject implements Serializable
     public void removeBody()
     {
 
-        Iterator<EntityObject> i = gameScreen.getGameWorld().getEntities().iterator();
+        Iterator<EntityObject> i = gameScreen.getGameWorld().getEntitiesForDeletion().iterator();
 
         if (!gameScreen.getWorld().isLocked())
         {
                 while(i.hasNext()) {
-                    Body b = i.next().getBody();
+                    EntityObject entity = i.next();
+                    Body b = entity.getBody();
                     gameScreen.getWorld().destroyBody(b);
+                    gameScreen.getGameWorld().removeEntity(entity);
                     i.remove();
                 }
 

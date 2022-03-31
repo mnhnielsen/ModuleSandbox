@@ -9,10 +9,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GameWorld
 {
     private final Map<String, EntityObject> entityMap = new ConcurrentHashMap<>();
+    private final Map<String, EntityObject> deleteObjectMap = new ConcurrentHashMap<>();
+
 
     public String addEntity(EntityObject entity)
     {
         entityMap.put(entity.getID(), entity);
+        return entity.getID();
+    }
+    public String addObjectForDeletion(EntityObject entity)
+    {
+        deleteObjectMap.put(entity.getID(), entity);
         return entity.getID();
     }
 
@@ -29,6 +36,10 @@ public class GameWorld
     public Collection<EntityObject> getEntities()
     {
         return entityMap.values();
+    }
+    public Collection<EntityObject> getEntitiesForDeletion()
+    {
+        return deleteObjectMap.values();
     }
 
     public <E extends EntityObject> List<EntityObject> getEntities(Class<E>... entityTypes)
