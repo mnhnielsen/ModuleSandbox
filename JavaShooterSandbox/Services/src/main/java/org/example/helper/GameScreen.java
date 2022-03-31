@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(1, this, gameWorld);
+        enemyService.enemy(5, this, gameWorld);
         obstacleService.obstacle(this);
     }
 
@@ -55,6 +55,7 @@ public class GameScreen extends ScreenAdapter
         //Delete bodies here
         if (collisionDetector.deleteObject()!= null)
             collisionDetector.deleteObject().removeBody();
+
 
         cam.update();
         batch.setProjectionMatrix(cam.combined);

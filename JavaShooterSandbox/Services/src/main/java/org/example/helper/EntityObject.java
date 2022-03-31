@@ -21,6 +21,7 @@ public class EntityObject implements Serializable
     private HealthPart healthPart;
 
 
+
     //Enemy
     public EntityObject(float x, float y, float speed, int width, int height, Body body, Sprite sprite, GameScreen gameScreen, HealthPart healthPart)
     {
@@ -181,12 +182,20 @@ public class EntityObject implements Serializable
     {
         return healthPart;
     }
+
     public void removeBody()
     {
+
+        Iterator<EntityObject> i = gameScreen.getGameWorld().getEntities().iterator();
+
         if (!gameScreen.getWorld().isLocked())
         {
-            gameScreen.getWorld().destroyBody(this.getBody());
-            gameScreen.getGameWorld().removeEntity(this);
+                while(i.hasNext()) {
+                    Body b = i.next().getBody();
+                    gameScreen.getWorld().destroyBody(b);
+                    i.remove();
+                }
+
         }
     }
 
@@ -194,5 +203,6 @@ public class EntityObject implements Serializable
     {
         this.healthPart = healthPart;
     }
+
 
 }

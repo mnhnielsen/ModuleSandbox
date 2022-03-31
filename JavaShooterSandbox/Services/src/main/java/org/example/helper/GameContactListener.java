@@ -31,8 +31,8 @@ public class GameContactListener implements ContactListener, ICollisionService
     public void beginContact(Contact contact)
     {
 
-        Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
+        Fixture a = contact.getFixtureA();
 
         if (a == null || b == null) return;
         if (a.getUserData() == null || b.getUserData() == null) return;
@@ -41,10 +41,10 @@ public class GameContactListener implements ContactListener, ICollisionService
         {
             gameScreen.getPlayerService().takeDamage(50);
         }
-        if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
-            collisionDetector.process(gameScreen,gameScreen.getGameWorld());
+        if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET) {
+            collisionDetector.process(gameScreen, gameScreen.getGameWorld());
 
-
+        }
 
 
     }
