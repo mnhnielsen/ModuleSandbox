@@ -52,6 +52,10 @@ public class GameScreen extends ScreenAdapter
     public void update()
     {
         world.step(1 / 60f, 6, 2);
+        //Delete bodies here
+        if (collisionDetector.deleteObject()!= null)
+            collisionDetector.deleteObject().removeBody();
+
         cam.update();
         batch.setProjectionMatrix(cam.combined);
 

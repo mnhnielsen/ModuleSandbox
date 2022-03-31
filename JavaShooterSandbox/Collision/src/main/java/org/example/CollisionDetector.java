@@ -1,15 +1,19 @@
 package org.example;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
 import org.example.spi.IBulletService;
 import org.example.spi.ICollisionDetector;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+import java.util.Iterator;
+
 @ServiceProviders(value = {@ServiceProvider(service = ICollisionDetector.class)})
 public class CollisionDetector implements ICollisionDetector
 {
+    EntityObject entity = null;
     public void process(GameScreen gameScreen, GameWorld gameWorld)
     {
         for (EntityObject entityObject : gameWorld.getEntities())
@@ -20,15 +24,24 @@ public class CollisionDetector implements ICollisionDetector
             {
 
 
-                //HealthPart entityLife = entityObject.getHealthPart();
-
                 if (this.colliderCheck(entityObject, collisionDetection))
                 {
+                    HealthPart entityLife = entityObject.getHealthPart();
 
-                    //collisionDetection.getHealthPart().setHealth(0);
+                    if (entityLife != null)
+                    {
 
-                    gameWorld.removeEntity(entityObject);
-                    gameWorld.removeEntity(collisionDetection);
+                        if (gameScreen.getWorld().isLocked())
+                            System.out.println("Locked");
+
+                        entityLife.setDead(true);
+                        if (entityLife.dead())
+                        {
+                            entity = entityObject;
+                            System.out.println("Hit");
+                        }
+                    }
+
                     /*if (entityLife.getHealth() > 0)
                     {
                         entityLife.setHealth(entityLife.getHealth() - 1);
@@ -37,6 +50,8 @@ public class CollisionDetector implements ICollisionDetector
                             entityLife.setDead(true);
                             gameWorld.removeEntity(collisionDetection);
                             gameWorld.removeEntity(entityObject);
+
+                            }
                         }
                     }
 
@@ -44,6 +59,12 @@ public class CollisionDetector implements ICollisionDetector
                 }
             }
         }
+    }
+
+    @Override
+    public EntityObject deleteObject()
+    {
+        return entity;
     }
 
     private Boolean colliderCheck(EntityObject e1, EntityObject e2)

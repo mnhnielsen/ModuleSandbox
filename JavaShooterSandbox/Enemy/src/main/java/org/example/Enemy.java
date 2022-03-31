@@ -87,6 +87,7 @@ public class Enemy implements IEnemyService
 
                 enemy.getBody().setLinearVelocity(speedX, speedY);
                 render(gameScreen.getBatch(), enemy);
+
             }
         }
     }

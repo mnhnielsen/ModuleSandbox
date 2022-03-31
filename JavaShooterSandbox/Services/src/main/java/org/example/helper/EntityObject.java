@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -179,6 +180,14 @@ public class EntityObject implements Serializable
     public HealthPart getHealthPart()
     {
         return healthPart;
+    }
+    public void removeBody()
+    {
+        if (!gameScreen.getWorld().isLocked())
+        {
+            gameScreen.getWorld().destroyBody(this.getBody());
+            gameScreen.getGameWorld().removeEntity(this);
+        }
     }
 
     public void setHealthPart(HealthPart healthPart)
