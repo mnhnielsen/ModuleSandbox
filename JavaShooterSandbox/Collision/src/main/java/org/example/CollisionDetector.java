@@ -27,6 +27,7 @@ public class CollisionDetector implements ICollisionDetector
                 if (this.colliderCheck(entityObject, collisionDetection))
                 {
                     HealthPart entityLife = entityObject.getHealthPart();
+                    gameWorld.addObjectForDeletion(collisionDetection);
 
                     if (entityLife != null)
                     {

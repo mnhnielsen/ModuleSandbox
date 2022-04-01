@@ -11,6 +11,7 @@ import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 @ServiceProviders(value = {@ServiceProvider(service = IBulletService.class)})
 public class BulletController implements IBulletService
@@ -21,6 +22,8 @@ public class BulletController implements IBulletService
     @Override
     public BulletObject createBullet(float x, float y, float speed, int width, int height, String textureName, GameScreen gameScreen, GameWorld gameWorld)
     {
+        int minusAccuracy = 2, maxAccuracy = 5;
+        int accuracy = new Random().nextInt(maxAccuracy - minusAccuracy) + minusAccuracy;
         this.gameScreen = gameScreen;
         File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
@@ -31,7 +34,7 @@ public class BulletController implements IBulletService
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.BULLET);
         body.setLinearVelocity(speed,0);
-        BulletObject entityObject = new BulletObject(x, y, speed, width, height, sprite, gameScreen, body);
+        BulletObject entityObject = new BulletObject(x, y+accuracy, speed, width, height, sprite, gameScreen, body);
         return entityObject;
     }
 }

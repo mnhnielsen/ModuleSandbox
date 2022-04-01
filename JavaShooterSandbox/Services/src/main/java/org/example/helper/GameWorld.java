@@ -38,6 +38,7 @@ public class GameWorld
     public void removeEntity(EntityObject entity)
     {
         entityMap.remove(entity.getID());
+        bulletMap.remove(entity.getID());
     }
 
     public Collection<EntityObject> getEntities()

@@ -23,7 +23,7 @@ import java.io.File;
 public class PlayerControl implements IPlayerService
 {
     protected Body body;
-    protected float x, y, speed, velY, velX, radians = 3.1415f / 2, rotationSpeed = 5f;
+    protected float x, y, speed, velY, velX, radians = 3.1415f / 2, rotationSpeed = 5f, fireRate = 2f;
     protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
@@ -108,7 +108,7 @@ public class PlayerControl implements IPlayerService
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
             
-            fireDelay -= Gdx.graphics.getDeltaTime();
+            fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
             if (fireDelay<=0)
             {
                 EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
