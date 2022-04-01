@@ -6,5 +6,5 @@ import org.example.helper.GameWorld;
 
 public interface IBulletService
 {
-    EntityObject createBullet(float x, float y, float speed, int width, int height, String textureName, GameScreen gameScreen, GameWorld gameWorld);
+    EntityObject createBullet(float x, float y, float speedX, float speedY, int width, int height, String textureName, GameScreen gameScreen, GameWorld gameWorld);
 }

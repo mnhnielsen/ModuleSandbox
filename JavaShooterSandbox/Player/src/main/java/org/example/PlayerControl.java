@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
 import org.example.spi.IBulletService;
@@ -99,34 +100,87 @@ public class PlayerControl implements IPlayerService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
-
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addEntity(bullet);
-
-        }
-
+        double direction = 0;
+        
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
             velY = 1;
             isMoving = true;
+            direction = 1;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
             velY = -1;
             isMoving = true;
+            direction = 3;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
             velX = 1;
             isMoving = true;
+            direction = 2;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
             velX = -1;
             isMoving = true;
+            direction = 4;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
+        {
+            direction = 1.5;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.S))
+        {
+            direction = 2.5;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
+        {
+            direction = 3.5;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Input.Keys.W))
+        {
+            direction = 4.5;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 1)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 15, y + 60, 0, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 1.5)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 60, 25, 25, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 2)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 0, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 2.5)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y - 15, 25, -25, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 3)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 15, y - 28, 0, -50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 3.5)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x - 28, y - 15, -25, -25, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 4)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x -28, y + 15, -50, 0, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 4.5)
+        {
+            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x - 28 , y + 60, -25, 25, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+            gameScreen.getGameWorld().addEntity(bullet);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving && canMove)
             speed = 10;
@@ -134,13 +188,14 @@ public class PlayerControl implements IPlayerService
             speed = 6;
 
         body.setLinearVelocity(velX * speed, velY * speed);
+
+
     }
 
 
     @Override
     public void render(SpriteBatch batch)
     {
-
         batch.draw(sprite, x, y, width, height);
     }
     @Override
