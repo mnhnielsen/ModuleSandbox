@@ -30,10 +30,6 @@ public class CollisionDetector implements ICollisionDetector
 
                     if (entityLife != null)
                     {
-
-                        if (gameScreen.getWorld().isLocked())
-                            System.out.println("Locked");
-
                         entityLife.setDead(true);
                         if (entityLife.dead())
                         {

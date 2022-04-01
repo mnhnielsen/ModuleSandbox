@@ -5,8 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
 import org.example.spi.IBulletService;
@@ -100,6 +99,7 @@ public class PlayerControl implements IPlayerService
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
