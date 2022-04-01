@@ -11,6 +11,5 @@ public class BulletObject extends EntityObject
     public BulletObject(float x, float y, float speed, int width, int height, Sprite sprite, GameScreen gameScreen, Body body)
     {
         super(x, y, speed, width, height, sprite, gameScreen, body);
-
     }
 }

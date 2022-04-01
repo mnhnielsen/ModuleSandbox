@@ -31,7 +31,7 @@ public class PlayerControl implements IPlayerService
     private boolean canMove = true, isMoving;
     private String fileName;
     private boolean canShoot = true;
-    private float fireDelay;
+    private float fireDelay, experation = 5f;
 
 
     @Override
@@ -80,9 +80,14 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
+        experation-=Gdx.graphics.getDeltaTime();
+        if (experation<= 0){
+            for (EntityObject object : gameScreen.getGameWorld().getBulletEntities())
+                gameScreen.getGameWorld().removeBulletEntity(object);
+        }
 
-        if (lifePart.isHit() && lifePart.getHealth() <= 50)
-            updateTexture("injured.png");
+            if (lifePart.isHit() && lifePart.getHealth() <= 50)
+                updateTexture("injured.png");
         if (lifePart.dead())
         {
             canMove = false;
@@ -107,9 +112,9 @@ public class PlayerControl implements IPlayerService
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
-            
+
             fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
-            if (fireDelay<=0)
+            if (fireDelay <= 0)
             {
                 EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
                 gameScreen.getGameWorld().addBulletObject(bullet);

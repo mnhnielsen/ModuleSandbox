@@ -33,8 +33,8 @@ public class BulletController implements IBulletService
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.BULLET);
-        body.setLinearVelocity(speed,0);
-        BulletObject entityObject = new BulletObject(x, y+accuracy, speed, width, height, sprite, gameScreen, body);
+        body.setLinearVelocity(speed, 0);
+        BulletObject entityObject = new BulletObject(x, y + accuracy, speed, width, height, sprite, gameScreen, body);
         return entityObject;
     }
 }
