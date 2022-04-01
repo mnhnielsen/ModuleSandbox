@@ -31,6 +31,7 @@ public class PlayerControl implements IPlayerService
     private boolean canMove = true, isMoving;
     private String fileName;
     private boolean canShoot = true;
+    private float fireDelay;
 
 
     @Override
@@ -106,8 +107,16 @@ public class PlayerControl implements IPlayerService
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
+            
+            fireDelay -= Gdx.graphics.getDeltaTime();
+            if (fireDelay<=0)
+            {
+                EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
+                gameScreen.getGameWorld().addBulletObject(bullet);
+                fireDelay += 0.25;
+            }
+
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
