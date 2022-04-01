@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.helper.*;
 import org.example.spi.IBulletService;
@@ -14,6 +15,7 @@ import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
+import javax.swing.text.html.parser.Entity;
 import java.io.File;
 
 @ServiceProviders(value = {@ServiceProvider(service = IPlayerService.class)
@@ -21,7 +23,7 @@ import java.io.File;
 public class PlayerControl implements IPlayerService
 {
     protected Body body;
-    protected float x, y, speed, velY, velX;
+    protected float x, y, speed, velY, velX, radians = 3.1415f / 2, rotationSpeed = 5f;
     protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
@@ -77,6 +79,7 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
+
         if (lifePart.isHit() && lifePart.getHealth() <= 50)
             updateTexture("injured.png");
         if (lifePart.dead())
@@ -97,15 +100,14 @@ public class PlayerControl implements IPlayerService
         }
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
+
         velY = 0;
         velX = 0;
-
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot)
         {
             EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 20, 10, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addEntity(bullet);
-
+            gameScreen.getGameWorld().addBulletObject(bullet);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
@@ -125,6 +127,7 @@ public class PlayerControl implements IPlayerService
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
+            radians += rotationSpeed * Gdx.graphics.getDeltaTime();
             velX = -1;
             isMoving = true;
         }
@@ -133,16 +136,22 @@ public class PlayerControl implements IPlayerService
         else
             speed = 6;
 
+
         body.setLinearVelocity(velX * speed, velY * speed);
+
+        render(gameScreen.getBatch());
     }
 
 
-    @Override
     public void render(SpriteBatch batch)
     {
-
         batch.draw(sprite, x, y, width, height);
+
+        for (EntityObject entityObject : gameScreen.getGameWorld().getBulletEntities())
+            batch.draw(entityObject.getSprite(), entityObject.getX(), entityObject.getY(), entityObject.getWidth(), entityObject.getHeight());
+
     }
+
     @Override
     public float getX()
     {

@@ -20,7 +20,7 @@ public class CollisionDetector implements ICollisionDetector
         {
             System.out.println(entityObject.getID());
 
-            for (EntityObject collisionDetection : gameWorld.getEntities())
+            for (EntityObject collisionDetection : gameWorld.getBulletEntities())
             {
 
 

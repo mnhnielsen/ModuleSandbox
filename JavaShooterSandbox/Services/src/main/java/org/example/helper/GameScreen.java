@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(5, this, gameWorld);
+        enemyService.enemy(1, this, gameWorld);
         obstacleService.obstacle(this);
     }
 
@@ -79,9 +79,7 @@ public class GameScreen extends ScreenAdapter
 
         batch.begin();
 
-        playerService.render(batch);
         update();
-
         //obstacleService.render(batch);
 
         box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));

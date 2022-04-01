@@ -10,6 +10,8 @@ public class GameWorld
 {
     private final Map<String, EntityObject> entityMap = new ConcurrentHashMap<>();
     private final Map<String, EntityObject> deleteObjectMap = new ConcurrentHashMap<>();
+    private final Map<String, EntityObject> bulletMap = new ConcurrentHashMap<>();
+
 
 
     public String addEntity(EntityObject entity)
@@ -20,6 +22,11 @@ public class GameWorld
     public String addObjectForDeletion(EntityObject entity)
     {
         deleteObjectMap.put(entity.getID(), entity);
+        return entity.getID();
+    }
+    public String addBulletObject(EntityObject entity)
+    {
+        bulletMap.put(entity.getID(), entity);
         return entity.getID();
     }
 
@@ -41,6 +48,11 @@ public class GameWorld
     {
         return deleteObjectMap.values();
     }
+    public Collection<EntityObject> getBulletEntities()
+    {
+        return bulletMap.values();
+    }
+
 
     public <E extends EntityObject> List<EntityObject> getEntities(Class<E>... entityTypes)
     {
