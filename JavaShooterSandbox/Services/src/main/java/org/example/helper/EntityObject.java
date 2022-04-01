@@ -12,7 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EntityObject implements Serializable
 {
     private final UUID ID = UUID.randomUUID();
-    private float x, y, speed, velY, velX;
+    private float x;
+    private float y;
+    private float speed;
+    private float speedY;
+    private float speedX;
+    private float velY;
+    private float velX;
     private int width, height;
     private String filename;
     private Sprite sprite;
@@ -37,11 +43,11 @@ public class EntityObject implements Serializable
     }
 
     //Bullet
-    public EntityObject(float x, float y, float speed, int width, int height, Sprite sprite, GameScreen gameScreen, Body body)
+    public EntityObject(float x, float y, float speedX, float speedY, int width, int height, Sprite sprite, GameScreen gameScreen, Body body)
     {
         this.x = x;
         this.y = y;
-        this.speed = speed;
+        this.speedY = speedY;
         this.width = width;
         this.height = height;
         this.sprite = sprite;
