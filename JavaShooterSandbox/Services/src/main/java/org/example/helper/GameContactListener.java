@@ -43,8 +43,10 @@ public class GameContactListener implements ContactListener, ICollisionService
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET) {
             collisionDetector.process(gameScreen, gameScreen.getGameWorld());
-
         }
+        if (a.getUserData() == ContactType.OBSTACLE && b.getUserData() == ContactType.BULLET)
+            collisionDetector.deleteBullets(gameScreen, gameScreen.getGameWorld());
+
 
 
     }

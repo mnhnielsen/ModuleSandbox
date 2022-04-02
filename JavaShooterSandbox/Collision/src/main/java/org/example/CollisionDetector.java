@@ -14,6 +14,7 @@ import java.util.Iterator;
 public class CollisionDetector implements ICollisionDetector
 {
     EntityObject entity = null;
+
     public void process(GameScreen gameScreen, GameWorld gameWorld)
     {
         for (EntityObject entityObject : gameWorld.getEntities())
@@ -58,15 +59,36 @@ public class CollisionDetector implements ICollisionDetector
         }
     }
 
+    public void deleteBullets(GameScreen gameScreen, GameWorld gameWorld)
+    {
+        for (EntityObject entityObject : gameWorld.getWallEntities())
+        {
+            for (EntityObject collisionDetection : gameWorld.getBulletEntities())
+            {
+                if (bulletColliderCheck(entityObject, collisionDetection))
+                {
+                    entity = collisionDetection;
+                    gameWorld.addObjectForDeletion(entity);
+                }
+            }
+        }
+    }
+
     @Override
     public EntityObject deleteObject()
     {
         return entity;
     }
 
+    private Boolean bulletColliderCheck(EntityObject e1, EntityObject e2)
+    {
+        float dst = e1.getBody().getPosition().dst(e2.getBody().getPosition());
+        System.out.println(dst);
+        return dst >= 0 && dst <= 20;
+    }
+
     private Boolean colliderCheck(EntityObject e1, EntityObject e2)
     {
-
         float ex1 = e1.getBody().getPosition().x * Const.PPM - (e1.getWidth() / 2);
         float ey1 = e1.getBody().getPosition().y * Const.PPM - (e1.getHeight() / 2);
 

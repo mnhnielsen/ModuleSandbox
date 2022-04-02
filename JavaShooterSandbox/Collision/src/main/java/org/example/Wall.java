@@ -48,7 +48,9 @@ public class Wall implements IObstacleService
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(spawnX, spawnY, width, height, true, 0, gameScreen.getWorld(), ContactType.OBSTACLE);
-        return new EntityObject(spawnX, spawnY, width, height, body, textureName, sprite, gameScreen);
+        EntityObject object = new WallObject(spawnX, spawnY, width, height, body, textureName, sprite, gameScreen);
+        gameScreen.getGameWorld().addWallObject(object);
+        return object;
     }
 
 

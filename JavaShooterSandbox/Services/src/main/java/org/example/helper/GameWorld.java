@@ -11,6 +11,8 @@ public class GameWorld
     private final Map<String, EntityObject> entityMap = new ConcurrentHashMap<>();
     private final Map<String, EntityObject> deleteObjectMap = new ConcurrentHashMap<>();
     private final Map<String, EntityObject> bulletMap = new ConcurrentHashMap<>();
+    private final Map<String, EntityObject> wallMap = new ConcurrentHashMap<>();
+
 
 
     public String addEntity(EntityObject entity)
@@ -28,6 +30,12 @@ public class GameWorld
     public String addBulletObject(EntityObject entity)
     {
         bulletMap.put(entity.getID(), entity);
+        return entity.getID();
+    }
+
+    public String addWallObject(EntityObject entity)
+    {
+        wallMap.put(entity.getID(), entity);
         return entity.getID();
     }
 
@@ -62,6 +70,11 @@ public class GameWorld
     {
         return bulletMap.values();
     }
+    public Collection<EntityObject> getWallEntities()
+    {
+        return wallMap.values();
+    }
+
 
 
     public <E extends EntityObject> List<EntityObject> getEntities(Class<E>... entityTypes)
