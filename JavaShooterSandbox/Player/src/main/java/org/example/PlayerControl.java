@@ -56,6 +56,8 @@ public class PlayerControl implements IPlayerService
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
 
+
+
     public void updateTexture(String fname)
     {
 
@@ -198,21 +200,21 @@ public class PlayerControl implements IPlayerService
 
         body.setLinearVelocity(velX * speed, velY * speed);
 
-       // render(gameScreen.getBatch());
-
     }
 
 
-   /* public void render(SpriteBatch batch)
+    public void render(SpriteBatch batch)
     {
         batch.draw(sprite, x, y, width, height);
 
-        for (EntityObject entityObject : gameScreen.getGameWorld().getBulletEntities())
+        /*for (EntityObject entityObject : gameScreen.getGameWorld().getBulletEntities())
             batch.draw(entityObject.getSprite(), entityObject.getX(), entityObject.getY(), entityObject.getWidth(), entityObject.getHeight());
+
+         */
 
     }
 
-    */
+
 
     @Override
     public float getX()

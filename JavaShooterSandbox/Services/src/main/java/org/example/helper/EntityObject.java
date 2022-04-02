@@ -212,5 +212,13 @@ public class EntityObject implements Serializable
         this.healthPart = healthPart;
     }
 
+    public float getSpeedY()
+    {
+        return speedY;
+    }
 
+    public float getSpeedX()
+    {
+        return speedX;
+    }
 }

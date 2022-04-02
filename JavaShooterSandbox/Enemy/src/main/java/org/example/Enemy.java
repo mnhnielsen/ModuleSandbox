@@ -86,15 +86,16 @@ public class Enemy implements IEnemyService
                 float speedY = direction.y * enemy.getSpeed();
 
                 enemy.getBody().setLinearVelocity(speedX, speedY);
-                render(gameScreen.getBatch(), enemy);
 
             }
         }
     }
 
-    public void render(SpriteBatch batch, EntityObject enemy)
+
+    public void render(SpriteBatch batch)
     {
-        batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
+        for (EntityObject enemy : gameScreen.getGameWorld().getEntities(EnemyObject.class))
+            batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
     }
 
 }

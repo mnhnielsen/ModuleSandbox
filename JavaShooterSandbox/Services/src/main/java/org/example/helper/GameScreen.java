@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.example.spi.*;
 import org.openide.util.Lookup;
 
+import java.io.File;
 
 
 public class GameScreen extends ScreenAdapter
@@ -28,6 +31,7 @@ public class GameScreen extends ScreenAdapter
     private ICollisionDetector collisionDetector = Lookup.getDefault().lookup(ICollisionDetector.class);
     private Box2DDebugRenderer box2DDebugRenderer;
     private GameWorld gameWorld = new GameWorld();
+    private Sprite sprite;
 
     public GameWorld getGameWorld()
     {
@@ -41,11 +45,19 @@ public class GameScreen extends ScreenAdapter
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
+
+        File file = new File(this.getClass().getResource("bgimage.png").getPath());
+        String path = file.getPath().substring(5);
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+
+        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+
         world.setContactListener(collisionService.contactListener(this));
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(1, this, gameWorld);
+        enemyService.enemy(10, this, gameWorld);
         obstacleService.obstacle(this);
     }
 
@@ -74,16 +86,15 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
+        update();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
-        update();
-        //obstacleService.render(batch);
-
+        sprite.draw(batch);
+        playerService.render(batch);
+        enemyService.render(batch);
         box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
-
         batch.end();
     }
 
