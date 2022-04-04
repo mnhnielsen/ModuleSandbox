@@ -23,15 +23,14 @@ import java.io.File;
 public class PlayerControl implements IPlayerService
 {
     protected Body body;
-    protected float x, y, speed, velY, velX, radians = 3.1415f / 2, rotationSpeed = 5f, fireRate = 1f;
+    protected float x, y, speed, radians, fireDelay, fireRate = 1f, delay;
     protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
     private HealthPart lifePart = new HealthPart(100);
     private boolean canMove = true, isMoving;
     private String fileName;
-    private boolean canShoot = true;
-    private float fireDelay, experation = 5f;
+    Vector2 dir = new Vector2();
 
 
     @Override
@@ -44,7 +43,7 @@ public class PlayerControl implements IPlayerService
         width = 64;
         height = 64;
 
-        fileName = "man.png";
+        fileName = "soldierIdle.png";
 
         File file = new File(this.getClass().getResource(fileName).getPath());
         String path = file.getPath().substring(5);
@@ -55,7 +54,6 @@ public class PlayerControl implements IPlayerService
         sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
-
 
 
     public void updateTexture(String fname)
@@ -82,144 +80,108 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
+
         updateTexture("soldierIdle.png");
 
         if (lifePart.isHit() && lifePart.getHealth() <= 50)
             //updateTexture("injured.png");
-        if (lifePart.dead())
-        {
-            canMove = false;
-            try
+            if (lifePart.dead())
             {
-                Thread.sleep(2500);
-                lifePart.setHealth(100);
-                lifePart.setDead(false);
-                body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
-                canMove = true;
-                updateTexture("soldierIdle.png");
-            } catch (InterruptedException e)
-            {
-                e.printStackTrace();
+                canMove = false;
+                try
+                {
+                    Thread.sleep(2500);
+                    lifePart.setHealth(100);
+                    lifePart.setDead(false);
+                    body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
+                    canMove = true;
+                    //updateTexture("soldierIdle.png");
+                } catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
             }
-        }
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
 
-        velY = 0;
-        velX = 0;
 
+        dir.setZero();
 
-
-        double direction = 0;
-
-
+        radians = 0;
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
+            radians = 90;
             updateTexture("soldierUp.png");
-            velY = 1;
+            dir.y = 1;
+            spawnBullet(0, 1, 50, 70, 30, 5, 10);
             isMoving = true;
-            direction = 1;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
+            radians = 270;
             updateTexture("soldierDown.png");
-            velY = -1;
+            dir.y = -1;
+            spawnBullet(0, -1, 15, 0, 30, 5, 10);
+
             isMoving = true;
-            direction = 3;
 
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
+            radians = 0;
             updateTexture("soldierRight.png");
-            velX = 1;
+            dir.x = 1;
+            spawnBullet(1, 0, 60, 15, 30, 10, 5);
+
             isMoving = true;
-            direction = 2;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
+            radians = 180;
             updateTexture("soldierLeft.png");
-            velX = -1;
+            dir.x = -1;
+            spawnBullet(-1, 0, -10, 50, 30, 10, 5);
             isMoving = true;
-            direction = 4;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
-        {
-            direction = 1.5;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            direction = 2.5;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
-        {
-            direction = 3.5;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Input.Keys.W))
-        {
-            direction = 4.5;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 1)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 15, y + 60, 0, 50, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 1.5)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 60, 25, 25, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 2)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y + 15, 50, 0, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 2.5)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 60, y - 15, 25, -25, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 3)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x + 15, y - 28, 0, -50, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 3.5)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x - 28, y - 15, -25, -25, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 4)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x - 28, y + 15, -50, 0, 10, 5, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && canShoot && direction == 4.5)
-        {
-            EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(x - 28, y + 60, -25, 25, 10, 4, "red.png", gameScreen, gameScreen.getGameWorld());
-            gameScreen.getGameWorld().addBulletObject(bullet);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving && canMove)
+
+        if (isMoving && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             speed = 10;
         else
             speed = 6;
 
+        dir.nor();
 
-        body.setLinearVelocity(velX * speed, velY * speed);
+        float dirX = dir.x * speed;
+        float dirY = dir.y * speed;
+
+        body.setLinearVelocity(dirX, dirY);
 
     }
 
+    private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
+    {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
+            if (fireDelay <= 0)
+            {
+                EntityObject bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(this.x + dir.x + spawnX, this.y + dir.y + spawnY, 0, 0, width, height, "yellow.png", gameScreen, gameScreen.getGameWorld());
+                bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
+                gameScreen.getGameWorld().addBulletObject(bullet);
+                fireDelay += 0.25;
+                System.out.println("Shooting");
+                gameScreen.getGameWorld().addBulletObject(bullet);
+
+            }
+        }
+    }
 
     public void render(SpriteBatch batch)
     {
         batch.draw(sprite, x, y, width, height);
-
-        /*for (EntityObject entityObject : gameScreen.getGameWorld().getBulletEntities())
-            batch.draw(entityObject.getSprite(), entityObject.getX(), entityObject.getY(), entityObject.getWidth(), entityObject.getHeight());
-
-         */
-
+        for (EntityObject object : gameScreen.getGameWorld().getBulletEntities())
+            batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
     }
-
 
 
     @Override

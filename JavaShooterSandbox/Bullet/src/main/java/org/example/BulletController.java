@@ -22,9 +22,9 @@ public class BulletController implements IBulletService
     @Override
     public EntityObject createBullet(float x, float y, float speedX, float speedY, int width, int height, String textureName, GameScreen gameScreen, GameWorld gameWorld)
     {
-        int minusAccuracy = 2, maxAccuracy = 5;
-        int accuracy = new Random().nextInt(maxAccuracy - minusAccuracy) + minusAccuracy;
+
         this.gameScreen = gameScreen;
+
         File file = new File(this.getClass().getResource(textureName).getPath());
         String path = file.getPath().substring(5);
 
@@ -33,7 +33,6 @@ public class BulletController implements IBulletService
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.BULLET);
-        body.setLinearVelocity(speedX,speedY);
         EntityObject entityObject = new EntityObject(x, y, speedX, speedY, width, height, sprite, gameScreen, body);
         return entityObject;
     }

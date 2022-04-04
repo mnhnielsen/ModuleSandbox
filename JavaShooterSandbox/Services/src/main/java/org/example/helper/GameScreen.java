@@ -57,7 +57,7 @@ public class GameScreen extends ScreenAdapter
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
-        enemyService.enemy(10, this, gameWorld);
+        enemyService.enemy(1, this, gameWorld);
         //obstacleService.obstacle(this);
     }
 
@@ -77,7 +77,7 @@ public class GameScreen extends ScreenAdapter
 
         for (IEnemyService eService : Lookup.getDefault().lookupAll(IEnemyService.class))
             eService.update();
-
+        
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
 
@@ -87,6 +87,7 @@ public class GameScreen extends ScreenAdapter
     public void render(float delta)
     {
         update();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
