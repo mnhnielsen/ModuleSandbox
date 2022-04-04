@@ -19,8 +19,6 @@ public class CollisionDetector implements ICollisionDetector
     {
         for (EntityObject entityObject : gameWorld.getEntities())
         {
-            System.out.println(entityObject.getID());
-
             for (EntityObject collisionDetection : gameWorld.getBulletEntities())
             {
 
@@ -39,21 +37,6 @@ public class CollisionDetector implements ICollisionDetector
                             gameWorld.addObjectForDeletion(entity);
                         }
                     }
-
-                    /*if (entityLife.getHealth() > 0)
-                    {
-                        entityLife.setHealth(entityLife.getHealth() - 1);
-                        if (entityLife.getHealth() <= 0)
-                        {
-                            entityLife.setDead(true);
-                            gameWorld.removeEntity(collisionDetection);
-                            gameWorld.removeEntity(entityObject);
-
-                            }
-                        }
-                    }
-
-                     */
                 }
             }
         }
@@ -83,7 +66,6 @@ public class CollisionDetector implements ICollisionDetector
     private Boolean bulletColliderCheck(EntityObject e1, EntityObject e2)
     {
         float dst = e1.getBody().getPosition().dst(e2.getBody().getPosition());
-        System.out.println(dst);
         return dst >= 0 && dst <= 20;
     }
 

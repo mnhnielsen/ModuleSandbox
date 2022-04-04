@@ -41,10 +41,10 @@ public class PlayerControl implements IPlayerService
         this.y = y;
         this.gameScreen = gameScreen;
         speed = 6;
-        width = 32;
-        height = 32;
+        width = 64;
+        height = 64;
 
-        fileName = "color.png";
+        fileName = "man.png";
 
         File file = new File(this.getClass().getResource(fileName).getPath());
         String path = file.getPath().substring(5);
@@ -82,9 +82,10 @@ public class PlayerControl implements IPlayerService
     @Override
     public void update()
     {
+        updateTexture("soldierIdle.png");
 
         if (lifePart.isHit() && lifePart.getHealth() <= 50)
-            updateTexture("injured.png");
+            //updateTexture("injured.png");
         if (lifePart.dead())
         {
             canMove = false;
@@ -95,7 +96,7 @@ public class PlayerControl implements IPlayerService
                 lifePart.setDead(false);
                 body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
                 canMove = true;
-                updateTexture("color.png");
+                updateTexture("soldierIdle.png");
             } catch (InterruptedException e)
             {
                 e.printStackTrace();
@@ -111,27 +112,32 @@ public class PlayerControl implements IPlayerService
 
         double direction = 0;
 
+
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
+            updateTexture("soldierUp.png");
             velY = 1;
             isMoving = true;
             direction = 1;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
+            updateTexture("soldierDown.png");
             velY = -1;
             isMoving = true;
             direction = 3;
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
+            updateTexture("soldierRight.png");
             velX = 1;
             isMoving = true;
             direction = 2;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
-            radians += rotationSpeed * Gdx.graphics.getDeltaTime();
+            updateTexture("soldierLeft.png");
             velX = -1;
             isMoving = true;
             direction = 4;

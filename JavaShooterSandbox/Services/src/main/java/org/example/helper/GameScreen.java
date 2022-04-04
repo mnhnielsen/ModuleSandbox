@@ -41,7 +41,7 @@ public class GameScreen extends ScreenAdapter
     public GameScreen(OrthographicCamera cam)
     {
         this.cam = cam;
-        this.cam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
+       // this.cam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
@@ -58,7 +58,7 @@ public class GameScreen extends ScreenAdapter
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
         enemyService.enemy(10, this, gameWorld);
-        obstacleService.obstacle(this);
+        //obstacleService.obstacle(this);
     }
 
     public void update()
@@ -68,6 +68,7 @@ public class GameScreen extends ScreenAdapter
         if (collisionDetector.deleteObject()!= null)
             collisionDetector.deleteObject().removeBody();
 
+        this.cam.position.set(playerService.getX(),playerService.getY(),0);
 
         cam.update();
         batch.setProjectionMatrix(cam.combined);
@@ -76,7 +77,6 @@ public class GameScreen extends ScreenAdapter
 
         for (IEnemyService eService : Lookup.getDefault().lookupAll(IEnemyService.class))
             eService.update();
-
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
@@ -94,7 +94,7 @@ public class GameScreen extends ScreenAdapter
         sprite.draw(batch);
         playerService.render(batch);
         enemyService.render(batch);
-        box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
+        //box2DDebugRenderer.render(world, cam.combined.scl(Const.PPM));
         batch.end();
     }
 

@@ -10,6 +10,5 @@ public interface ICollisionDetector
 {
     void process(GameScreen gameScreen,GameWorld gameWorld);
     void deleteBullets(GameScreen gameScreen,GameWorld gameWorld);
-
     EntityObject deleteObject();
 }
