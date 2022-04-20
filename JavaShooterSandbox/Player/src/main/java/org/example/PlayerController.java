@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
 import org.example.helper.Const;
@@ -124,5 +125,9 @@ public class PlayerController implements IEntityProcessingService
 
         batch.draw(player.getPlayer().getSprite(), x, y, player.getPlayer().getWidth(), player.getPlayer().getHeight());
 
+    }
+    @Override
+    public Vector2 position(){
+        return new Vector2(x,y);
     }
 }

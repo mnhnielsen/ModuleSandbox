@@ -27,6 +27,7 @@ public class Game implements ApplicationListener
     private GameWorld gameWorld = new GameWorld();
     private LibWorld world;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
+
     private Lookup.Result<IGamePluginService> result;
     private SpriteBatch batch;
 
@@ -56,13 +57,17 @@ public class Game implements ApplicationListener
 
     }
 
-    private void update()
+    private void camUpdate()
     {
-        System.out.println(gameWorld.getEntities().size());
         world.getWorld().step(1 / 60f, 6, 2);
-        //this.cam.position.set(playerService.getX(),playerService.getY(),0);
+        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
+    }
+
+    private void update()
+    {
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
@@ -75,7 +80,7 @@ public class Game implements ApplicationListener
     public void render()
     {
 
-
+        camUpdate();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
