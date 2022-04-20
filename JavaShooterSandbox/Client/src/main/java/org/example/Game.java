@@ -25,7 +25,7 @@ public class Game implements ApplicationListener
     private static OrthographicCamera cam;
     private final Lookup lookup = Lookup.getDefault();
     private GameWorld gameWorld = new GameWorld();
-    private LibWorld libWorld;
+    private LibWorld world;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private SpriteBatch batch;
@@ -34,7 +34,8 @@ public class Game implements ApplicationListener
     @Override
     public void create()
     {
-        libWorld = LibWorld.INSTANCE;
+
+        world = new LibWorld();
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
 
@@ -57,7 +58,8 @@ public class Game implements ApplicationListener
 
     private void update()
     {
-        libWorld.getWorld().step(1 / 60f, 6, 2);
+        System.out.println(gameWorld.getEntities().size());
+        world.getWorld().step(1 / 60f, 6, 2);
         //this.cam.position.set(playerService.getX(),playerService.getY(),0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
