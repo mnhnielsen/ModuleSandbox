@@ -13,8 +13,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import org.example.spi.*;
 import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class GameScreen extends ScreenAdapter
@@ -25,11 +30,17 @@ public class GameScreen extends ScreenAdapter
     private final Lookup lookup = Lookup.getDefault();
     private final IPlayerService playerService = lookup.lookup(IPlayerService.class);
     private final IEnemyService enemyService = lookup.lookup(IEnemyService.class);
-    private final IObstacleService obstacleService = lookup.lookup(IObstacleService.class);
+
+    //Testing updatecenter stuff for player module.
+    private Lookup.Result<IEnemyService> result;
+    private List<IEnemyService> gamePlugins = new CopyOnWriteArrayList<>();
+
+
     private final ICollisionDetector collisionDetector = Lookup.getDefault().lookup(ICollisionDetector.class);
     private Box2DDebugRenderer box2DDebugRenderer;
     private GameWorld gameWorld = new GameWorld();
     private Sprite sprite;
+    private GameScreen gm = this;
 
     public GameWorld getGameWorld()
     {
@@ -38,6 +49,9 @@ public class GameScreen extends ScreenAdapter
 
     public GameScreen(OrthographicCamera cam)
     {
+        result = lookup.lookupResult(IEnemyService.class);
+        result.addLookupListener(lookupListener);
+        result.allItems();
         this.cam = cam;
        // this.cam.position.set(new Vector3(Boot.INSTANCE.getScreenWidth() / 2, Boot.INSTANCE.getScreenHeight() / 2, 0));
         this.batch = new SpriteBatch();
@@ -53,11 +67,12 @@ public class GameScreen extends ScreenAdapter
 
         IContactListener collisionService = Lookup.getDefault().lookup(IContactListener.class);
         world.setContactListener(collisionService.contactListener(this));
+        System.out.println("test");
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);
 
         enemyService.enemy(1, this, gameWorld);
-        //obstacleService.obstacle(this);
+
     }
 
     public void update()
@@ -109,8 +124,31 @@ public class GameScreen extends ScreenAdapter
         return playerService;
     }
 
-    public SpriteBatch getBatch()
-    {
-        return batch;
-    }
+    private final LookupListener lookupListener = new LookupListener() {
+        @Override
+        public void resultChanged(LookupEvent le) {
+
+            Collection<? extends IEnemyService> updated = result.allInstances();
+
+            for (IEnemyService us : updated) {
+                // Newly installed modules
+                if (!gamePlugins.contains(us)) {
+                    us.enemy(1, gm,gameWorld);
+                    gamePlugins.add(us);
+                }
+            }
+
+            // Stop and remove module
+            for (IEnemyService gs : gamePlugins) {
+                if (!updated.contains(gs)) {
+                    for(EntityObject enemy : gameWorld.getEntities())
+                        gameWorld.removeEntity(enemy);
+
+                    gamePlugins.remove(gs);
+                }
+            }
+        }
+
+    };
+
 }

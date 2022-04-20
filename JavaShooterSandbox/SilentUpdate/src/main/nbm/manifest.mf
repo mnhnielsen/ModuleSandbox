@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+OpenIDE-Module-Localizing-Bundle: org/example/Bundle.properties
+OpenIDE-Module-Install: org/example/UpdateActivator.class
+OpenIDE-Module-Layer: org/example/layer.xml
+
+
+

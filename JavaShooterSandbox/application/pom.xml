@@ -42,11 +42,11 @@
             <artifactId>Player</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>Enemy</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>${project.groupId}</groupId>-->
+<!--            <artifactId>Enemy</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Collision</artifactId>
@@ -65,6 +65,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Bullet</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>SilentUpdate</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

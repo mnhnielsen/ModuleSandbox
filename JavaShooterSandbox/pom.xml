@@ -68,6 +68,7 @@
         <module>Collision</module>
         <module>Health</module>
         <module>Bullet</module>
+        <module>SilentUpdate</module>
     </modules>
 
     <properties>
