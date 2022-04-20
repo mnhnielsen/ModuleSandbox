@@ -63,6 +63,7 @@
         <module>application</module>
         <module>Client</module>
         <module>GameEngine</module>
+        <module>Services</module>
 
     </modules>
 
