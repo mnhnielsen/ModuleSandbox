@@ -60,14 +60,14 @@ public class Game implements ApplicationListener
     private void camUpdate()
     {
         world.getWorld().step(1 / 60f, 6, 2);
-        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
+        //this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
 
     private void update()
     {
-
+        System.out.println(gameWorld.getEntities().size());
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())

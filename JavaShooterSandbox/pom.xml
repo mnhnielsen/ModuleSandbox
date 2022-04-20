@@ -65,6 +65,7 @@
         <module>GameEngine</module>
         <module>Services</module>
         <module>Player</module>
+        <module>Enemy</module>
 
     </modules>
 

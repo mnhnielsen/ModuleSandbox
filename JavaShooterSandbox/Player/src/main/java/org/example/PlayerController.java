@@ -18,8 +18,7 @@ import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
 
-@ServiceProviders(value = {
-        @ServiceProvider(service = IEntityProcessingService.class)})
+@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class)})
 public class PlayerController implements IEntityProcessingService
 {
     private static PlayerCreation player = new PlayerCreation();
