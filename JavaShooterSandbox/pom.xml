@@ -64,6 +64,7 @@
         <module>Client</module>
         <module>GameEngine</module>
         <module>Services</module>
+        <module>Player</module>
 
     </modules>
 

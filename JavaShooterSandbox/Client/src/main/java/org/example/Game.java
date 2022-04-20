@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import org.example.data.GameWorld;
+import org.example.helper.LibWorld;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
 import org.openide.util.Lookup;
@@ -24,7 +25,7 @@ public class Game implements ApplicationListener
     private static OrthographicCamera cam;
     private final Lookup lookup = Lookup.getDefault();
     private GameWorld gameWorld = new GameWorld();
-    private World world;
+    private LibWorld libWorld;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
     private Lookup.Result<IGamePluginService> result;
     private SpriteBatch batch;
@@ -33,7 +34,7 @@ public class Game implements ApplicationListener
     @Override
     public void create()
     {
-        world = new World(new Vector2(0, 0), false);
+        libWorld = LibWorld.INSTANCE;
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
 
@@ -56,7 +57,7 @@ public class Game implements ApplicationListener
 
     private void update()
     {
-        world.step(1 / 60f, 6, 2);
+        libWorld.getWorld().step(1 / 60f, 6, 2);
         //this.cam.position.set(playerService.getX(),playerService.getY(),0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
@@ -64,7 +65,7 @@ public class Game implements ApplicationListener
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
         {
-            entityProcessorService.process(gameWorld);
+            entityProcessorService.update(gameWorld);
         }
     }
 
