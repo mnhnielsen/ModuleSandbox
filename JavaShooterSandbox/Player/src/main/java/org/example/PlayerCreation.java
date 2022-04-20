@@ -21,12 +21,17 @@ import java.io.File;
 @ServiceProviders(value = {@ServiceProvider(service = IGamePluginService.class)})
 public class PlayerCreation implements IGamePluginService
 {
-    private Entity player = createPlayer();
+    protected Entity player = createPlayer();
+
+    public PlayerCreation()
+    {
+
+    }
 
     protected Entity createPlayer()
     {
         int x = 40;
-        int y = Gdx.graphics.getHeight()/2;
+        int y = Gdx.graphics.getHeight() / 2;
         int speed = 6;
         int width = 64;
         int height = 64;
@@ -39,7 +44,7 @@ public class PlayerCreation implements IGamePluginService
         AssetLoader.INSTANCE.getAm().finishLoading();
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.PLAYER);
-        Entity p = new Entity(x,y,speed,width,height,body,sprite,new HealthPart(100));
+        Entity p = new Entity(x, y, speed, width, height, body, sprite, new HealthPart(100));
         return p;
     }
 

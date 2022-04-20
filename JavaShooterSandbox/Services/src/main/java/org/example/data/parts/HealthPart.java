@@ -33,6 +33,11 @@ public class HealthPart implements EntityPart
     {
         this.isHit = isHit;
     }
+    public void setDead(boolean dead)
+    {
+        this.dead = dead;
+    }
+
 
     public boolean isDead()
     {

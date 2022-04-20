@@ -67,7 +67,7 @@ public class Game implements ApplicationListener
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
         {
-            entityProcessorService.update(gameWorld);
+            entityProcessorService.update(gameWorld, batch);
         }
     }
 
