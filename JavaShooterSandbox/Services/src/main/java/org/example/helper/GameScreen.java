@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import org.example.spi.*;
@@ -52,7 +51,7 @@ public class GameScreen extends ScreenAdapter
 
         sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
 
-        ICollisionService collisionService = Lookup.getDefault().lookup(ICollisionService.class);
+        IContactListener collisionService = Lookup.getDefault().lookup(IContactListener.class);
         world.setContactListener(collisionService.contactListener(this));
 
         playerService.player(40, Boot.INSTANCE.getScreenHeight() / 2, this);

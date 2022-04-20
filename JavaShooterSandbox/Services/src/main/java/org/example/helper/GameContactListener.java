@@ -1,19 +1,15 @@
 package org.example.helper;
 
 import com.badlogic.gdx.physics.box2d.*;
-import org.example.helper.ContactType;
-import org.example.helper.GameScreen;
 import org.example.spi.ICollisionDetector;
-import org.example.spi.ICollisionService;
-import org.example.spi.IEnemyService;
-import org.example.spi.IPlayerService;
+import org.example.spi.IContactListener;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
-@ServiceProviders(value = {@ServiceProvider(service = ICollisionService.class)
+@ServiceProviders(value = {@ServiceProvider(service = IContactListener.class)
 })
-public class GameContactListener implements ContactListener, ICollisionService
+public class GameContactListener implements ContactListener, IContactListener
 {
     private GameScreen gameScreen;
     private ICollisionDetector collisionDetector = Lookup.getDefault().lookup(ICollisionDetector.class);
