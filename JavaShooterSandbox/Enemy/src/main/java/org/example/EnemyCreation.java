@@ -24,7 +24,17 @@ import java.util.Random;
 public class EnemyCreation implements IGamePluginService
 {
     protected ArrayList<Enemy> enemies = new ArrayList<>();
-    private Enemy enemy = createEnemy();
+    private int amountOfEnemies = 5;
+
+    private void spawnEnemies()
+    {
+        for (int i = 0; i < amountOfEnemies; i++)
+        {
+
+            Enemy e = createEnemy();
+            enemies.add(e);
+        }
+    }
 
 
     protected Enemy createEnemy()
@@ -53,14 +63,20 @@ public class EnemyCreation implements IGamePluginService
     @Override
     public void start(GameWorld world)
     {
-        //for (Enemy enemy : enemies)
-        world.addEntity(enemy);
+        spawnEnemies();
+        for (Enemy enemy : enemies)
+            world.addEntity(enemy);
     }
 
     @Override
     public void stop(GameWorld world)
     {
-        //for (Enemy enemy : enemies)
-        world.removeEntity(enemy);
+        for (Enemy enemy : enemies)
+            world.removeEntity(enemy);
+    }
+
+    public void setAmountOfEnemies(int amountOfEnemies)
+    {
+        this.amountOfEnemies = amountOfEnemies;
     }
 }

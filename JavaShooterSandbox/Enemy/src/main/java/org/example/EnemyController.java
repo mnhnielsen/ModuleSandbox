@@ -14,13 +14,15 @@ import org.openide.util.lookup.ServiceProviders;
 public class EnemyController implements IEntityProcessingService
 {
     private final Lookup lookup = Lookup.getDefault();
-    //private EnemyCreation enemyCreation = new EnemyCreation(1);
+    private EnemyCreation e = new EnemyCreation();
+
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
+        e.setAmountOfEnemies(2);
         for (Entity enemy : world.getEntities(Enemy.class))
         {
             if (enemy.getHealthPart().getLife() > 0){

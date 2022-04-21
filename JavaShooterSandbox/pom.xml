@@ -66,6 +66,7 @@
         <module>Services</module>
         <module>Player</module>
         <module>Enemy</module>
+        <module>SilentUpdate</module>
 
     </modules>
 

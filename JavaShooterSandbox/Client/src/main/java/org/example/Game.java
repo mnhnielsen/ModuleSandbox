@@ -67,7 +67,6 @@ public class Game implements ApplicationListener
 
     private void update()
     {
-        System.out.println(gameWorld.getEntities().size());
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
