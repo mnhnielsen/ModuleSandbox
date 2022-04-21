@@ -109,6 +109,16 @@ public class PlayerController implements IEntityProcessingService
             //spawnBullet(-1, 0, -10, 50, 30, 10, 5);
             isMoving = true;
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
+            updateTexture("soldier135.png");
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
+            updateTexture("soldier45.png");
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A))
+            updateTexture("soldier45Left.png");
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
+            updateTexture("soldier135Left.png");
+
+
 
         if (isMoving && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
             player.getPlayer().setSpeed(10);

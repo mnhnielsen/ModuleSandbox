@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import org.example.data.GameWorld;
+import org.example.helper.Const;
 import org.example.helper.LibWorld;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
@@ -29,6 +31,7 @@ public class Game implements ApplicationListener
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
     private Lookup.Result<IGamePluginService> result;
+    private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
 
@@ -36,6 +39,7 @@ public class Game implements ApplicationListener
     public void create()
     {
 
+        debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
         cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
@@ -80,11 +84,12 @@ public class Game implements ApplicationListener
     {
 
         camUpdate();
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         update();
+        //debugRenderer.render(world.getWorld(),cam.combined.scl(Const.PPM));
         batch.end();
 
     }

@@ -1,6 +1,8 @@
 package org.example;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
@@ -14,18 +16,17 @@ import org.openide.util.lookup.ServiceProviders;
 public class EnemyController implements IEntityProcessingService
 {
     private final Lookup lookup = Lookup.getDefault();
-    private EnemyCreation e = new EnemyCreation();
-
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
+
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
-        e.setAmountOfEnemies(2);
         for (Entity enemy : world.getEntities(Enemy.class))
         {
-            if (enemy.getHealthPart().getLife() > 0){
+            if (enemy.getHealthPart().getLife() > 0)
+            {
                 enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));
                 enemy.setY(enemy.getBody().getPosition().y * Const.PPM - (enemy.getHeight() / 2));
                 enemy.setVelX(0);
@@ -47,7 +48,8 @@ public class EnemyController implements IEntityProcessingService
                 float speedY = direction.y * enemy.getSpeed();
 
                 enemy.getBody().setLinearVelocity(speedX, speedY);
-                batch.draw(enemy.getSprite(),enemy.getX(),enemy.getY(),enemy.getWidth(),enemy.getHeight());
+                enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
+                batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
             }
         }
     }
