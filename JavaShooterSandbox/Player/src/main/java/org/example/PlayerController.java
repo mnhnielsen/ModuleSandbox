@@ -50,7 +50,7 @@ public class PlayerController implements IEntityProcessingService
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
-        updateTexture("soldierIdle.png");
+        //updateTexture("soldierIdle.png");
         if (player.getPlayer().getHealthPart().isHit() && player.getPlayer().getHealthPart().getLife() <= 50)
             //updateTexture("injured.png");
             if (player.getPlayer().getHealthPart().isDead())
