@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.example.data.GameWorld;
 import org.example.helper.Const;
 import org.example.helper.LibWorld;
+import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
 import org.openide.util.Lookup;
@@ -77,6 +78,9 @@ public class Game implements ApplicationListener
         {
             entityProcessorService.update(gameWorld, batch);
         }
+        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices()) {
+            postEntityProcessorService.process(gameWorld);
+        }
     }
 
     @Override
@@ -115,6 +119,9 @@ public class Game implements ApplicationListener
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices()
     {
         return lookup.lookupAll(IEntityProcessingService.class);
+    }
+    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices() {
+        return lookup.lookupAll(ICollisionDetection.class);
     }
 
     private final LookupListener lookupListener = new LookupListener()
