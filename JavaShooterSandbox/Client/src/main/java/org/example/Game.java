@@ -28,6 +28,7 @@ public class Game implements ApplicationListener
     private static OrthographicCamera cam;
     private final Lookup lookup = Lookup.getDefault();
     private GameWorld gameWorld = new GameWorld();
+    private IContactListener contactListener = lookup.lookup(IContactListener.class);
     private LibWorld world;
     private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
@@ -48,6 +49,7 @@ public class Game implements ApplicationListener
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
         result.allItems();
+        LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
         for (IGamePluginService plugin : result.allInstances())
         {

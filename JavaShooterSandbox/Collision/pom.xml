@@ -60,6 +60,11 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <version>4.3</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <publicPackages>
+                        <publicPackage>org.example.*</publicPackage>
+                    </publicPackages>
+                </configuration>
             </plugin>
 
             <plugin>

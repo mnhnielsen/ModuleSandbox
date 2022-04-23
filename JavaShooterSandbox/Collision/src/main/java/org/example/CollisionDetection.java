@@ -26,7 +26,7 @@ public class CollisionDetection implements ICollisionDetection
             {
                 if (this.colliderCheck(entityObject, collisionDetection))
                 {
-                    System.out.println("hit");
+
                 }
             }
         }
@@ -41,7 +41,17 @@ public class CollisionDetection implements ICollisionDetection
 
     private Boolean colliderCheck(Entity e1, Entity e2)
     {
-        float dst = e1.getBody().getPosition().dst(e2.getBody().getPosition());
-        return dst >= 1 && dst <= 20;
+
+
+        float ex1 = e1.getBody().getPosition().x * Const.PPM - (e1.getWidth() / 2);
+        float ey1 = e1.getBody().getPosition().y * Const.PPM - (e1.getHeight() / 2);
+
+        float ex2 = e2.getBody().getPosition().x * Const.PPM - (e2.getWidth() / 2);
+        float ey2 = e2.getBody().getPosition().y * Const.PPM - (e2.getHeight() / 2);
+
+        float dst = Vector2.dst(ex1, ey1, ex2, ey2);
+        //System.out.println(dst);
+        return dst >= 1 && dst <= 23;
+
     }
 }
