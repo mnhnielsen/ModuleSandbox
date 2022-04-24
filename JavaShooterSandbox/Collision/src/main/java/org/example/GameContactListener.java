@@ -1,5 +1,6 @@
 package org.example;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
@@ -28,7 +29,7 @@ public class GameContactListener implements ContactListener, IContactListener
 
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.PLAYER)
         {
-            System.out.println("Contact");
+            //System.out.println("Contact");
             for (Entity player : gameWorld.INSTANCE.getEntities(Player.class))
             {
                 //Player take damage - this works here.
@@ -38,7 +39,27 @@ public class GameContactListener implements ContactListener, IContactListener
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
         {
-            //collisionDetector.process(gameScreen, gameScreen.getGameWorld());
+            Entity enemyHit = null;
+            System.out.println("Contact Bullet + Enemy");
+            for (Entity enemy : gameWorld.getEntities(Enemy.class))
+            {
+
+                for (Entity bullet : gameWorld.getEntities(Bullet.class)){
+                    if (enemy.getID().equals(bullet.getID())) {
+                        continue;
+
+                        // remove entities with zero in expiration
+                    }
+                    float x = a.getBody().getPosition().x - b.getBody().getPosition().x;
+                    float y = a.getBody().getPosition().y - b.getBody().getPosition().y;
+                    double dst = Math.sqrt(x*x+y*y);
+                    if (dst < 1)
+                        enemyHit = enemy;
+
+                    gameWorld.removeEntity(enemyHit);
+                    return;
+                }
+            }
         }
         if (a.getUserData() == ContactType.OBSTACLE && b.getUserData() == ContactType.BULLET)
         {

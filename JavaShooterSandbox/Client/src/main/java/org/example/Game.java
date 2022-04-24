@@ -24,10 +24,10 @@ public class Game implements ApplicationListener
 {
     private static OrthographicCamera cam;
     private final Lookup lookup = Lookup.getDefault();
-    private GameWorld gameWorld = new GameWorld();
-    private IContactListener contactListener = lookup.lookup(IContactListener.class);
+    private final GameWorld gameWorld = new GameWorld();
+    private final IContactListener contactListener = lookup.lookup(IContactListener.class);
     private LibWorld world;
-    private List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
+    private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
@@ -87,7 +87,7 @@ public class Game implements ApplicationListener
     {
 
         camUpdate();
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();

@@ -11,14 +11,17 @@ import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
 import org.example.helper.Const;
+import org.example.helper.LibWorld;
+import org.example.spi.IBulletService;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
+import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
 
-@ServiceProviders(value = { @ServiceProvider(service = IEntityProcessingService.class)})
+@ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class PlayerController implements IEntityProcessingService
 {
     private static PlayerCreation player = new PlayerCreation();
@@ -79,7 +82,7 @@ public class PlayerController implements IEntityProcessingService
             radians = 90;
             updateTexture("soldierUp.png");
             dir.y = 1;
-            //spawnBullet(0, 1, 50, 70, 30, 5, 10);
+            spawnBullet(0, 1, 50, 70, 30, 5, 10);
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
@@ -87,7 +90,7 @@ public class PlayerController implements IEntityProcessingService
             radians = 270;
             updateTexture("soldierDown.png");
             dir.y = -1;
-            //spawnBullet(0, -1, 15, 0, 30, 5, 10);
+            spawnBullet(0, -1, 15, 0, 30, 5, 10);
 
             isMoving = true;
 
@@ -97,7 +100,7 @@ public class PlayerController implements IEntityProcessingService
             radians = 0;
             updateTexture("soldierRight.png");
             dir.x = 1;
-            //spawnBullet(1, 0, 60, 15, 30, 10, 5);
+            spawnBullet(1, 0, 60, 15, 30, 10, 5);
 
             isMoving = true;
         }
@@ -106,7 +109,7 @@ public class PlayerController implements IEntityProcessingService
             radians = 180;
             updateTexture("soldierLeft.png");
             dir.x = -1;
-            //spawnBullet(-1, 0, -10, 50, 30, 10, 5);
+            spawnBullet(-1, 0, -10, 50, 30, 10, 5);
             isMoving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
@@ -117,7 +120,6 @@ public class PlayerController implements IEntityProcessingService
             updateTexture("soldier45Left.png");
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A))
             updateTexture("soldier135Left.png");
-
 
 
         if (isMoving && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
@@ -134,9 +136,31 @@ public class PlayerController implements IEntityProcessingService
 
         batch.draw(player.getPlayer().getSprite(), x, y, player.getPlayer().getWidth(), player.getPlayer().getHeight());
 
+        for (Entity object : world.getEntities(Bullet.class))
+            batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
+
+
     }
+
+    private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
+    {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
+            if (fireDelay <= 0)
+            {
+                Entity bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(this.x + dir.x + spawnX, this.y + dir.y + spawnY, 0, 0, width, height, "yellow.png", GameWorld.INSTANCE);
+                bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
+                GameWorld.INSTANCE.addEntity(bullet);
+                fireDelay += 0.25;
+                System.out.println("Shooting");
+            }
+        }
+    }
+
     @Override
-    public Vector2 position(){
-        return new Vector2(x,y);
+    public Vector2 position()
+    {
+        return new Vector2(x, y);
     }
 }

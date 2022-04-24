@@ -24,7 +24,7 @@ import java.util.Random;
 public class EnemyCreation implements IGamePluginService
 {
     protected ArrayList<Enemy> enemies = new ArrayList<>();
-    private int amountOfEnemies = 1;
+    private int amountOfEnemies = 2;
 
     private void spawnEnemies()
     {
@@ -39,11 +39,9 @@ public class EnemyCreation implements IGamePluginService
 
     protected Enemy createEnemy()
     {
-       // float x = new Random().nextFloat() * Gdx.graphics.getWidth();
-        //float y = new Random().nextFloat() * Gdx.graphics.getHeight();
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
 
-        float x = 100;
-        float y = 100;
         int speed = new Random().nextInt(5 - 2) + 2;
         int width = 32;
         int height = 32;

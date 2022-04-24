@@ -40,6 +40,19 @@ public class Entity implements Serializable
         this.healthPart = healthPart;
         parts = new ConcurrentHashMap<>();
     }
+    //Bullet
+    public Entity(float x, float y, float speedX, float speedY, int width, int height, Sprite sprite, Body body)
+    {
+        this.x = x;
+        this.y = y;
+        this.speedY = speedY;
+        this.width = width;
+        this.height = height;
+        this.sprite = sprite;
+        this.body = body;
+        parts = new ConcurrentHashMap<>();
+
+    }
     public Entity()
     {
         parts = new ConcurrentHashMap<>();
