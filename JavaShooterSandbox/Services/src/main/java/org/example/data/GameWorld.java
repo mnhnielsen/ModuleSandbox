@@ -1,6 +1,7 @@
 package org.example.data;
 
 import org.example.helper.AssetLoader;
+import org.example.helper.LibWorld;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameWorld
 {
+    public static GameWorld INSTANCE;
+
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
     private AssetLoader as = new AssetLoader();
+
+    public GameWorld()
+    {
+        INSTANCE = this;
+    }
 
     public String addEntity(Entity entity)
     {
