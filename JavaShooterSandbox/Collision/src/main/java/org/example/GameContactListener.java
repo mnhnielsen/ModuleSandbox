@@ -47,8 +47,6 @@ public class GameContactListener implements ContactListener, IContactListener
                 for (Entity bullet : gameWorld.getEntities(Bullet.class)){
                     if (enemy.getID().equals(bullet.getID())) {
                         continue;
-
-                        // remove entities with zero in expiration
                     }
                     float x = a.getBody().getPosition().x - b.getBody().getPosition().x;
                     float y = a.getBody().getPosition().y - b.getBody().getPosition().y;
