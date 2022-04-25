@@ -26,6 +26,21 @@
         </repository>
     </repositories>
 
+    <dependencies>
+        <!--
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.1.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+    </dependencies>
     <build>
         <pluginManagement>
             <plugins>
@@ -57,7 +72,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
     <modules>
         <module>branding</module>
         <module>application</module>
@@ -69,6 +83,7 @@
         <module>Health</module>
         <module>Bullet</module>
         <module>SilentUpdate</module>
+        <module>Obstacles</module>
     </modules>
 
     <properties>

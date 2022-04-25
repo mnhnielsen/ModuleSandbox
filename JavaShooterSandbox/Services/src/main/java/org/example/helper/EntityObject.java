@@ -55,7 +55,7 @@ public class EntityObject implements Serializable
         this.body = body;
     }
 
-    //Wall
+    //Wall + dangerous obstacle
     public EntityObject(float x, float y, int width, int height, Body body, String filename, Sprite sprite, GameScreen gameScreen)
     {
         this.x = x;
@@ -67,7 +67,6 @@ public class EntityObject implements Serializable
         this.gameScreen = gameScreen;
         this.sprite = sprite;
     }
-
 
     public String getID()
     {
