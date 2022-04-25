@@ -38,7 +38,12 @@ public class GameContactListener implements ContactListener, IContactListener
             gameScreen.getPlayerService().takeDamage(50);
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET) {
-            collisionDetector.process(gameScreen, gameScreen.getGameWorld());
+            //collisionDetector.process(gameScreen, gameScreen.getGameWorld());
+            System.out.println("Hit");
+        }
+        if (a.getUserData() == ContactType.BULLET && b.getUserData() == ContactType.ENEMY) {
+            //collisionDetector.process(gameScreen, gameScreen.getGameWorld());
+            System.out.println("Hitty");
         }
         if (a.getUserData() == ContactType.OBSTACLE && b.getUserData() == ContactType.BULLET)
             collisionDetector.deleteBullets(gameScreen, gameScreen.getGameWorld());

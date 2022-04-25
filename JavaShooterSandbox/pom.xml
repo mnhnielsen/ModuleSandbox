@@ -80,7 +80,6 @@
         <module>Services</module>
         <module>Enemy</module>
         <module>Collision</module>
-        <module>Health</module>
         <module>Bullet</module>
         <module>SilentUpdate</module>
         <module>Obstacles</module>
