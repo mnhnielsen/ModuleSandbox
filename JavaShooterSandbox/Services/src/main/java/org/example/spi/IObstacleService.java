@@ -6,7 +6,7 @@ import org.example.helper.GameScreen;
 
 public interface IObstacleService
 {
-    void obstacle(float y, GameScreen gameScreen);
-    void render(SpriteBatch batch);
+    void obstacle(GameScreen gameScreen);
 
+    void render(SpriteBatch batch);
 }

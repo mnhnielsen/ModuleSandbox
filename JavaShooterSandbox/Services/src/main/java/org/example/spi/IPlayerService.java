@@ -10,6 +10,7 @@ public interface IPlayerService
     void player(float x, float y, GameScreen gameScreen);
     float getX();
     float getY();
+    void takeDamage(int damage);
 
 
 }

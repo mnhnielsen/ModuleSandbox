@@ -19,13 +19,17 @@ public class PlayerControl implements IPlayerService
 {
     protected Body body;
     protected float x, y, speed, velY, velX;
-    protected int width, height, score;
+    protected int width, height;
     protected Sprite sprite;
     protected GameScreen gameScreen;
+    private HealthPart lifePart = new HealthPart(100);
+    private boolean canMove = true, isMoving;
+    private String fileName;
 
     @Override
     public void player(float x, float y, GameScreen gameScreen)
     {
+        System.out.println("spawned");
         this.x = x;
         this.y = y;
         this.gameScreen = gameScreen;
@@ -33,7 +37,9 @@ public class PlayerControl implements IPlayerService
         width = 32;
         height = 32;
 
-        File file = new File(this.getClass().getResource("color.png").getPath());
+        fileName = "color.png";
+
+        File file = new File(this.getClass().getResource(fileName).getPath());
         String path = file.getPath().substring(5);
 
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);
@@ -43,37 +49,54 @@ public class PlayerControl implements IPlayerService
         body = BodyHelper.createBody(x, y, width, height, false, 10000, gameScreen.getWorld(), ContactType.PLAYER);
     }
 
+
     @Override
     public void update()
     {
-        boolean isMoving = false;
+        if (lifePart.dead())
+        {
+            canMove = false;
+            fileName = "red.png";
+            try
+            {
+                Thread.sleep(2500);
+                lifePart.setHealth(100);
+                lifePart.setDead(false);
+                body.setTransform(Boot.INSTANCE.getScreenWidth() / 2 / Const.PPM, Boot.INSTANCE.getScreenHeight() / 2 / Const.PPM, 0);
+                fileName = "color.png";
+                canMove = true;
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
         x = body.getPosition().x * Const.PPM - (width / 2);
         y = body.getPosition().y * Const.PPM - (height / 2);
         velY = 0;
         velX = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
             velY = 1;
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
             velY = -1;
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
             velX = 1;
             isMoving = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
             velX = -1;
             isMoving = true;
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving)
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) && isMoving && canMove)
             speed = 10;
         else
             speed = 6;
@@ -81,12 +104,13 @@ public class PlayerControl implements IPlayerService
         body.setLinearVelocity(velX * speed, velY * speed);
     }
 
+
     @Override
     public void render(SpriteBatch batch)
     {
         batch.draw(sprite, x, y, width, height);
     }
-    
+
 
     @Override
     public float getX()
@@ -98,5 +122,20 @@ public class PlayerControl implements IPlayerService
     public float getY()
     {
         return y;
+    }
+
+    public void takeDamage(int damage)
+    {
+        lifePart.takeDamage(damage);
+    }
+
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+    public void setFileName(String fileName)
+    {
+        this.fileName = fileName;
     }
 }
