@@ -69,6 +69,7 @@
         <module>SilentUpdate</module>
         <module>Collision</module>
         <module>Bullet</module>
+        <module>Obstacle</module>
 
     </modules>
 
