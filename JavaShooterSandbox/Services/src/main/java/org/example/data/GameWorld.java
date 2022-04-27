@@ -2,6 +2,7 @@ package org.example.data;
 
 import org.example.helper.AssetLoader;
 import org.example.helper.LibWorld;
+import org.example.spi.IEntityProcessingService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,6 +58,7 @@ public class GameWorld
         }
         return r;
     }
+
 
     public Entity getEntity(String ID)
     {

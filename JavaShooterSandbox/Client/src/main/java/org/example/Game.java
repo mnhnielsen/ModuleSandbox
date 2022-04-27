@@ -5,9 +5,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import org.example.data.GameWorld;
+import org.example.helper.AssetLoader;
 import org.example.helper.LibWorld;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
@@ -16,6 +22,7 @@ import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,10 +40,22 @@ public class Game implements ApplicationListener
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
+    private TiledMap map = new TiledMap();
+
+    private OrthogonalTiledMapRenderer renderer;
+
 
     @Override
     public void create()
     {
+        //loading tiled Maps
+        TmxMapLoader loader = new TmxMapLoader();
+
+
+        map =  new TmxMapLoader().load(AssetLoader.INSTANCE.getAm().getAssetFileName(String.valueOf(Gdx.files.internal("resources/map.tmx"))));
+        AssetLoader.INSTANCE.getAm().finishLoading();
+        renderer = new OrthogonalTiledMapRenderer(map);
+        // end loading
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
@@ -92,8 +111,15 @@ public class Game implements ApplicationListener
 
         batch.begin();
         update();
-        //debugRenderer.render(world.getWorld(),cam.combined.scl(Const.PPM));
+        try {
+
+
+        }catch (NullPointerException e) {
+            System.out.printf("exception" + e);
+        }
+        renderer.render();
         batch.end();
+
 
     }
 
@@ -112,7 +138,6 @@ public class Game implements ApplicationListener
     @Override
     public void dispose()
     {
-
     }
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices()
