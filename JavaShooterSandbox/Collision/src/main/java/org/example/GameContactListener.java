@@ -71,7 +71,6 @@ public class GameContactListener implements ContactListener, IContactListener
         float ey2 = e2.getBody().getPosition().y * Const.PPM - (e2.getHeight() / 2);
 
         float dst = Vector2.dst(ex1, ey1, ex2, ey2);
-        System.out.println(dst);
         return dst >= 1 && dst <= 33;
     }
 
