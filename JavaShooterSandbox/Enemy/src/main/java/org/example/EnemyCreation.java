@@ -56,6 +56,7 @@ public class EnemyCreation implements IGamePluginService
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.ENEMY);
 
         Enemy p = new Enemy(x, y, speed, width, height, body, sprite, new HealthPart(100));
+        System.out.println(p.getSpeed() + " " + p.getID());
         return p;
     }
 

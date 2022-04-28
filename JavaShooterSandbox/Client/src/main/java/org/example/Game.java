@@ -64,6 +64,8 @@ public class Game implements ApplicationListener
     private void camUpdate()
     {
         world.getWorld().step(1 / 60f, 6, 2);
+        if (contactListener.delteObject() != null)
+            contactListener.delteObject().removeBody();
         //this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
@@ -77,7 +79,8 @@ public class Game implements ApplicationListener
         {
             entityProcessorService.update(gameWorld, batch);
         }
-        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices()) {
+        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices())
+        {
             postEntityProcessorService.process(gameWorld);
         }
     }
@@ -92,7 +95,7 @@ public class Game implements ApplicationListener
 
         batch.begin();
         update();
-        //debugRenderer.render(world.getWorld(),cam.combined.scl(Const.PPM));
+        //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
         batch.end();
 
     }
@@ -119,7 +122,9 @@ public class Game implements ApplicationListener
     {
         return lookup.lookupAll(IEntityProcessingService.class);
     }
-    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices() {
+
+    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices()
+    {
         return lookup.lookupAll(ICollisionDetection.class);
     }
 

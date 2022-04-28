@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.parts.EntityPart;
 import org.example.data.parts.HealthPart;
+import org.example.helper.LibWorld;
 
 import java.io.Serializable;
+import java.lang.reflect.GenericArrayType;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Entity implements Serializable
 {
     private final UUID ID = UUID.randomUUID();
+    private GameWorld gameWorld = GameWorld.INSTANCE;
     private float x;
     private float y;
     private float speed;
@@ -182,8 +186,21 @@ public class Entity implements Serializable
 
     public void removeBody()
     {
+        Iterator<Entity> i = gameWorld.getEntitiesForDeletion().iterator();
 
+        if (!LibWorld.INSTANCE.getWorld().isLocked())
+        {
 
+            while(i.hasNext()) {
+                System.out.println("Deleting...");
+                Entity entity = i.next();
+                Body b = entity.getBody();
+                LibWorld.INSTANCE.getWorld().destroyBody(b);
+                gameWorld.removeEntity(entity);
+                i.remove();
+            }
+
+        }
     }
 
     public void setHealthPart(HealthPart healthPart)
