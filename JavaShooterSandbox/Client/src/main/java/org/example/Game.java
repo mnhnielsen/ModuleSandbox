@@ -116,15 +116,17 @@ public class Game implements ApplicationListener
     public void render()
     {
 
-        camUpdate();
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        renderer.render();
+        camUpdate();
         renderer.setView(cam);
+        renderer.render();
+        batch.begin();
         update();
         batch.end();
+
+
+
 
 
 
