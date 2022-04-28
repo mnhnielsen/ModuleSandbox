@@ -19,7 +19,7 @@ public class GameContactListener implements ContactListener, IContactListener
 {
     //private final Lookup lookup = Lookup.getDefault();
     private GameWorld gameWorld = GameWorld.INSTANCE;
-    private Entity enemyHit;
+    private Entity enemyHit = null;
 
 
     //private IEntityProcessingService iEntityProcessingService = lookup.lookup(IEntityProcessingService.class);
@@ -46,23 +46,14 @@ public class GameContactListener implements ContactListener, IContactListener
         {
             for (Entity enemy : gameWorld.getEntities(Enemy.class))
             {
-                enemyHit = null;
                 for (Entity bullet : gameWorld.getEntities(Bullet.class))
                 {
                     if (colliderCheck(enemy, bullet))
                     {
-                        String id = enemy.getID();
-                        System.out.println(id);
-                        for (Entity e : gameWorld.getEntities(Enemy.class))
-                        {
-                            if (Objects.equals(id, e.getID()))
-                            {
-                                enemyHit = e;
-                                gameWorld.addObjectForDeletion(e);
-                            }
-                        }
+                        System.out.println("Hit: " + enemy.getID());
+                        enemyHit = enemy;
+                        gameWorld.addObjectForDeletion(enemyHit);
                     }
-                    return;
                 }
             }
         }
@@ -74,11 +65,21 @@ public class GameContactListener implements ContactListener, IContactListener
 
     private Boolean colliderCheck(Entity e1, Entity e2)
     {
-        float x = e1.getBody().getPosition().x - e1.getBody().getPosition().x;
-        float y = e2.getBody().getPosition().y - e2.getBody().getPosition().y;
-        double dst = Math.sqrt(x * x + y * y);
-        System.out.println(dst);
-        return dst < 1;
+//        float x = e1.getBody().getPosition().x - e1.getBody().getPosition().x;
+//        float y = e2.getBody().getPosition().y - e2.getBody().getPosition().y;
+//        float dist = Vector2.dst(e1.getBody().getPosition().x,e1.getBody().getPosition().y,e2.getBody().getPosition().x,e2.getBody().getPosition().y);
+//        double dst = Math.sqrt(x * x + y * y);
+//        //System.out.println(dist);
+//        //return dst == 0;
+//        return dist >= 1 && dst <= 23;
+        float ex1 = e1.getBody().getPosition().x * Const.PPM - (e1.getWidth() / 2);
+        float ey1 = e1.getBody().getPosition().y * Const.PPM - (e1.getHeight() / 2);
+
+        float ex2 = e2.getBody().getPosition().x * Const.PPM - (e2.getWidth() / 2);
+        float ey2 = e2.getBody().getPosition().y * Const.PPM - (e2.getHeight() / 2);
+
+        float dst = Vector2.dst(ex1, ey1, ex2, ey2);
+        return dst >= 1 && dst <= 23;
     }
 
     @Override

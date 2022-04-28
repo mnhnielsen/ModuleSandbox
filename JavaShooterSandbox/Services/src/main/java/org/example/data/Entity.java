@@ -192,7 +192,6 @@ public class Entity implements Serializable
         {
 
             while(i.hasNext()) {
-                System.out.println("Deleting...");
                 Entity entity = i.next();
                 Body b = entity.getBody();
                 LibWorld.INSTANCE.getWorld().destroyBody(b);
