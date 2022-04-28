@@ -3,6 +3,8 @@ package org.example;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +42,7 @@ public class Game implements ApplicationListener
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
-    private TiledMap map = new TiledMap();
+    private TiledMap map;
 
     private OrthogonalTiledMapRenderer renderer;
 
@@ -48,18 +50,23 @@ public class Game implements ApplicationListener
     @Override
     public void create()
     {
+
         //loading tiled Maps
+
         TmxMapLoader loader = new TmxMapLoader();
 
+        //path er hardcoded pt
+        map =  new TmxMapLoader(new ExternalFileHandleResolver()).load(String.valueOf(Gdx.files.internal("Downloads/Sem04/Project/ModuleSandbox/JavaShooterSandbox/Client/src/main/resources/org/example/map.tmx")));
 
-        map =  new TmxMapLoader().load(AssetLoader.INSTANCE.getAm().getAssetFileName(String.valueOf(Gdx.files.internal("resources/map.tmx"))));
         AssetLoader.INSTANCE.getAm().finishLoading();
         renderer = new OrthogonalTiledMapRenderer(map);
+
+
         // end loading
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam = new OrthographicCamera( );
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -72,18 +79,22 @@ public class Game implements ApplicationListener
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
+
     }
 
     @Override
-    public void resize(int i, int i1)
+    public void resize(int width, int height)
     {
+        cam.viewportWidth = width;
+        cam.viewportHeight = height;
+        cam.update();
 
     }
 
     private void camUpdate()
     {
         world.getWorld().step(1 / 60f, 6, 2);
-        //this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
+        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
@@ -110,15 +121,11 @@ public class Game implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        update();
-        try {
-
-
-        }catch (NullPointerException e) {
-            System.out.printf("exception" + e);
-        }
         renderer.render();
+        renderer.setView(cam);
+        update();
         batch.end();
+
 
 
     }
