@@ -1,5 +1,4 @@
 package org.example.helper;
-
 import com.badlogic.gdx.files.FileHandleStream;
 
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.io.OutputStream;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 public class JarFileResolver extends FileHandleStream
 {
     private JarFile jarFile = null;

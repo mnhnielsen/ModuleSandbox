@@ -62,10 +62,15 @@
         <module>branding</module>
         <module>application</module>
         <module>Client</module>
-        <module>Player</module>
+        <module>GameEngine</module>
         <module>Services</module>
+        <module>Player</module>
         <module>Enemy</module>
+        <module>SilentUpdate</module>
         <module>Collision</module>
+        <module>Bullet</module>
+        <module>Obstacle</module>
+
     </modules>
 
     <properties>

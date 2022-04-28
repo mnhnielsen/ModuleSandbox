@@ -5,5 +5,5 @@ public enum ContactType
     OBSTACLE,
     BULLET,
     ENEMY,
-    PLAYER
+    PLAYER,
 }

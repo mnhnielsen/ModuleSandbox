@@ -22,4 +22,7 @@ public class BodyHelper
         shape.dispose();
         return body;
     }
+    public static void destroyBody(Body body, World world){
+        world.destroyBody(body);
+    }
 }
