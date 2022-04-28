@@ -2,26 +2,31 @@ package org.example.data.parts;
 
 import org.example.data.Entity;
 
-public class HealthPart implements EntityPart
+public class HealthPart
 {
-    public HealthPart(int life)
+    private int health;
+    private boolean isDead;
+    private boolean isHit = false, tempDead;
+
+
+    public HealthPart(int health)
     {
-        this.life = life;
+        this.health = health;
     }
 
-    private boolean dead = false;
-    private int life;
-    private boolean isHit = false;
-
-
-    public int getLife()
+    public int getHealth()
     {
-        return life;
+        return health;
     }
 
-    public void setLife(int life)
+    public void setHealth(int health)
     {
-        this.life = life;
+        this.health = health;
+    }
+
+    public void setDead(boolean dead)
+    {
+        isDead = dead;
     }
 
     public boolean isHit()
@@ -29,32 +34,17 @@ public class HealthPart implements EntityPart
         return isHit;
     }
 
-    public void setIsHit(boolean isHit)
+    public void takeDamage(int damage)
     {
-        this.isHit = isHit;
-    }
-    public void setDead(boolean dead)
-    {
-        this.dead = dead;
-    }
+        isHit = true;
+        health -= damage;
+        if (health <= 0)
+            isDead = true;
 
-
-    public boolean isDead()
-    {
-        return dead;
     }
 
-    @Override
-    public void process(Entity entity)
+    public boolean dead()
     {
-        if (isHit)
-        {
-            life = -1;
-            isHit = false;
-        }
-        if (life <= 0)
-        {
-            dead = true;
-        }
+        return isDead;
     }
 }
