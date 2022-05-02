@@ -60,6 +60,12 @@ public class PlayerCreation implements IGamePluginService
         world.removeEntity(player);
     }
 
+    @Override
+    public void spawnEnemies(int enemies)
+    {
+
+    }
+
     public Entity getPlayer()
     {
         return player;

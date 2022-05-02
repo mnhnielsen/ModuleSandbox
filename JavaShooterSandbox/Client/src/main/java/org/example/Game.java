@@ -32,11 +32,9 @@ public class Game implements ApplicationListener
     private final IContactListener contactListener = lookup.lookup(IContactListener.class);
     private LibWorld world;
     private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
-
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
-
 
 
     @Override
@@ -51,10 +49,12 @@ public class Game implements ApplicationListener
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
         result.allItems();
+
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
         for (IGamePluginService plugin : result.allInstances())
         {
+            plugin.spawnEnemies(5);
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
@@ -71,7 +71,7 @@ public class Game implements ApplicationListener
         world.getWorld().step(1 / 60f, 6, 2);
         if (contactListener.delteObject() != null)
             contactListener.delteObject().removeBody();
-        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
+        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
