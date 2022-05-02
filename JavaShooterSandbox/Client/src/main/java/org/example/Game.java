@@ -71,7 +71,7 @@ public class Game implements ApplicationListener
         world.getWorld().step(1 / 60f, 6, 2);
         if (contactListener.delteObject() != null)
             contactListener.delteObject().removeBody();
-        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
+        cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
@@ -81,13 +81,9 @@ public class Game implements ApplicationListener
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
-        {
             entityProcessorService.update(gameWorld, batch);
-        }
         for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices())
-        {
             postEntityProcessorService.process(gameWorld);
-        }
     }
 
     @Override
