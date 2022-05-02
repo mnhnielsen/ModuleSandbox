@@ -33,6 +33,10 @@ public class CollisionDetection implements ICollisionDetection
     }
 
 
+
+
+
+
     @Override
     public Entity deleteObject()
     {

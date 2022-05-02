@@ -3,12 +3,11 @@ package org.example;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -29,8 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game implements ApplicationListener
-{
+public class Game implements ApplicationListener {
     private static OrthographicCamera cam;
     private final Lookup lookup = Lookup.getDefault();
     private final GameWorld gameWorld = new GameWorld();
@@ -44,20 +42,33 @@ public class Game implements ApplicationListener
 
     private TiledMap map;
 
+   MapProperties mapProp = new MapProperties();
+   TiledMapTileLayer layer;
+
+
+
     private OrthogonalTiledMapRenderer renderer;
 
 
     @Override
-    public void create()
-    {
+    public void create() {
+
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
 
         //loading tiled Maps
 
         TmxMapLoader loader = new TmxMapLoader();
+        String fileName = "map.tmx";
+
 
         //path er hardcoded pt
-        map =  new TmxMapLoader(new ExternalFileHandleResolver()).load(String.valueOf(Gdx.files.internal("Downloads/Sem04/Project/ModuleSandbox/JavaShooterSandbox/Client/src/main/resources/org/example/map.tmx")));
 
+        File file = new File(this.getClass().getResource(fileName).getPath());
+        String path = file.getPath().substring(5);
+
+        map = new TmxMapLoader(new ExternalFileHandleResolver()).load(String.valueOf(Gdx.files.internal("Downloads/Sem04/Project/ModuleSandbox/JavaShooterSandbox/Client/src/main/resources/org/example/map.tmx")));
+        layer = (TiledMapTileLayer) map.getLayers().get("collision");
         AssetLoader.INSTANCE.getAm().finishLoading();
         renderer = new OrthogonalTiledMapRenderer(map);
 
@@ -66,7 +77,8 @@ public class Game implements ApplicationListener
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
-        cam = new OrthographicCamera( );
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, w, h);
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -74,8 +86,7 @@ public class Game implements ApplicationListener
         result.allItems();
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
-        for (IGamePluginService plugin : result.allInstances())
-        {
+        for (IGamePluginService plugin : result.allInstances()) {
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
@@ -88,19 +99,22 @@ public class Game implements ApplicationListener
         cam.viewportWidth = width;
         cam.viewportHeight = height;
         cam.update();
-
     }
+
 
     private void camUpdate()
     {
+
         world.getWorld().step(1 / 60f, 6, 2);
         this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
+
     }
 
     private void update()
     {
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
@@ -117,17 +131,14 @@ public class Game implements ApplicationListener
     {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camUpdate();
-        renderer.setView(cam);
         renderer.render();
+        renderer.setView(cam);
         batch.begin();
         update();
         batch.end();
-
-
-
-
 
 
     }
