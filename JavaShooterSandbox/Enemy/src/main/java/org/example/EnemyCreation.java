@@ -38,7 +38,6 @@ public class EnemyCreation implements IGamePluginService
 
     protected Enemy createEnemy()
     {
-        System.out.println("Spawning");
         float x = new Random().nextFloat() * Gdx.graphics.getWidth();
         float y = new Random().nextFloat() * Gdx.graphics.getHeight();
 

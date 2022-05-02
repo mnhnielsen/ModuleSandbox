@@ -60,9 +60,4 @@ public class EnemyController implements IEntityProcessingService
         return null;
     }
 
-    @Override
-    public void create()
-    {
-
-    }
 }

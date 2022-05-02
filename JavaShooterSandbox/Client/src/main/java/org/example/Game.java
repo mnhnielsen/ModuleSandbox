@@ -49,6 +49,7 @@ public class Game implements ApplicationListener
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
         result.allItems();
+
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
         for (IGamePluginService plugin : result.allInstances())

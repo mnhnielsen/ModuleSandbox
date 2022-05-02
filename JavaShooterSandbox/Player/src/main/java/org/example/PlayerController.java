@@ -156,7 +156,6 @@ public class PlayerController implements IEntityProcessingService
                 bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
                 GameWorld.INSTANCE.addEntity(bullet);
                 fireDelay += 0.25;
-                System.out.println("Shooting");
             }
         }
     }
@@ -167,9 +166,4 @@ public class PlayerController implements IEntityProcessingService
         return new Vector2(x, y);
     }
 
-    @Override
-    public void create()
-    {
-
-    }
 }

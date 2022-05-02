@@ -9,6 +9,5 @@ public interface IEntityProcessingService
 {
     void update(GameWorld world, SpriteBatch batch);
     Vector2 position();
-    void create();
 
 }
