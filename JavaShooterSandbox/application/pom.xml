@@ -62,6 +62,12 @@
             <artifactId>Bullet</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Obstacle</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>${project.groupId}</groupId>-->
 <!--            <artifactId>SilentUpdate</artifactId>-->

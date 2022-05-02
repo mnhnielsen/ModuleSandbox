@@ -35,8 +35,11 @@ public class ObstacleCreator implements IGamePluginService
 
     protected Obstacle createObstacle()
     {
-        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
-        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
+        System.out.println("obstacle");
+//        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+//        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
+        float x = 40;
+        float y = 40f;
         int width = 32;
         int height = 32;
 

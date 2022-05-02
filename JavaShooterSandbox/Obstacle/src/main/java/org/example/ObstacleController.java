@@ -12,7 +12,8 @@ import org.openide.util.lookup.ServiceProviders;
 @ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class ObstacleController implements IEntityProcessingService
 {
-    protected ObstacleCreator obstacle = new ObstacleCreator();
+    //protected ObstacleCreator obstacle = new ObstacleCreator();
+    private float x, y;
 
     @Override
     public void update(GameWorld world, SpriteBatch batch)
@@ -21,12 +22,14 @@ public class ObstacleController implements IEntityProcessingService
         {
             obstacle.setX(obstacle.getBody().getPosition().x * Const.PPM - (obstacle.getWidth() / 2));
             obstacle.setY(obstacle.getBody().getPosition().y * Const.PPM - (obstacle.getHeight() / 2));
+            batch.draw(obstacle.getSprite(), obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
         }
     }
 
     @Override
     public Vector2 position()
     {
-        return null;
+        return new Vector2(x, y);
+        // return null;
     }
 }
