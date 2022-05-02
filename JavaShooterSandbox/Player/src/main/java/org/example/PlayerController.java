@@ -64,7 +64,7 @@ public class PlayerController implements IEntityProcessingService
                     Thread.sleep(2500);
                     p.getHealthPart().setHealth(100);
                     p.getHealthPart().setDead(false);
-                    player.getPlayer().getBody().setTransform(new Random().nextFloat() * Gdx.graphics.getWidth() / Const.PPM, new Random().nextFloat() * Gdx.graphics.getHeight() / Const.PPM, 0);
+                    player.getPlayer().getBody().setTransform(new Random().nextFloat() * Gdx.graphics.getWidth()/Const.PPM,new Random().nextFloat() * Gdx.graphics.getHeight()/Const.PPM, 0);
 
                     canMove = true;
                 } catch (InterruptedException e)
@@ -156,6 +156,7 @@ public class PlayerController implements IEntityProcessingService
                 bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
                 GameWorld.INSTANCE.addEntity(bullet);
                 fireDelay += 0.25;
+                System.out.println("Shooting");
             }
         }
     }
@@ -165,5 +166,4 @@ public class PlayerController implements IEntityProcessingService
     {
         return new Vector2(x, y);
     }
-
 }

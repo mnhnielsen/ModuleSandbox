@@ -70,7 +70,6 @@
         <module>Collision</module>
         <module>Bullet</module>
         <module>Obstacle</module>
-        <module>Map</module>
 
     </modules>
 

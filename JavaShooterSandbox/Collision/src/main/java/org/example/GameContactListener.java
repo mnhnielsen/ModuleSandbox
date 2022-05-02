@@ -48,6 +48,7 @@ public class GameContactListener implements ContactListener, IContactListener
                 {
                     if (colliderCheck(enemy, bullet))
                     {
+                        System.out.println("Hit: " + enemy.getID());
                         enemyHit = enemy;
                         gameWorld.addObjectForDeletion(enemyHit);
                         gameWorld.addObjectForDeletion(bullet);
