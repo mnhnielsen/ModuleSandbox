@@ -36,20 +36,12 @@ public class Game implements ApplicationListener
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
-    private Sprite sprite;
 
 
 
     @Override
     public void create()
     {
-
-        File file = new File(this.getClass().getResource("bgImage.jpeg").getPath());
-        String path = file.getPath().substring(5);
-        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
-        AssetLoader.INSTANCE.getAm().finishLoading();
-
-        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
@@ -107,7 +99,6 @@ public class Game implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        sprite.draw(batch);
 
         update();
         //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
