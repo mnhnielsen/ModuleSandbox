@@ -64,7 +64,7 @@ public class PlayerController implements IEntityProcessingService
                     Thread.sleep(2500);
                     p.getHealthPart().setHealth(100);
                     p.getHealthPart().setDead(false);
-                    player.getPlayer().getBody().setTransform(new Random().nextFloat() * Gdx.graphics.getWidth()/Const.PPM,new Random().nextFloat() * Gdx.graphics.getHeight()/Const.PPM, 0);
+                    player.getPlayer().getBody().setTransform(new Random().nextFloat() * Gdx.graphics.getWidth() / Const.PPM, new Random().nextFloat() * Gdx.graphics.getHeight() / Const.PPM, 0);
 
                     canMove = true;
                 } catch (InterruptedException e)
@@ -165,5 +165,11 @@ public class PlayerController implements IEntityProcessingService
     public Vector2 position()
     {
         return new Vector2(x, y);
+    }
+
+    @Override
+    public void create()
+    {
+
     }
 }
