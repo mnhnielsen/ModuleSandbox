@@ -5,9 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import org.example.data.GameWorld;
+import org.example.helper.AssetLoader;
 import org.example.helper.LibWorld;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
@@ -16,6 +19,7 @@ import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -32,11 +36,20 @@ public class Game implements ApplicationListener
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
+    private Sprite sprite;
+
 
 
     @Override
     public void create()
     {
+
+        File file = new File(this.getClass().getResource("bgImage.jpeg").getPath());
+        String path = file.getPath().substring(5);
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+
+        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
@@ -64,7 +77,9 @@ public class Game implements ApplicationListener
     private void camUpdate()
     {
         world.getWorld().step(1 / 60f, 6, 2);
-        //this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
+        if (contactListener.delteObject() != null)
+            contactListener.delteObject().removeBody();
+        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
@@ -77,7 +92,8 @@ public class Game implements ApplicationListener
         {
             entityProcessorService.update(gameWorld, batch);
         }
-        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices()) {
+        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices())
+        {
             postEntityProcessorService.process(gameWorld);
         }
     }
@@ -91,8 +107,10 @@ public class Game implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+        sprite.draw(batch);
+
         update();
-        //debugRenderer.render(world.getWorld(),cam.combined.scl(Const.PPM));
+        //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
         batch.end();
 
     }
@@ -119,7 +137,9 @@ public class Game implements ApplicationListener
     {
         return lookup.lookupAll(IEntityProcessingService.class);
     }
-    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices() {
+
+    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices()
+    {
         return lookup.lookupAll(ICollisionDetection.class);
     }
 

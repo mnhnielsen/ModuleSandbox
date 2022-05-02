@@ -20,13 +20,14 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
+import java.util.Random;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class PlayerController implements IEntityProcessingService
 {
     private static PlayerCreation player = new PlayerCreation();
     private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f, delay;
+    private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
 
     public void updateTexture(String fname)
@@ -53,25 +54,27 @@ public class PlayerController implements IEntityProcessingService
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
-        //updateTexture("soldierIdle.png");
-        if (player.getPlayer().getHealthPart().isHit() && player.getPlayer().getHealthPart().getLife() <= 50)
-            //updateTexture("injured.png");
-            if (player.getPlayer().getHealthPart().isDead())
+        for (Entity p : world.getEntities(Player.class))
+        {
+            if (p.getHealthPart().dead())
             {
                 canMove = false;
                 try
                 {
                     Thread.sleep(2500);
-                    player.getPlayer().getHealthPart().setLife(100);
-                    player.getPlayer().getHealthPart().setDead(false);
-                    player.getPlayer().getBody().setTransform(Gdx.graphics.getWidth() / 2 / Const.PPM, Gdx.graphics.getHeight() / 2 / Const.PPM, 0);
+                    p.getHealthPart().setHealth(100);
+                    p.getHealthPart().setDead(false);
+                    player.getPlayer().getBody().setTransform(new Random().nextFloat() * Gdx.graphics.getWidth()/Const.PPM,new Random().nextFloat() * Gdx.graphics.getHeight()/Const.PPM, 0);
+
                     canMove = true;
-                    //updateTexture("soldierIdle.png");
                 } catch (InterruptedException e)
                 {
                     e.printStackTrace();
                 }
             }
+
+        }
+//
         x = player.getPlayer().getBody().getPosition().x * Const.PPM - (player.getPlayer().getWidth() / 2);
         y = player.getPlayer().getBody().getPosition().y * Const.PPM - (player.getPlayer().getHeight() / 2);
         dir.setZero();

@@ -14,6 +14,8 @@ public class GameWorld
     public static GameWorld INSTANCE;
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
+    private final Map<String, Entity> deleteObjectMap = new ConcurrentHashMap<>();
+
     private AssetLoader as = new AssetLoader();
 
     public GameWorld()
@@ -24,6 +26,15 @@ public class GameWorld
     public String addEntity(Entity entity)
     {
         entityMap.put(entity.getID(), entity);
+        return entity.getID();
+    }
+    public Collection<Entity> getEntitiesForDeletion()
+    {
+        return deleteObjectMap.values();
+    }
+    public String addObjectForDeletion(Entity entity)
+    {
+        deleteObjectMap.put(entity.getID(), entity);
         return entity.getID();
     }
 
