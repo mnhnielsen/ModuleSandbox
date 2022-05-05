@@ -72,7 +72,6 @@
         <module>Obstacle</module>
         <module>Map</module>
         <module>Weapon</module>
-
     </modules>
 
     <properties>
