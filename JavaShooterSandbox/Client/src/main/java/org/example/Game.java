@@ -15,6 +15,7 @@ import org.example.helper.LibWorld;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
+import org.example.spi.IMapService;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -35,11 +36,19 @@ public class Game implements ApplicationListener
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
+    private Sprite sprite;
 
 
     @Override
     public void create()
     {
+
+        File file = new File(this.getClass().getResource("map1.png").getPath());
+        String path = file.getPath().substring(5);
+
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
 
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
@@ -54,7 +63,7 @@ public class Game implements ApplicationListener
 
         for (IGamePluginService plugin : result.allInstances())
         {
-            plugin.spawnEnemies(5);
+            plugin.spawnEnemies(1);
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
@@ -84,6 +93,14 @@ public class Game implements ApplicationListener
             entityProcessorService.update(gameWorld, batch);
         for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices())
             postEntityProcessorService.process(gameWorld);
+
+
+    }
+
+    private void mapService()
+    {
+        for (IMapService mapService : getMapService())
+            mapService.mapBackground(gameWorld,batch);
     }
 
     @Override
@@ -95,7 +112,8 @@ public class Game implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
+        sprite.draw(batch);
+        mapService();
         update();
         //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
         batch.end();
@@ -123,6 +141,11 @@ public class Game implements ApplicationListener
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices()
     {
         return lookup.lookupAll(IEntityProcessingService.class);
+    }
+
+    private Collection<? extends IMapService> getMapService()
+    {
+        return lookup.lookupAll(IMapService.class);
     }
 
     private Collection<? extends ICollisionDetection> getPostEntityProcessingServices()
