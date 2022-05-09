@@ -35,15 +35,13 @@ public class ObstacleCreator implements IGamePluginService
 
     protected Obstacle createObstacle()
     {
-        System.out.println("obstacle");
-//        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
-//        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
-        float x = 40;
-        float y = 40f;
-        int width = 32;
-        int height = 32;
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
 
-        File file = new File(this.getClass().getResource("obstacle_mine.png").getPath());
+        int width = (int) (Math.random() * (230 - 110)) + 110;
+        int height = (int) (Math.random() * (50 - 30)) + 30;
+
+        File file = new File(this.getClass().getResource("red.png").getPath());
         String path = file.getPath().substring(5);
 
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);

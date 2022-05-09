@@ -24,7 +24,7 @@ import java.util.Random;
 public class EnemyCreation implements IGamePluginService
 {
     protected ArrayList<Enemy> enemies = new ArrayList<>();
-    private int amountOfEnemies = 1;
+    private int amountOfEnemies = 100;
 
     private void spawnEnemies()
     {
