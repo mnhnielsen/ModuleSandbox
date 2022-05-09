@@ -3,24 +3,13 @@ package org.example;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.ImageResolver;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import org.example.data.Entity;
 import org.example.data.GameWorld;
-import org.example.helper.AssetLoader;
 import org.example.helper.CamController;
 import org.example.helper.LibWorld;
+import org.example.helper.Player;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
@@ -28,9 +17,7 @@ import org.example.spi.IMapSpi;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import sun.awt.X11.XErrorHandler;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -45,15 +32,11 @@ public class Game implements ApplicationListener
     private CamController camController;
     private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
-    private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
 
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
-    TiledMap map;
-    OrthogonalTiledMapRenderer renderer;
-    float unitScale = 1 / 32f;
 
 
     @Override
@@ -64,7 +47,7 @@ public class Game implements ApplicationListener
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
         camController = new CamController();
-        CamController.INSTANCE.getCam().setToOrtho(false, w, h);
+        camController.INSTANCE.getCam().setToOrtho(false, w, h);
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -72,22 +55,22 @@ public class Game implements ApplicationListener
         result.allItems();
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
-        for (IMapSpi map : getMapServices())
-            map.initrenderer();
+
         for (IGamePluginService plugin : result.allInstances())
         {
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
-
+        for (IMapSpi map : getMapServices())
+            map.initrenderer();
     }
 
     @Override
     public void resize(int width, int height)
     {
-        CamController.INSTANCE.getCam().viewportWidth = width;
-        CamController.INSTANCE.getCam().viewportHeight = height;
-        CamController.INSTANCE.getCam().update();
+        camController.INSTANCE.getCam().viewportWidth = width;
+        camController.INSTANCE.getCam().viewportHeight = height;
+        camController.INSTANCE.getCam().update();
     }
 
 
@@ -95,9 +78,9 @@ public class Game implements ApplicationListener
     {
 
         world.getWorld().step(1 / 60f, 6, 2);
-        CamController.INSTANCE.getCam().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
-        CamController.INSTANCE.getCam().update();
-        batch.setProjectionMatrix(CamController.INSTANCE.getCam().combined);
+        camController.INSTANCE.getCam().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
+        camController.INSTANCE.getCam().update();
+        batch.setProjectionMatrix(camController.INSTANCE.getCam().combined);
 
     }
 
@@ -123,9 +106,10 @@ public class Game implements ApplicationListener
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        camUpdate();
+
         for (IMapSpi map : getMapServices())
             map.render();
-        camUpdate();
         batch.begin();
         update();
         batch.end();

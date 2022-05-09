@@ -7,12 +7,11 @@ import com.badlogic.gdx.physics.box2d.World;
 public class CamController
 {
     public static CamController INSTANCE;
-    private OrthographicCamera cam;
+    private OrthographicCamera cam = new OrthographicCamera();
 
     public CamController()
     {
         INSTANCE = this;
-        cam = new OrthographicCamera();
     }
 
     public OrthographicCamera getCam()

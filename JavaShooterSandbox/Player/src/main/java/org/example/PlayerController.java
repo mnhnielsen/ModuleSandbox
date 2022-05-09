@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
@@ -15,6 +17,7 @@ import org.example.helper.LibWorld;
 import org.example.spi.IBulletService;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
+import org.example.spi.IMapSpi;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
@@ -24,10 +27,14 @@ import java.io.File;
 @ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class PlayerController implements IEntityProcessingService
 {
-    private static PlayerCreation player = new PlayerCreation();
+    private Entity player = PlayerCreation.INSTANCE.getPlayer();
     private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f, delay;
+    private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
+
+    private final Lookup lookup = Lookup.getDefault();
+    private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
+
 
     public void updateTexture(String fname)
     {
@@ -44,7 +51,7 @@ public class PlayerController implements IEntityProcessingService
                 AssetLoader.INSTANCE.getAm().finishLoading();
 
                 Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-                player.getPlayer().setSprite(sprite);
+                player.setSprite(sprite);
             }
         });
 
@@ -53,18 +60,19 @@ public class PlayerController implements IEntityProcessingService
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
+
         //updateTexture("soldierIdle.png");
-        if (player.getPlayer().getHealthPart().isHit() && player.getPlayer().getHealthPart().getLife() <= 50)
+        if (player.getHealthPart().isHit() && player.getHealthPart().getLife() <= 50)
             //updateTexture("injured.png");
-            if (player.getPlayer().getHealthPart().isDead())
+            if (player.getHealthPart().isDead())
             {
                 canMove = false;
                 try
                 {
                     Thread.sleep(2500);
-                    player.getPlayer().getHealthPart().setLife(100);
-                    player.getPlayer().getHealthPart().setDead(false);
-                    player.getPlayer().getBody().setTransform(Gdx.graphics.getWidth() / 2 / Const.PPM, Gdx.graphics.getHeight() / 2 / Const.PPM, 0);
+                    player.getHealthPart().setLife(100);
+                    player.getHealthPart().setDead(false);
+                    player.getBody().setTransform(Gdx.graphics.getWidth() / 2 / Const.PPM, Gdx.graphics.getHeight() / 2 / Const.PPM, 0);
                     canMove = true;
                     //updateTexture("soldierIdle.png");
                 } catch (InterruptedException e)
@@ -72,8 +80,8 @@ public class PlayerController implements IEntityProcessingService
                     e.printStackTrace();
                 }
             }
-        x = player.getPlayer().getBody().getPosition().x * Const.PPM - (player.getPlayer().getWidth() / 2);
-        y = player.getPlayer().getBody().getPosition().y * Const.PPM - (player.getPlayer().getHeight() / 2);
+        x = player.getBody().getPosition().x * Const.PPM - (player.getWidth() / 2);
+        y = player.getBody().getPosition().y * Const.PPM - (player.getHeight() / 2);
         dir.setZero();
         radians = 0;
 
@@ -123,23 +131,31 @@ public class PlayerController implements IEntityProcessingService
 
 
         if (isMoving && Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT))
-            player.getPlayer().setSpeed(10);
+            player.setSpeed(10);
         else
-            player.getPlayer().setSpeed(6);
+            player.setSpeed(6);
 
         dir.nor();
 
-        float dirX = dir.x * player.getPlayer().getSpeed();
-        float dirY = dir.y * player.getPlayer().getSpeed();
+        float dirX = dir.x * player.getSpeed();
+        float dirY = dir.y * player.getSpeed();
 
-        player.getPlayer().getBody().setLinearVelocity(dirX, dirY);
+        player.getBody().setLinearVelocity(dirX, dirY);
 
-        batch.draw(player.getPlayer().getSprite(), x, y, player.getPlayer().getWidth(), player.getPlayer().getHeight());
+        batch.draw(player.getSprite(), x, y, player.getWidth(), player.getHeight());
 
+        System.out.println(mapSpi.getMap().getLayers().get("colission"));
         for (Entity object : world.getEntities(Bullet.class))
             batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
 
 
+    }
+
+    private boolean isCellBlocked(float x, float y)
+    {
+        Cell cell = null;
+        boolean blocked = false;
+        return false;
     }
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)

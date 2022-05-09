@@ -3,15 +3,11 @@ package org.example;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.data.parts.HealthPart;
-import org.example.helper.AssetLoader;
-import org.example.helper.BodyHelper;
-import org.example.helper.ContactType;
-import org.example.helper.LibWorld;
+import org.example.helper.*;
 import org.example.spi.IGamePluginService;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
@@ -21,15 +17,19 @@ import java.io.File;
 @ServiceProviders(value = {@ServiceProvider(service = IGamePluginService.class)})
 public class PlayerCreation implements IGamePluginService
 {
-    protected Player player = createPlayer();
+
+    public static PlayerCreation INSTANCE;
+    private Player player = createPlayer();
+
 
     public PlayerCreation()
     {
-
+        INSTANCE = this;
     }
 
     protected Player createPlayer()
     {
+        System.out.println("Created");
         int x = 40;
         int y = Gdx.graphics.getHeight() / 2;
         int speed = 6;

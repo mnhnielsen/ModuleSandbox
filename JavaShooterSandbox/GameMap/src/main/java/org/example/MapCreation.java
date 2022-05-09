@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -29,6 +30,7 @@ public class MapCreation implements IMapSpi
 
 
     private TiledMapTileLayer layer;
+    private MapProperties mapProperties;
 
 
     private OrthogonalTiledMapRenderer renderer;
@@ -38,7 +40,9 @@ public class MapCreation implements IMapSpi
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
+        mapProperties = map.getProperties();
     }
+
 
 
     @Override
@@ -67,6 +71,11 @@ public class MapCreation implements IMapSpi
     public TiledMap getTiledMap()
     {
         return map;
+    }
+
+    public MapProperties getMapProperties()
+    {
+        return mapProperties;
     }
 
 }

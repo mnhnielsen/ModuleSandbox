@@ -1,4 +1,4 @@
-package org.example;
+package org.example.helper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;

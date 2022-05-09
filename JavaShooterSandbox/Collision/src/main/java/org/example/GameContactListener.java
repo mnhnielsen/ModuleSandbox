@@ -1,12 +1,10 @@
 package org.example;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.ContactType;
-import org.example.spi.IEntityProcessingService;
-import org.openide.util.Lookup;
+import org.example.helper.Player;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
