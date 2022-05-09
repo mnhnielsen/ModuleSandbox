@@ -1,5 +1,6 @@
 package org.example.data;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.example.helper.AssetLoader;
 import org.example.helper.LibWorld;
 import org.example.spi.IEntityProcessingService;
@@ -15,6 +16,7 @@ public class GameWorld
     public static GameWorld INSTANCE;
 
     private final Map<String, Entity> entityMap = new ConcurrentHashMap<>();
+    private final Map<String, TiledMap> tiledMapMap = new ConcurrentHashMap<>();
     private AssetLoader as = new AssetLoader();
 
     public GameWorld()
@@ -27,6 +29,7 @@ public class GameWorld
         entityMap.put(entity.getID(), entity);
         return entity.getID();
     }
+    
 
     public void removeEntity(String entityID)
     {
@@ -64,4 +67,5 @@ public class GameWorld
     {
         return entityMap.get(ID);
     }
+
 }

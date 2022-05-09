@@ -7,21 +7,27 @@ import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.ImageResolver;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
 import org.example.helper.LibWorld;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
+import org.example.spi.IMapSpi;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
+import sun.awt.X11.XErrorHandler;
 
 import java.io.File;
 import java.util.Collection;
@@ -29,62 +35,42 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements ApplicationListener {
-    private static OrthographicCamera cam;
+
     private final Lookup lookup = Lookup.getDefault();
     private final GameWorld gameWorld = new GameWorld();
     private final IContactListener contactListener = lookup.lookup(IContactListener.class);
     private LibWorld world;
     private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
+    private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
+
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
 
-    private TiledMap map;
+    TiledMap map;
+    OrthogonalTiledMapRenderer renderer;
+    float unitScale = 1 / 32f;
 
-   MapProperties mapProp = new MapProperties();
-   TiledMapTileLayer layer;
-
-
-
-    private OrthogonalTiledMapRenderer renderer;
 
 
     @Override
     public void create() {
 
+
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
-        //loading tiled Maps
-
-        TmxMapLoader loader = new TmxMapLoader();
-        String fileName = "map.tmx";
-
-
-        //path er hardcoded pt
-
-        File file = new File(this.getClass().getResource(fileName).getPath());
-        String path = file.getPath().substring(5);
-
-        map = new TmxMapLoader(new ExternalFileHandleResolver()).load(String.valueOf(Gdx.files.internal("Downloads/Sem04/Project/ModuleSandbox/JavaShooterSandbox/Client/src/main/resources/org/example/map.tmx")));
-        layer = (TiledMapTileLayer) map.getLayers().get("collision");
-        AssetLoader.INSTANCE.getAm().finishLoading();
-        renderer = new OrthogonalTiledMapRenderer(map);
-
-
-        // end loading
-
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, w, h);
+        mapSpi.create().setToOrtho(false, w, h);
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
         result.addLookupListener(lookupListener);
         result.allItems();
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
+
 
         for (IGamePluginService plugin : result.allInstances()) {
             plugin.start(gameWorld);
@@ -96,9 +82,9 @@ public class Game implements ApplicationListener {
     @Override
     public void resize(int width, int height)
     {
-        cam.viewportWidth = width;
-        cam.viewportHeight = height;
-        cam.update();
+        mapSpi.create().viewportWidth = width;
+        mapSpi.create().viewportHeight = height;
+        mapSpi.create().update();
     }
 
 
@@ -106,9 +92,9 @@ public class Game implements ApplicationListener {
     {
 
         world.getWorld().step(1 / 60f, 6, 2);
-        this.cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
-        cam.update();
-        batch.setProjectionMatrix(cam.combined);
+        mapSpi.create().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
+        mapSpi.create().update();
+        batch.setProjectionMatrix(mapSpi.create().combined);
 
     }
 
@@ -133,15 +119,14 @@ public class Game implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        mapSpi.render();
         camUpdate();
-        renderer.render();
-        renderer.setView(cam);
         batch.begin();
         update();
         batch.end();
 
+        }
 
-    }
 
     @Override
     public void pause()

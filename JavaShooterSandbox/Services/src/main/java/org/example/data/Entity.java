@@ -1,6 +1,8 @@
 package org.example.data;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.parts.EntityPart;
 import org.example.data.parts.HealthPart;
@@ -26,6 +28,10 @@ public class Entity implements Serializable
     private Body body;
     private HealthPart healthPart;
     private Map<Class, EntityPart> parts;
+
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+
+    private TiledMap tiledMap;
 
     //Enemy
     public Entity(float x, float y, float speed, int width, int height, Body body, Sprite sprite, HealthPart healthPart)
@@ -157,6 +163,14 @@ public class Entity implements Serializable
     public Sprite getSprite()
     {
         return sprite;
+    }
+
+    public TiledMap getTiledMap(){
+        return tiledMap;
+    }
+
+    public OrthogonalTiledMapRenderer getRenderer(){
+        return orthogonalTiledMapRenderer;
     }
 
     public void setSprite(Sprite sprite)
