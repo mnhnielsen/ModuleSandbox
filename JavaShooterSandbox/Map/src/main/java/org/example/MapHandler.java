@@ -42,12 +42,7 @@ public class MapHandler implements IMapService
         if (world.getEntities(Enemy.class).size() == 0)
         {
             updateMapTexture("map2.png").draw(batch);
-            for (IGamePluginService plugin : result.allInstances())
-            {
-                plugin.spawnEnemies(1);
-                plugin.start(world);
-                gamePlugins.add(plugin);
-            }
+
         }
     }
 
