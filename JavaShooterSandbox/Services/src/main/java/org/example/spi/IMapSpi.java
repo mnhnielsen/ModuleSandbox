@@ -7,8 +7,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 public interface IMapSpi {
 
     void render();
+    void initrenderer();
 
-    OrthographicCamera create();
-
-    //void initialCam();
 }

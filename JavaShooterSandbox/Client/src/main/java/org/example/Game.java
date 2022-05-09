@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
+import org.example.helper.CamController;
 import org.example.helper.LibWorld;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
@@ -34,12 +35,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game implements ApplicationListener {
+public class Game implements ApplicationListener
+{
 
     private final Lookup lookup = Lookup.getDefault();
     private final GameWorld gameWorld = new GameWorld();
     private final IContactListener contactListener = lookup.lookup(IContactListener.class);
     private LibWorld world;
+    private CamController camController;
     private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
 
     private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
@@ -53,17 +56,15 @@ public class Game implements ApplicationListener {
     float unitScale = 1 / 32f;
 
 
-
     @Override
-    public void create() {
-
-
+    public void create()
+    {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
-        mapSpi.create().setToOrtho(false, w, h);
+        camController = new CamController();
+        CamController.INSTANCE.getCam().setToOrtho(false, w, h);
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -71,8 +72,10 @@ public class Game implements ApplicationListener {
         result.allItems();
         LibWorld.INSTANCE.getWorld().setContactListener(contactListener.contactListener());
 
-
-        for (IGamePluginService plugin : result.allInstances()) {
+        for (IMapSpi map : getMapServices())
+            map.initrenderer();
+        for (IGamePluginService plugin : result.allInstances())
+        {
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
@@ -82,9 +85,9 @@ public class Game implements ApplicationListener {
     @Override
     public void resize(int width, int height)
     {
-        mapSpi.create().viewportWidth = width;
-        mapSpi.create().viewportHeight = height;
-        mapSpi.create().update();
+        CamController.INSTANCE.getCam().viewportWidth = width;
+        CamController.INSTANCE.getCam().viewportHeight = height;
+        CamController.INSTANCE.getCam().update();
     }
 
 
@@ -92,9 +95,9 @@ public class Game implements ApplicationListener {
     {
 
         world.getWorld().step(1 / 60f, 6, 2);
-        mapSpi.create().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y,0);
-        mapSpi.create().update();
-        batch.setProjectionMatrix(mapSpi.create().combined);
+        CamController.INSTANCE.getCam().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
+        CamController.INSTANCE.getCam().update();
+        batch.setProjectionMatrix(CamController.INSTANCE.getCam().combined);
 
     }
 
@@ -107,7 +110,8 @@ public class Game implements ApplicationListener {
         {
             entityProcessorService.update(gameWorld, batch);
         }
-        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices()) {
+        for (ICollisionDetection postEntityProcessorService : getPostEntityProcessingServices())
+        {
             postEntityProcessorService.process(gameWorld);
         }
     }
@@ -119,13 +123,13 @@ public class Game implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        mapSpi.render();
+        for (IMapSpi map : getMapServices())
+            map.render();
         camUpdate();
         batch.begin();
         update();
         batch.end();
-
-        }
+    }
 
 
     @Override
@@ -149,8 +153,14 @@ public class Game implements ApplicationListener {
     {
         return lookup.lookupAll(IEntityProcessingService.class);
     }
-    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices() {
+
+    private Collection<? extends ICollisionDetection> getPostEntityProcessingServices()
+    {
         return lookup.lookupAll(ICollisionDetection.class);
+    }
+    private Collection<? extends IMapSpi> getMapServices()
+    {
+        return lookup.lookupAll(IMapSpi.class);
     }
 
     private final LookupListener lookupListener = new LookupListener()
