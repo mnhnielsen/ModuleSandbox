@@ -6,5 +6,4 @@ import org.example.data.GameWorld;
 public interface IMapService
 {
     void mapBackground(GameWorld world, SpriteBatch batch);
-    void spawnEnemies(int amount);
 }

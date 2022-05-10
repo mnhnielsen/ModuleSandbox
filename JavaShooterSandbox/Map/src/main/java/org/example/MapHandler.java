@@ -22,9 +22,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MapHandler implements IMapService
 {
-    private Lookup.Result<IGamePluginService> result;
-    private final List<IGamePluginService> gamePlugins = new CopyOnWriteArrayList<>();
-
+    private EnemyCreation enemyCreation = new EnemyCreation();
+    private boolean map1 = true;
 
     private Sprite updateMapTexture(String fileName)
     {
@@ -39,18 +38,20 @@ public class MapHandler implements IMapService
     @Override
     public void mapBackground(GameWorld world, SpriteBatch batch)
     {
-        if (world.getEntities(Enemy.class).size() == 0)
+       // System.out.println(world.getEntities(Enemy.class).size());
+        if (world.getEntities(Enemy.class).size() == 0 && map1)
         {
             updateMapTexture("map2.png").draw(batch);
-
+            spawnEnemies(1);
+            map1 = false;
         }
     }
 
-    @Override
-    public void spawnEnemies(int amount)
+    private void spawnEnemies(int numberOfEnemies)
     {
-        
+        enemyCreation.spawnEnemies(numberOfEnemies);
+        enemyCreation.start(GameWorld.INSTANCE);
+        //System.out.println("Spawned " + numberOfEnemies + " enemies...");
     }
-
 
 }

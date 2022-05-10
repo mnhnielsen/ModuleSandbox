@@ -100,7 +100,7 @@ public class Game implements ApplicationListener
     private void mapService()
     {
         for (IMapService mapService : getMapService())
-            mapService.mapBackground(gameWorld,batch);
+            mapService.mapBackground(gameWorld, batch);
     }
 
     @Override
@@ -112,8 +112,9 @@ public class Game implements ApplicationListener
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        sprite.draw(batch);
         mapService();
+        sprite.draw(batch);
+
         update();
         //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
         batch.end();
