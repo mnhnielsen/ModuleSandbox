@@ -36,7 +36,6 @@ public class HealthPart
 
     public void takeDamage(int damage)
     {
-        System.out.println("Hit");
         isHit = true;
         health -= damage;
         if (health <= 0)

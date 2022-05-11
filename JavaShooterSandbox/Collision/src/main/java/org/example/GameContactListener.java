@@ -18,10 +18,12 @@ import java.util.Objects;
 
 public class GameContactListener implements ContactListener, IContactListener
 {
+    //private final Lookup lookup = Lookup.getDefault();
     private GameWorld gameWorld = GameWorld.INSTANCE;
     private Entity enemyHit = null;
 
 
+    //private IEntityProcessingService iEntityProcessingService = lookup.lookup(IEntityProcessingService.class);
     @Override
     public void beginContact(Contact contact)
     {
@@ -33,9 +35,10 @@ public class GameContactListener implements ContactListener, IContactListener
 
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.PLAYER)
         {
-
-            Entity player = gameWorld.getEntities(Player.class).get(0);
-            player.getHealthPart().takeDamage(100);
+            for (Entity player : gameWorld.getEntities(Player.class))
+            {
+                player.getHealthPart().takeDamage(50);
+            }
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
         {

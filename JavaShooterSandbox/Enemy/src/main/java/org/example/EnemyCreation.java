@@ -26,8 +26,7 @@ public class EnemyCreation implements IGamePluginService
     protected ArrayList<Enemy> enemies = new ArrayList<>();
     private int amountOfEnemies = 1;
 
-    @Override
-    public void spawnEnemies(int amountOfEnemies)
+    private void spawnEnemies()
     {
         for (int i = 0; i < amountOfEnemies; i++)
         {
@@ -35,8 +34,6 @@ public class EnemyCreation implements IGamePluginService
             Enemy e = createEnemy();
             enemies.add(e);
         }
-        System.out.println(enemies.size());
-
     }
 
 
@@ -59,6 +56,7 @@ public class EnemyCreation implements IGamePluginService
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.ENEMY);
 
         Enemy p = new Enemy(x, y, speed, width, height, body, sprite, new HealthPart(100));
+        System.out.println(p.getSpeed() + " " + p.getID());
         return p;
     }
 
