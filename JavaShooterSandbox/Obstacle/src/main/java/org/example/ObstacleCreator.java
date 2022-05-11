@@ -23,12 +23,13 @@ public class ObstacleCreator implements IGamePluginService
     protected ArrayList<Obstacle> obstacles = new ArrayList<>();
     private int obstacleAmount = new Random().nextInt(10);
 
-
     private void spawnObstacles()
     {
         for (int i = 0; i < obstacleAmount; i++)
         {
+            Obstacle trap = createTrapObstacle();
             Obstacle obstacle = createObstacle();
+            obstacles.add(trap);
             obstacles.add(obstacle);
         }
     }
@@ -49,6 +50,27 @@ public class ObstacleCreator implements IGamePluginService
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, true, 10000, LibWorld.INSTANCE.getWorld(), ContactType.OBSTACLE);
+
+        Obstacle obstacle = new Obstacle(x, y, width, height, body, sprite);
+        return obstacle;
+    }
+
+    protected Obstacle createTrapObstacle()
+    {
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float y = new Random().nextFloat() * Gdx.graphics.getHeight();
+
+        int width = 40;
+        int height = 40;
+
+        File file = new File(this.getClass().getResource("obstacle_mine.png").getPath());
+        String path = file.getPath().substring(5);
+
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().finishLoading();
+
+        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+        Body body = BodyHelper.createBody(x, y, width, height, true, 10000, LibWorld.INSTANCE.getWorld(), ContactType.ENEMY);
 
         Obstacle obstacle = new Obstacle(x, y, width, height, body, sprite);
         return obstacle;
