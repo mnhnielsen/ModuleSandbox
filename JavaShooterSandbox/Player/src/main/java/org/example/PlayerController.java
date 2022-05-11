@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -29,11 +31,18 @@ public class PlayerController implements IEntityProcessingService
 {
     private Entity player = PlayerCreation.INSTANCE.getPlayer();
     private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f;
+    private float x, y, radians, fireDelay, fireRate = 1f, oldX = x, oldY = y;
     private Vector2 dir = new Vector2();
 
     private final Lookup lookup = Lookup.getDefault();
     private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
+
+    private boolean collisionX = false, collisionY = false;
+
+    MapCreation mapCreation = new MapCreation();
+
+    TiledMapTileLayer layer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get("colission");
+    float tileWidth = mapCreation.getLayer().getTileWidth(), tileHeight = mapCreation.getLayer().getTileHeight();
 
 
     public void updateTexture(String fname)
@@ -83,7 +92,11 @@ public class PlayerController implements IEntityProcessingService
         x = player.getBody().getPosition().x * Const.PPM - (player.getWidth() / 2);
         y = player.getBody().getPosition().y * Const.PPM - (player.getHeight() / 2);
         dir.setZero();
-        radians = 0;
+
+
+        mapCreation.isCellBlocked(x, y);
+
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
@@ -92,6 +105,9 @@ public class PlayerController implements IEntityProcessingService
             dir.y = 1;
             spawnBullet(0, 1, 50, 70, 30, 5, 10);
             isMoving = true;
+
+
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
@@ -102,15 +118,16 @@ public class PlayerController implements IEntityProcessingService
 
             isMoving = true;
 
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
             radians = 0;
             updateTexture("soldierRight.png");
-            dir.x = 1;
             spawnBullet(1, 0, 60, 15, 30, 10, 5);
-
+            dir.x = 1;
             isMoving = true;
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
@@ -119,7 +136,13 @@ public class PlayerController implements IEntityProcessingService
             dir.x = -1;
             spawnBullet(-1, 0, -10, 50, 30, 10, 5);
             isMoving = true;
+
+
+
         }
+
+        collisionDetect();
+
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
             updateTexture("soldier135.png");
         if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D))
@@ -144,19 +167,12 @@ public class PlayerController implements IEntityProcessingService
 
         batch.draw(player.getSprite(), x, y, player.getWidth(), player.getHeight());
 
-        System.out.println(mapSpi.getMap().getLayers().get("colission"));
         for (Entity object : world.getEntities(Bullet.class))
             batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
 
 
     }
 
-    private boolean isCellBlocked(float x, float y)
-    {
-        Cell cell = null;
-        boolean blocked = false;
-        return false;
-    }
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
     {
@@ -171,6 +187,31 @@ public class PlayerController implements IEntityProcessingService
                 fireDelay += 0.25;
                 System.out.println("Shooting");
             }
+        }
+    }
+
+    private void collisionDetect() {
+        if (dir.x < 0) {
+
+            //top left
+            collisionX = layer.getCell((int) (x / tileWidth),
+                    (int) (y + player.getHeight() / tileHeight)).getTile().getProperties().containsKey("blocked");
+            //middle left
+            if(!collisionX)
+            collisionX = layer.getCell((int) (x / tileWidth),
+                    (int) ((y + player.getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
+            //bottom left
+            if(!collisionX)
+            collisionX = layer.getCell((int) (x / tileWidth),
+                    (int) (y / tileHeight)).getTile().getProperties().containsKey("blocked");
+
+        } else if( dir.x> 0) {
+
+        }
+        if(dir.y < 0) {
+
+        }else if (dir.y > 0) {
+
         }
     }
 

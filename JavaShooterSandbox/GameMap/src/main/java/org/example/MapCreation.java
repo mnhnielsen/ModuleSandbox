@@ -21,26 +21,47 @@ import java.io.File;
 public class MapCreation implements IMapSpi
 {
 
-    public MapCreation()
-    {
-
-    }
 
     private TiledMap map;
 
 
     private TiledMapTileLayer layer;
-    private MapProperties mapProperties;
 
 
     private OrthogonalTiledMapRenderer renderer;
     //protected Map tiledMap = new Map(map, renderer);
 
+    public MapCreation()
+    {
+        map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
+        renderer = new OrthogonalTiledMapRenderer(map);
+        layer =  (TiledMapTileLayer) map.getLayers().get("colission");
+
+    }
+
     public void initrenderer()
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        mapProperties = map.getProperties();
+        layer =  (TiledMapTileLayer) map.getLayers().get("colission");
+    }
+
+    public boolean isCellBlocked(float x, float y) {
+        TiledMapTileLayer.Cell cell = null;
+        boolean blocked = false;
+
+        try {
+            cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (cell != null && cell.getTile() != null) {
+            if (cell.getTile().getProperties().containsKey("blocked")) {
+                blocked = true;
+            }
+        }
+        return blocked;
     }
 
 
@@ -68,14 +89,6 @@ public class MapCreation implements IMapSpi
         return renderer;
     }
 
-    public TiledMap getTiledMap()
-    {
-        return map;
-    }
 
-    public MapProperties getMapProperties()
-    {
-        return mapProperties;
-    }
 
 }
