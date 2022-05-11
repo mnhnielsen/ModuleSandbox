@@ -25,6 +25,7 @@ public class EnemyController implements IEntityProcessingService
     {
         for (Entity enemy : world.getEntities(Enemy.class))
         {
+            System.out.println(world.getEntities(Enemy.class).size());
             if (enemy.getHealthPart().getHealth() > 0)
             {
                 enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));
