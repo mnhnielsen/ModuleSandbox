@@ -21,7 +21,7 @@ import java.util.Random;
 public class ObstacleCreator implements IGamePluginService
 {
     protected ArrayList<Obstacle> obstacles = new ArrayList<>();
-    private int obstacleAmount = 2;
+    private int obstacleAmount = new Random().nextInt(10);
 
 
     private void spawnObstacles()

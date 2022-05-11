@@ -6,4 +6,5 @@ public enum ContactType
     BULLET,
     ENEMY,
     PLAYER,
+    TRAP,
 }
