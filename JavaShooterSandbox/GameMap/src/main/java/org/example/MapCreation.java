@@ -35,7 +35,7 @@ public class MapCreation implements IMapSpi
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer =  (TiledMapTileLayer) map.getLayers().get("colission");
+        layer =  (TiledMapTileLayer) map.getLayers().get(1);
 
     }
 
@@ -43,12 +43,13 @@ public class MapCreation implements IMapSpi
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer =  (TiledMapTileLayer) map.getLayers().get("colission");
+        layer =  (TiledMapTileLayer) map.getLayers().get(1);
     }
 
     public boolean isCellBlocked(float x, float y) {
         TiledMapTileLayer.Cell cell = null;
         boolean blocked = false;
+
 
         try {
             cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
@@ -58,6 +59,7 @@ public class MapCreation implements IMapSpi
 
         if (cell != null && cell.getTile() != null) {
             if (cell.getTile().getProperties().containsKey("blocked")) {
+                System.out.println("blocked");
                 blocked = true;
             }
         }

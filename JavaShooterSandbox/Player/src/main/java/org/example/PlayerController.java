@@ -5,9 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.*;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -34,6 +38,7 @@ public class PlayerController implements IEntityProcessingService
     private float x, y, radians, fireDelay, fireRate = 1f, oldX = x, oldY = y;
     private Vector2 dir = new Vector2();
 
+
     private final Lookup lookup = Lookup.getDefault();
     private final IMapSpi mapSpi = lookup.lookup(IMapSpi.class);
 
@@ -41,7 +46,7 @@ public class PlayerController implements IEntityProcessingService
 
     MapCreation mapCreation = new MapCreation();
 
-    TiledMapTileLayer layer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get("colission");
+    TiledMapTileLayer layer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(1);
     float tileWidth = mapCreation.getLayer().getTileWidth(), tileHeight = mapCreation.getLayer().getTileHeight();
 
 
@@ -89,17 +94,20 @@ public class PlayerController implements IEntityProcessingService
                     e.printStackTrace();
                 }
             }
-        x = player.getBody().getPosition().x * Const.PPM - (player.getWidth() / 2);
-        y = player.getBody().getPosition().y * Const.PPM - (player.getHeight() / 2);
+        setX(player.getBody().getPosition().x * Const.PPM - (player.getWidth() / 2));
+        setY(player.getBody().getPosition().y * Const.PPM - (player.getHeight() / 2));
         dir.setZero();
-
-
-        mapCreation.isCellBlocked(x, y);
 
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
         {
+
+            if  (collisionY = collideTop()) {
+                setY(oldY);
+                canMove = false;
+            }
+
             radians = 90;
             updateTexture("soldierUp.png");
             dir.y = 1;
@@ -108,29 +116,48 @@ public class PlayerController implements IEntityProcessingService
 
 
 
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
         {
+
+            if  (collisionY = collideBottom()) {
+                setY(oldY);
+                canMove = false;
+            }
+
             radians = 270;
             updateTexture("soldierDown.png");
             dir.y = -1;
             spawnBullet(0, -1, 15, 0, 30, 5, 10);
-
             isMoving = true;
+
 
 
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
         {
+            if(collisionX = collideRight()) {
+                setX(oldX);
+                canMove = false;
+            }
+
             radians = 0;
             updateTexture("soldierRight.png");
             spawnBullet(1, 0, 60, 15, 30, 10, 5);
             dir.x = 1;
             isMoving = true;
 
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
         {
+
+            if(collisionX = collideLeft()) {
+                setX(oldX);
+                canMove = false;
+            }
+
             radians = 180;
             updateTexture("soldierLeft.png");
             dir.x = -1;
@@ -141,7 +168,7 @@ public class PlayerController implements IEntityProcessingService
 
         }
 
-        collisionDetect();
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
             updateTexture("soldier135.png");
@@ -190,34 +217,67 @@ public class PlayerController implements IEntityProcessingService
         }
     }
 
-    private void collisionDetect() {
-        if (dir.x < 0) {
-
-            //top left
-            collisionX = layer.getCell((int) (x / tileWidth),
-                    (int) (y + player.getHeight() / tileHeight)).getTile().getProperties().containsKey("blocked");
-            //middle left
-            if(!collisionX)
-            collisionX = layer.getCell((int) (x / tileWidth),
-                    (int) ((y + player.getHeight() / 2) / tileHeight)).getTile().getProperties().containsKey("blocked");
-            //bottom left
-            if(!collisionX)
-            collisionX = layer.getCell((int) (x / tileWidth),
-                    (int) (y / tileHeight)).getTile().getProperties().containsKey("blocked");
-
-        } else if( dir.x> 0) {
-
+    public boolean collideRight() {
+        boolean collides = false;
+        for(float step =0; step < player.getHeight(); step += layer.getTileHeight() /2){
+            if(collides = mapCreation.isCellBlocked(getX() + player.getWidth(), getY() + step)){
+                break;
+            }
         }
-        if(dir.y < 0) {
-
-        }else if (dir.y > 0) {
-
-        }
+        return collides;
     }
+
+    public boolean collideLeft() {
+        boolean collides = false;
+        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() /2)
+            if(collides = mapCreation.isCellBlocked(getX(), getY() + step)) {
+                break;
+            }
+        return collides;
+    }
+
+    public boolean collideTop(){
+        boolean collides = false;
+        for(float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2){
+            if(collides = mapCreation.isCellBlocked(getX() + step, getY() + player.getHeight())){
+                    break;
+                }
+        }
+        return collides;
+    }
+
+    public boolean collideBottom() {
+        boolean collides = false;
+
+        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2 ) {
+            if (collides = mapCreation.isCellBlocked(getX() + step, getY())) {
+                break;
+            }
+
+        }
+        return collides;
+    }
+
 
     @Override
     public Vector2 position()
     {
         return new Vector2(x, y);
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

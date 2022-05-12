@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
@@ -20,6 +21,7 @@ public class PlayerCreation implements IGamePluginService
 
     public static PlayerCreation INSTANCE;
     private Player player = createPlayer();
+
 
 
     public PlayerCreation()

@@ -1,6 +1,7 @@
 package org.example.helper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.Entity;
 import org.example.data.parts.HealthPart;
