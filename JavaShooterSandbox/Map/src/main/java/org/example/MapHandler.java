@@ -1,22 +1,16 @@
 package org.example;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
-import org.example.spi.IEntityProcessingService;
-import org.example.spi.IGamePluginService;
+import org.example.helper.Enemy;
 import org.example.spi.IMapService;
-import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @ServiceProviders(value = {@ServiceProvider(service = IMapService.class)})
 

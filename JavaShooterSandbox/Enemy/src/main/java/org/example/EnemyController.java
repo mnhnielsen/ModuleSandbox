@@ -1,12 +1,11 @@
 package org.example;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.Const;
+import org.example.helper.Enemy;
 import org.example.spi.IEntityProcessingService;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
@@ -25,7 +24,6 @@ public class EnemyController implements IEntityProcessingService
     {
         for (Entity enemy : world.getEntities(Enemy.class))
         {
-            System.out.println(world.getEntities(Enemy.class).size());
             if (enemy.getHealthPart().getHealth() > 0)
             {
                 enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));

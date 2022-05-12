@@ -1,4 +1,4 @@
-package org.example.spi;
+package org.example;
 
 import org.example.data.Entity;
 import org.example.data.GameWorld;

@@ -5,11 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
-import org.example.helper.AssetLoader;
-import org.example.helper.BodyHelper;
-import org.example.helper.ContactType;
-import org.example.helper.LibWorld;
-import org.example.spi.IBulletService;
+import org.example.helper.*;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
