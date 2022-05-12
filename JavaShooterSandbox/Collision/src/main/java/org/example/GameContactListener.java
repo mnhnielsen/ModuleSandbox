@@ -28,7 +28,7 @@ public class GameContactListener implements ContactListener, IContactListener
         if (a.getUserData() == ContactType.PLAYER && b.getUserData() == ContactType.ENEMY)
         {
             Entity player = gameWorld.getEntities(Player.class).get(0);
-            player.getHealthPart().takeDamage(100);
+            player.getHealthPart().takeDamage(33);
         }
         if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.BULLET)
         {
@@ -44,10 +44,6 @@ public class GameContactListener implements ContactListener, IContactListener
                     }
                 }
             }
-        }
-        if (a.getUserData() == ContactType.OBSTACLE && b.getUserData() == ContactType.BULLET)
-        {
-
         }
     }
 

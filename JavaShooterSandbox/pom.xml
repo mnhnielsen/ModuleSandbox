@@ -71,7 +71,7 @@
         <module>Bullet</module>
         <module>Map</module>
         <module>CommonBullet</module>
-
+        <module>Obstacle</module>
     </modules>
 
     <properties>

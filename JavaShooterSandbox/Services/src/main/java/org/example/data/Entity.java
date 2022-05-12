@@ -57,6 +57,18 @@ public class Entity implements Serializable
         parts = new ConcurrentHashMap<>();
 
     }
+
+    //Obstacles
+    public Entity(float x, float y, int width, int height, Body body, Sprite sprite)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.body = body;
+        this.sprite = sprite;
+        parts = new ConcurrentHashMap<>();
+    }
     public Entity()
     {
         parts = new ConcurrentHashMap<>();
