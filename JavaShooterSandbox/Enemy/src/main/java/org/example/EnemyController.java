@@ -6,6 +6,7 @@ import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.Const;
 import org.example.helper.Enemy;
+import org.example.helper.Player;
 import org.example.spi.IEntityProcessingService;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;

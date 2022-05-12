@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
+import org.example.helper.Const;
 import org.example.helper.LibWorld;
+import org.example.helper.Player;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
@@ -80,13 +82,22 @@ public class Game implements ApplicationListener
         world.getWorld().step(1 / 60f, 6, 2);
         if (contactListener.delteObject() != null)
             contactListener.delteObject().removeBody();
-        cam.position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
+
+        try
+        {
+            cam.position.set(gameWorld.getEntities(Player.class).get(0).getBody().getPosition().x * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getWidth() / 2), gameWorld.getEntities(Player.class).get(0).getBody().getPosition().y * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getHeight() / 2), 0);
+            //lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y
+        } catch (IndexOutOfBoundsException e)
+        {
+            System.out.println();
+        }
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
 
     private void update()
     {
+        System.out.println(gameWorld.getEntities(Player.class).size());
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
@@ -107,14 +118,14 @@ public class Game implements ApplicationListener
     public void render()
     {
 
-        camUpdate();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
         mapService();
         sprite.draw(batch);
-
+        camUpdate();
         update();
         //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
         batch.end();

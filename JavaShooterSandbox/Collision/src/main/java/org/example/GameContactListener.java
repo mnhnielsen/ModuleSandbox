@@ -25,9 +25,8 @@ public class GameContactListener implements ContactListener, IContactListener
         if (a == null || b == null) return;
         if (a.getUserData() == null || b.getUserData() == null) return;
 
-        if (a.getUserData() == ContactType.ENEMY && b.getUserData() == ContactType.PLAYER)
+        if (a.getUserData() == ContactType.PLAYER && b.getUserData() == ContactType.ENEMY)
         {
-
             Entity player = gameWorld.getEntities(Player.class).get(0);
             player.getHealthPart().takeDamage(100);
         }

@@ -24,25 +24,35 @@ public class PlayerController implements IEntityProcessingService
     private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
 
+
     public void updateTexture(String fname)
     {
 
-        Gdx.app.postRunnable(new Runnable()
-        {
-            @Override
-            public void run()
+
+            Gdx.app.postRunnable(new Runnable()
             {
-                File file = new File(this.getClass().getResource(fname).getPath());
-                String path = file.getPath().substring(5);
 
-                AssetLoader.INSTANCE.getAm().load(path, Texture.class);
-                AssetLoader.INSTANCE.getAm().finishLoading();
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        File file = new File(this.getClass().getResource(fname).getPath());
+                        String path = file.getPath().substring(5);
 
-                Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-                for (Entity p : GameWorld.INSTANCE.getEntities(Player.class))
-                    p.setSprite(sprite);
-            }
-        });
+                        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+                        AssetLoader.INSTANCE.getAm().finishLoading();
+
+                        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
+                        for (Entity p : GameWorld.INSTANCE.getEntities(Player.class))
+                            p.setSprite(sprite);
+                    }catch (NullPointerException e){
+                        System.out.println();
+                    }
+                }
+            });
+
+
 
     }
 
@@ -142,16 +152,23 @@ public class PlayerController implements IEntityProcessingService
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        try
         {
-            fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
-            if (fireDelay <= 0)
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
             {
-                Entity bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(this.x + dir.x + spawnX, this.y + dir.y + spawnY, 0, 0, width, height, "yellow.png", GameWorld.INSTANCE);
-                bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
-                GameWorld.INSTANCE.addEntity(bullet);
-                fireDelay += 0.25;
+                fireDelay -= Gdx.graphics.getDeltaTime() * fireRate;
+                if (fireDelay <= 0)
+                {
+                    Entity bullet = Lookup.getDefault().lookup(IBulletService.class).createBullet(this.x + dir.x + spawnX, this.y + dir.y + spawnY, 0, 0, width, height, "yellow.png", GameWorld.INSTANCE);
+                    bullet.getBody().setLinearVelocity(directionX * speed, directionY * speed);
+                    GameWorld.INSTANCE.addEntity(bullet);
+                    fireDelay += 0.25;
+                }
             }
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("Cannot fire");
         }
     }
 

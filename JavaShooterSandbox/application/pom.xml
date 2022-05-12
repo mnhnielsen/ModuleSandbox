@@ -16,10 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <all.clusters>${project.build.directory}/${brandingToken}</all.clusters>
-        <netbeans.run.params.ide/>
-        <netbeans.run.params>${netbeans.run.params.ide}
-            -J-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=localhost:5005 --nosplash
-        </netbeans.run.params>
+
     </properties>
 
     <dependencies>
@@ -35,11 +32,14 @@
             <scope>test
             </scope> <!-- beyond platform cluster, this often needs to be dropped down to compile/runtime, some other modules in IDE clusters depend on it -->
         </dependency>
+
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>Services</artifactId>
             <version>${project.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -59,41 +59,42 @@
             <version>${project.version}</version>
         </dependency>
 
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>SilentUpdate</artifactId>
-                    <version>${project.version}</version>
-                </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>SilentUpdate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>${project.groupId}</groupId>-->
-<!--            <artifactId>Player</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>${project.groupId}</groupId>-->
+        <!--                    <artifactId>Player</artifactId>-->
+        <!--                    <version>${project.version}</version>-->
+        <!--                </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>${project.groupId}</groupId>-->
-<!--            <artifactId>CommonBullet</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>${project.groupId}</groupId>-->
-<!--            <artifactId>Enemy</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>${project.groupId}</groupId>-->
+        <!--                    <artifactId>CommonBullet</artifactId>-->
+        <!--                    <version>${project.version}</version>-->
+        <!--                </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>${project.groupId}</groupId>-->
-<!--            <artifactId>Bullet</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>${project.groupId}</groupId>-->
+        <!--                    <artifactId>Enemy</artifactId>-->
+        <!--                    <version>${project.version}</version>-->
+        <!--                </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>${project.groupId}</groupId>-->
-<!--            <artifactId>Map</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>${project.groupId}</groupId>-->
+        <!--                    <artifactId>Bullet</artifactId>-->
+        <!--                    <version>${project.version}</version>-->
+        <!--                </dependency>-->
+
+        <!--                <dependency>-->
+        <!--                    <groupId>${project.groupId}</groupId>-->
+        <!--                    <artifactId>Map</artifactId>-->
+        <!--                    <version>${project.version}</version>-->
+        <!--                </dependency>-->
 
     </dependencies>
     <build>
