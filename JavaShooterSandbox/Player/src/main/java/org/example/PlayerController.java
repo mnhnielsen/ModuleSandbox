@@ -35,7 +35,7 @@ public class PlayerController implements IEntityProcessingService
 {
     private Entity player = PlayerCreation.INSTANCE.getPlayer();
     private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f, oldX = x, oldY = y;
+    private float x, y, radians, fireDelay, fireRate = 1f, oldX = position().x, oldY = position().y;
     private Vector2 dir = new Vector2();
 
 
@@ -105,7 +105,6 @@ public class PlayerController implements IEntityProcessingService
 
             if  (collisionY = collideTop()) {
                 setY(oldY);
-                canMove = false;
             }
 
             radians = 90;
@@ -123,7 +122,6 @@ public class PlayerController implements IEntityProcessingService
 
             if  (collisionY = collideBottom()) {
                 setY(oldY);
-                canMove = false;
             }
 
             radians = 270;
@@ -139,7 +137,6 @@ public class PlayerController implements IEntityProcessingService
         {
             if(collisionX = collideRight()) {
                 setX(oldX);
-                canMove = false;
             }
 
             radians = 0;
@@ -155,7 +152,6 @@ public class PlayerController implements IEntityProcessingService
 
             if(collisionX = collideLeft()) {
                 setX(oldX);
-                canMove = false;
             }
 
             radians = 180;
@@ -220,7 +216,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideRight() {
         boolean collides = false;
         for(float step =0; step < player.getHeight(); step += layer.getTileHeight() /2){
-            if(collides = mapCreation.isCellBlocked(getX() + player.getWidth(), getY() + step)){
+            if(collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step)){
                 break;
             }
         }
@@ -230,7 +226,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideLeft() {
         boolean collides = false;
         for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() /2)
-            if(collides = mapCreation.isCellBlocked(getX(), getY() + step)) {
+            if(collides = mapCreation.isCellBlocked(position().x, position().y + step)) {
                 break;
             }
         return collides;
@@ -239,7 +235,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideTop(){
         boolean collides = false;
         for(float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2){
-            if(collides = mapCreation.isCellBlocked(getX() + step, getY() + player.getHeight())){
+            if(collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight())){
                     break;
                 }
         }
@@ -250,7 +246,7 @@ public class PlayerController implements IEntityProcessingService
         boolean collides = false;
 
         for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2 ) {
-            if (collides = mapCreation.isCellBlocked(getX() + step, getY())) {
+            if (collides = mapCreation.isCellBlocked(position().x + step, position().y)) {
                 break;
             }
 
