@@ -34,8 +34,8 @@ import java.io.File;
 public class PlayerController implements IEntityProcessingService
 {
     private Entity player = PlayerCreation.INSTANCE.getPlayer();
-    private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f, oldX = position().x, oldY = position().y;
+    private boolean canMove = true, isMoving, canMoveLeft = true, canMoveRight = true, canMoveUp = true, canMoveDown = true;
+    private float x, y, radians, fireDelay, fireRate = 1f, oldX, oldY;
     private Vector2 dir = new Vector2();
 
 
@@ -94,18 +94,17 @@ public class PlayerController implements IEntityProcessingService
                     e.printStackTrace();
                 }
             }
+
         setX(player.getBody().getPosition().x * Const.PPM - (player.getWidth() / 2));
         setY(player.getBody().getPosition().y * Const.PPM - (player.getHeight() / 2));
         dir.setZero();
 
+        oldX = player.getBody().getPosition().x;
+        oldY = player.getBody().getPosition().y;
 
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
+        if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove && !collideTop())
         {
 
-            if  (collisionY = collideTop()) {
-                setY(oldY);
-            }
 
             radians = 90;
             updateTexture("soldierUp.png");
@@ -114,16 +113,9 @@ public class PlayerController implements IEntityProcessingService
             isMoving = true;
 
 
-
-
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
+        if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove && !collideBottom())
         {
-
-            if  (collisionY = collideBottom()) {
-                setY(oldY);
-            }
-
             radians = 270;
             updateTexture("soldierDown.png");
             dir.y = -1;
@@ -131,14 +123,9 @@ public class PlayerController implements IEntityProcessingService
             isMoving = true;
 
 
-
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
+        if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove && !collideRight())
         {
-            if(collisionX = collideRight()) {
-                setX(oldX);
-            }
-
             radians = 0;
             updateTexture("soldierRight.png");
             spawnBullet(1, 0, 60, 15, 30, 10, 5);
@@ -147,23 +134,19 @@ public class PlayerController implements IEntityProcessingService
 
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
+        System.out.println(collideLeft());
+        if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove && !collideLeft())
         {
 
-            if(collisionX = collideLeft()) {
-                setX(oldX);
-            }
-
             radians = 180;
+
             updateTexture("soldierLeft.png");
             dir.x = -1;
             spawnBullet(-1, 0, -10, 50, 30, 10, 5);
             isMoving = true;
 
 
-
         }
-
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D))
@@ -213,44 +196,38 @@ public class PlayerController implements IEntityProcessingService
         }
     }
 
-    public boolean collideRight() {
+    public boolean collideRight()
+    {
         boolean collides = false;
-        for(float step =0; step < player.getHeight(); step += layer.getTileHeight() /2){
-            if(collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step)){
-                break;
-            }
-        }
+        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() / 2)
+            collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step);
         return collides;
     }
 
-    public boolean collideLeft() {
+    public boolean collideLeft()
+    {
         boolean collides = false;
-        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() /2)
-            if(collides = mapCreation.isCellBlocked(position().x, position().y + step)) {
-                break;
-            }
+        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() / 2)
+            collides = mapCreation.isCellBlocked(position().x, position().y + step);
+
         return collides;
     }
 
-    public boolean collideTop(){
+    public boolean collideTop()
+    {
         boolean collides = false;
-        for(float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2){
-            if(collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight())){
-                    break;
-                }
-        }
+        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() / 2)
+            collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight());
+
         return collides;
     }
 
-    public boolean collideBottom() {
+    public boolean collideBottom()
+    {
         boolean collides = false;
 
-        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() /2 ) {
-            if (collides = mapCreation.isCellBlocked(position().x + step, position().y)) {
-                break;
-            }
-
-        }
+        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() / 2)
+            collides = mapCreation.isCellBlocked(position().x + step, position().y);
         return collides;
     }
 
@@ -261,19 +238,23 @@ public class PlayerController implements IEntityProcessingService
         return new Vector2(x, y);
     }
 
-    public float getX() {
+    public float getX()
+    {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(float x)
+    {
         this.x = x;
     }
 
-    public float getY() {
+    public float getY()
+    {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(float y)
+    {
         this.y = y;
     }
 }
