@@ -19,6 +19,11 @@ public class PlayerCreation implements IGamePluginService
 {
     protected Player player = createPlayer();
 
+    public PlayerCreation()
+    {
+
+    }
+
     @Override
     public void start(GameWorld world)
     {
@@ -44,7 +49,6 @@ public class PlayerCreation implements IGamePluginService
         Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(100));
         return p;
     }
-
 
 
     @Override

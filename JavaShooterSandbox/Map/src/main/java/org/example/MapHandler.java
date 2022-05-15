@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.example.data.GameWorld;
 import org.example.helper.AssetLoader;
 import org.example.helper.Enemy;
@@ -35,10 +36,28 @@ public class MapHandler implements IMapService
        // System.out.println(world.getEntities(Enemy.class).size());
         if (world.getEntities(Enemy.class).size() == 0 && map1)
         {
-            updateMapTexture("map2.png").draw(batch);
+            //updateMapTexture("map2.png").draw(batch);
             spawnEnemies(1);
             map1 = false;
         }
+    }
+
+    @Override
+    public void render()
+    {
+
+    }
+
+    @Override
+    public void initialRender()
+    {
+
+    }
+
+    @Override
+    public TiledMap getMap()
+    {
+        return null;
     }
 
     private void spawnEnemies(int numberOfEnemies)

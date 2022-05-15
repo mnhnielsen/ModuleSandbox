@@ -72,6 +72,7 @@
         <module>Map</module>
         <module>CommonBullet</module>
         <module>Obstacle</module>
+        <module>GameMap</module>
     </modules>
 
     <properties>

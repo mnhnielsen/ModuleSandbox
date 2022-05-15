@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import org.example.data.GameWorld;
-import org.example.helper.AssetLoader;
-import org.example.helper.Const;
-import org.example.helper.LibWorld;
-import org.example.helper.Player;
+import org.example.helper.*;
 import org.example.spi.ICollisionDetection;
 import org.example.spi.IEntityProcessingService;
 import org.example.spi.IGamePluginService;
@@ -38,23 +35,20 @@ public class Game implements ApplicationListener
     private Lookup.Result<IGamePluginService> result;
     private Box2DDebugRenderer debugRenderer;
     private SpriteBatch batch;
-    private Sprite sprite;
+    private CamController camController;
+
 
 
     @Override
     public void create()
     {
 
-        File file = new File(this.getClass().getResource("map1.png").getPath());
-        String path = file.getPath().substring(5);
-
-        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
-        AssetLoader.INSTANCE.getAm().finishLoading();
-        sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
         debugRenderer = new Box2DDebugRenderer();
         world = new LibWorld();
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camController = new CamController();
+        camController.INSTANCE.getCam().setToOrtho(false, w, h);
         batch = new SpriteBatch();
 
         result = lookup.lookupResult(IGamePluginService.class);
@@ -69,12 +63,16 @@ public class Game implements ApplicationListener
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
+        for (IMapService map : getMapService())
+            map.initialRender();
     }
 
     @Override
-    public void resize(int i, int i1)
+    public void resize(int width, int height)
     {
-
+        camController.INSTANCE.getCam().viewportWidth = width;
+        camController.INSTANCE.getCam().viewportHeight = height;
+        camController.INSTANCE.getCam().update();
     }
 
     private void camUpdate()
@@ -85,19 +83,18 @@ public class Game implements ApplicationListener
 
         try
         {
-            cam.position.set(gameWorld.getEntities(Player.class).get(0).getBody().getPosition().x * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getWidth() / 2), gameWorld.getEntities(Player.class).get(0).getBody().getPosition().y * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getHeight() / 2), 0);
-            //lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y
+            camController.INSTANCE.getCam().position.set(gameWorld.getEntities(Player.class).get(0).getBody().getPosition().x * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getWidth() / 2), gameWorld.getEntities(Player.class).get(0).getBody().getPosition().y * Const.PPM - (gameWorld.getEntities(Player.class).get(0).getHeight() / 2), 0);
+            //camController.INSTANCE.getCam().position.set(lookup.lookup(IEntityProcessingService.class).position().x, lookup.lookup(IEntityProcessingService.class).position().y, 0);
         } catch (IndexOutOfBoundsException e)
         {
             System.out.println();
         }
-        cam.update();
-        batch.setProjectionMatrix(cam.combined);
+        camController.INSTANCE.getCam().update();
+        batch.setProjectionMatrix(camController.INSTANCE.getCam().combined);
     }
 
     private void update()
     {
-        System.out.println(gameWorld.getEntities(Player.class).size());
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
@@ -111,7 +108,10 @@ public class Game implements ApplicationListener
     private void mapService()
     {
         for (IMapService mapService : getMapService())
+        {
             mapService.mapBackground(gameWorld, batch);
+            mapService.render();
+        }
     }
 
     @Override
@@ -121,13 +121,11 @@ public class Game implements ApplicationListener
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        batch.begin();
-        mapService();
-        sprite.draw(batch);
         camUpdate();
+        mapService();
+        batch.begin();
         update();
-        //debugRenderer.render(world.getWorld(),cam.combined.scl(32));
+        //debugRenderer.render(world.getWorld(),CamController.INSTANCE.getCam().combined.scl(32));
         batch.end();
 
     }
