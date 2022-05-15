@@ -23,34 +23,40 @@ public class EnemyController implements IEntityProcessingService
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
-        for (Entity enemy : world.getEntities(Enemy.class))
+        try
         {
-            if (enemy.getHealthPart().getHealth() > 0)
+            for (Entity enemy : world.getEntities(Enemy.class))
             {
-                enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));
-                enemy.setY(enemy.getBody().getPosition().y * Const.PPM - (enemy.getHeight() / 2));
-                enemy.setVelX(0);
-                enemy.setVelY(0);
+                if (enemy.getHealthPart().getHealth() > 0)
+                {
+                    enemy.setX(enemy.getBody().getPosition().x * Const.PPM - (enemy.getWidth() / 2));
+                    enemy.setY(enemy.getBody().getPosition().y * Const.PPM - (enemy.getHeight() / 2));
+                    enemy.setVelX(0);
+                    enemy.setVelY(0);
 
-                //Enemy movement with vector
-                Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
-                Vector2 playerPos = new Vector2(player.position().x, player.position().y);
-                Vector2 direction = new Vector2();
+                    //Enemy movement with vector
+                    Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
+                    Vector2 playerPos = new Vector2(player.position().x, player.position().y);
+                    Vector2 direction = new Vector2();
 
-                //Difference in position to create vector with direction
-                direction.x = playerPos.x - zombiePos.x;
-                direction.y = playerPos.y - zombiePos.y;
+                    //Difference in position to create vector with direction
+                    direction.x = playerPos.x - zombiePos.x;
+                    direction.y = playerPos.y - zombiePos.y;
 
-                //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
-                direction.nor();
+                    //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
+                    direction.nor();
 
-                float speedX = direction.x * enemy.getSpeed();
-                float speedY = direction.y * enemy.getSpeed();
+                    float speedX = direction.x * enemy.getSpeed();
+                    float speedY = direction.y * enemy.getSpeed();
 
-                enemy.getBody().setLinearVelocity(speedX, speedY);
-                enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
-                batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
+                    enemy.getBody().setLinearVelocity(speedX, speedY);
+                    enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
+                    batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
+                }
             }
+        }
+        catch (NullPointerException e){
+            System.out.println();
         }
     }
 
