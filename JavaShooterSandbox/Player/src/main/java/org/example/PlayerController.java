@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.*;
@@ -146,8 +148,12 @@ public class PlayerController implements IEntityProcessingService
 
             for (Entity object : world.getEntities(Bullet.class))
                 batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
-
         }
+    }
+
+    private void getTileValue()
+    {
+
     }
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
