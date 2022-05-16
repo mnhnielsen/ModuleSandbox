@@ -31,7 +31,6 @@ public class PlayerController implements IEntityProcessingService
     private Vector2 dir = new Vector2();
     private MapCreation mapCreation = new MapCreation();
     private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(0);
-    private TiledMapTileLayer blockedLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(1);
 
 
     public void updateTexture(String fname)
@@ -167,24 +166,26 @@ public class PlayerController implements IEntityProcessingService
         {
             Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
 
-            int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-                    {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-                    {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-                    {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
 
-            for (int[] n : neighbours)
+            try
             {
-                try
+                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
+                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
+                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
+                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
+
+
+                for (int[] n : neighbours)
                 {
+
                     if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
                     {
-                        System.out.println("Some neighbours are blocked");
-                        //should not move
+
                     }
-                } catch (NullPointerException e)
-                {
-                    System.out.println("Too close to edge");
                 }
+            } catch (NullPointerException e)
+            {
+                System.out.println("Too close to edge");
             }
         }
     }
