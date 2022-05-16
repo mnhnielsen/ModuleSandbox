@@ -73,6 +73,7 @@
         <module>CommonBullet</module>
         <module>Obstacle</module>
         <module>GameMap</module>
+        <module>AI</module>
     </modules>
 
     <properties>

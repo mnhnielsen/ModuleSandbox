@@ -7,24 +7,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Client</artifactId>
+    <artifactId>AI</artifactId>
     <packaging>nbm</packaging>
 
-    <name>Client</name>
+    <name>AI</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
-        <!--
-        Repository hosting NetBeans modules, especially APIs.
-        Versions are based on IDE releases, e.g.: RELEASE691
-        To create your own repository, use: nbm:populate-repository
-        
-        If you use Apache NetBeans starting with Apache NetBeans 9.0 
-        you can remove the netbeans repository section
-        -->
         <repository>
             <id>netbeans</id>
             <name>NetBeans</name>
@@ -38,47 +30,15 @@
     <dependencies>
         <dependency>
             <groupId>org.netbeans.api</groupId>
-            <artifactId>org-netbeans-api-annotations-common</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-modules</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
-            <artifactId>org-openide-util</artifactId>
-            <version>${netbeans.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
             <version>${netbeans.version}</version>
             <type>jar</type>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.xaguzman/pathfinding-gdx-bridge -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>GameEngine</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xaguzman</groupId>
-            <artifactId>pathfinding-gdx-bridge</artifactId>
-            <version>0.2.6</version>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-api-annotations-common</artifactId>
+            <version>${netbeans.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -87,9 +47,16 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>Collision</artifactId>
+            <artifactId>GameEngine</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>GameMap</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -99,6 +66,11 @@
                 <artifactId>nbm-maven-plugin</artifactId>
                 <version>4.3</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <publicPackages>
+                        <publicPackage>org.example.*</publicPackage>
+                    </publicPackages>
+                </configuration>
             </plugin>
 
             <plugin>
