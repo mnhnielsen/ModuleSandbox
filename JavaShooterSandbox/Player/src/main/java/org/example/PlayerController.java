@@ -5,21 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ObjectMap;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.*;
 import org.example.spi.IEntityProcessingService;
-import org.example.spi.IMapService;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.function.IntUnaryOperator;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class PlayerController implements IEntityProcessingService
@@ -28,7 +30,8 @@ public class PlayerController implements IEntityProcessingService
     private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
     private MapCreation mapCreation = new MapCreation();
-    private TiledMapTileLayer layer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(1);
+    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(0);
+    private TiledMapTileLayer blockedLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(1);
 
 
     public void updateTexture(String fname)
@@ -148,12 +151,42 @@ public class PlayerController implements IEntityProcessingService
 
             for (Entity object : world.getEntities(Bullet.class))
                 batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
+
+            getTileValue();
         }
     }
 
     private void getTileValue()
     {
+        int cellValueX = (int) (x / walkableLayer.getTileWidth());
+        int cellValueY = (int) (y / walkableLayer.getTileHeight());
+        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
 
+
+        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
+        {
+            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
+
+            int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
+                    {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
+                    {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
+                    {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
+
+            for (int[] n : neighbours)
+            {
+                try
+                {
+                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
+                    {
+                        System.out.println("Some neighbours are blocked");
+                        //should not move
+                    }
+                } catch (NullPointerException e)
+                {
+                    System.out.println("Too close to edge");
+                }
+            }
+        }
     }
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
@@ -180,7 +213,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideRight(Entity player)
     {
         boolean collides = false;
-        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() / 2)
+        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
             collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step);
         return collides;
     }
@@ -188,7 +221,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideLeft(Entity player)
     {
         boolean collides = false;
-        for (float step = 0; step < player.getHeight(); step += layer.getTileHeight() / 2)
+        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
             collides = mapCreation.isCellBlocked(position().x, position().y + step);
 
         return collides;
@@ -197,7 +230,7 @@ public class PlayerController implements IEntityProcessingService
     public boolean collideTop(Entity player)
     {
         boolean collides = false;
-        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() / 2)
+        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
             collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight());
 
         return collides;
@@ -207,7 +240,7 @@ public class PlayerController implements IEntityProcessingService
     {
         boolean collides = false;
 
-        for (float step = 0; step < player.getWidth(); step += layer.getTileWidth() / 2)
+        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
             collides = mapCreation.isCellBlocked(position().x + step, position().y);
         return collides;
     }

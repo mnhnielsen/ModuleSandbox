@@ -64,7 +64,7 @@ public class MapCreation implements IMapService
         {
             if (cell.getTile().getProperties().containsKey("blocked"))
             {
-                System.out.println("blocked");
+                //System.out.println("blocked");
                 blocked = true;
             }
         }

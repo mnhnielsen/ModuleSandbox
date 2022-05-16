@@ -32,11 +32,11 @@ public class PlayerCreation implements IGamePluginService
 
     protected Player createPlayer()
     {
-        int x = 40;
+        int x = Gdx.graphics.getWidth() / 2;
         int y = Gdx.graphics.getHeight() / 2;
         int speed = 6;
-        int width = 64;
-        int height = 64;
+        int width = 32;
+        int height = 32;
         String fileName = "soldierIdle.png";
 
         File file = new File(this.getClass().getResource(fileName).getPath());
