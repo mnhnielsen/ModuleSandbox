@@ -48,16 +48,19 @@ public class EnemyController implements IEntityProcessingService
                     direction.x = playerPos.x - zombiePos.x;
                     direction.y = playerPos.y - zombiePos.y;
 
+
                     //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
                     direction.nor();
 
                     float speedX = direction.x * enemy.getSpeed();
                     float speedY = direction.y * enemy.getSpeed();
 
+                    Vector2 tempVector = new Vector2(direction.x, direction.y);
 
                     enemy.getBody().setLinearVelocity(speedX, speedY);
 
-                    enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
+
+                    //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
                     batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
                 }
             }
@@ -66,7 +69,6 @@ public class EnemyController implements IEntityProcessingService
             e.printStackTrace();
         }
     }
-
 
 
     public boolean collideRight(Entity player)
