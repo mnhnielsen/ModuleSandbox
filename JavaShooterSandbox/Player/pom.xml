@@ -59,6 +59,11 @@
             <artifactId>GameMap</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>AI</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 
     </dependencies>

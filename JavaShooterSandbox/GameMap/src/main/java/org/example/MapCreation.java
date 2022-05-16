@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.CamController;
 import org.example.spi.IMapService;
@@ -13,6 +14,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
+import java.util.ArrayList;
 
 @ServiceProviders(value = {@ServiceProvider(service = IMapService.class)})
 public class MapCreation implements IMapService
@@ -32,7 +34,7 @@ public class MapCreation implements IMapService
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer =  (TiledMapTileLayer) map.getLayers().get(1);
+        layer = (TiledMapTileLayer) map.getLayers().get(1);
 
     }
 
@@ -41,27 +43,37 @@ public class MapCreation implements IMapService
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer =  (TiledMapTileLayer) map.getLayers().get(1);
+        layer = (TiledMapTileLayer) map.getLayers().get(1);
     }
 
-    public boolean isCellBlocked(float x, float y) {
+    public boolean isCellBlocked(float x, float y)
+    {
         TiledMapTileLayer.Cell cell = null;
         boolean blocked = false;
 
 
-        try {
+        try
+        {
             cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
 
-        if (cell != null && cell.getTile() != null) {
-            if (cell.getTile().getProperties().containsKey("blocked")) {
+        if (cell != null && cell.getTile() != null)
+        {
+            if (cell.getTile().getProperties().containsKey("blocked"))
+            {
                 System.out.println("blocked");
                 blocked = true;
             }
         }
         return blocked;
+    }
+
+    public TiledMapTileLayer.Cell getCell(int x, int y){
+        TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
+        return cell;
     }
 
 
