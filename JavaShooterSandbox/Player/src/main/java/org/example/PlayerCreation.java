@@ -46,7 +46,7 @@ public class PlayerCreation implements IGamePluginService
         AssetLoader.INSTANCE.getAm().finishLoading();
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.PLAYER);
-        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(100));
+        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(10000));
         return p;
     }
 

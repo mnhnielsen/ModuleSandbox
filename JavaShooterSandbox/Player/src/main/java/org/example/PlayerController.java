@@ -30,7 +30,7 @@ public class PlayerController implements IEntityProcessingService
     private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
     private MapCreation mapCreation = new MapCreation();
-    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(0);
+    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
 
 
     public void updateTexture(String fname)
@@ -89,7 +89,7 @@ public class PlayerController implements IEntityProcessingService
             dir.setZero();
             radians = 0;
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove && !collideTop(p))
+            if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
             {
                 radians = 90;
                 updateTexture("soldierUp.png");
@@ -97,7 +97,7 @@ public class PlayerController implements IEntityProcessingService
                 spawnBullet(0, 1, 50, 70, 30, 5, 10);
                 isMoving = true;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove && !collideBottom(p))
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
             {
                 radians = 270;
                 updateTexture("soldierDown.png");
@@ -107,7 +107,7 @@ public class PlayerController implements IEntityProcessingService
                 isMoving = true;
 
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove && !collideRight(p))
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
             {
                 radians = 0;
                 updateTexture("soldierRight.png");
@@ -116,7 +116,7 @@ public class PlayerController implements IEntityProcessingService
 
                 isMoving = true;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove && !collideLeft(p))
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
             {
                 radians = 180;
                 updateTexture("soldierLeft.png");
@@ -151,7 +151,7 @@ public class PlayerController implements IEntityProcessingService
             for (Entity object : world.getEntities(Bullet.class))
                 batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
 
-            getTileValue();
+            //getTileValue();
         }
     }
 

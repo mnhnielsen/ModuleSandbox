@@ -1,42 +1,70 @@
 package org.example;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import java.util.ArrayList;
 
 public class Node
 {
     private Node parent;
-    private float value;
+    private TiledMapTileLayer.Cell cell;
+    private float evalValue;
+    private int tileX;
+    private int tileY;
+    private String tileCellType;
 
-    public Node getNode()
+    public Node getParent()
     {
         return parent;
     }
 
-    public void setNode(Node parent)
+    public void setParent(Node parent)
     {
         this.parent = parent;
     }
 
-    public float getValue()
+    public TiledMapTileLayer.Cell getCell()
     {
-        return value;
+        return cell;
     }
 
-    public void setValue(float value)
+    public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY)
     {
-        this.value = value;
+        this.cell = cell;
+        this.tileX = tileX;
+        this.tileY = tileY;
     }
 
-    public ArrayList<Node> getPathNodes()
+    public float getEvalValue()
     {
-        ArrayList<Node> nodePath = new ArrayList<Node>();
-        Node thisNode = this;
-        nodePath.add(thisNode);
-        while (thisNode.getNode() != null)
+        return evalValue;
+    }
+
+    public int getTileX()
+    {
+        return tileX;
+    }
+
+    public int getTileY()
+    {
+        return tileY;
+    }
+
+    public String getTileCellType()
+    {
+        return tileCellType;
+    }
+
+    public ArrayList<Node> getPath()
+    {
+        ArrayList<Node> path = new ArrayList<Node>();
+        Node currentNode = this;
+        path.add(currentNode);
+        while (currentNode.getParent() != null)
         {
-            thisNode = thisNode.getNode();
-            nodePath.add(0, parent);
+            currentNode = currentNode.getParent();
+            path.add(0, parent);
         }
-        return nodePath;
+        return path;
     }
 }

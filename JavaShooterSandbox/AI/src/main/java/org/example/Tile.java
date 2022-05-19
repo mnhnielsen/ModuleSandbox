@@ -21,6 +21,11 @@ public class Tile
         this.tileY = tileY;
         this.tileCellType = tileCellValue;
     }
+    public Tile(int tileX, int tileY, TiledMapTileLayer.Cell cell){
+        this.tileX = tileX;
+        this.tileY = tileY;
+        this.cell = cell;
+    }
 
     public int getTileX()
     {

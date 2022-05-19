@@ -34,7 +34,7 @@ public class MapCreation implements IMapService
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer = (TiledMapTileLayer) map.getLayers().get(1);
+        layer = (TiledMapTileLayer) map.getLayers().get(2);
 
     }
 
@@ -43,7 +43,7 @@ public class MapCreation implements IMapService
     {
         map = new TmxMapLoader().load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
         renderer = new OrthogonalTiledMapRenderer(map);
-        layer = (TiledMapTileLayer) map.getLayers().get(1);
+        layer = (TiledMapTileLayer) map.getLayers().get(2);
     }
 
     public boolean isCellBlocked(float x, float y)
