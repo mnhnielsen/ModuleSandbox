@@ -188,8 +188,8 @@ public class EnemyController implements IEntityProcessingService
     {
         int cellValueX = (int) (enemy.getX() / walkableLayer.getTileWidth());
         int cellValueY = (int) (enemy.getY() / walkableLayer.getTileHeight());
-        int playerCellValueX = (int) (player.position().x / walkableLayer.getTileWidth());
-        int playerCellValueY = (int) (player.position().y / walkableLayer.getTileHeight());
+        int playerCellValueX = (int) (Gdx.graphics.getWidth()/2 / walkableLayer.getTileWidth());
+        int playerCellValueY = (int) (Gdx.graphics.getHeight()/2 / walkableLayer.getTileHeight());
 
 
         TiledMapTileLayer.Cell enemyPosition = walkableLayer.getCell(cellValueX, cellValueY);
@@ -228,13 +228,12 @@ public class EnemyController implements IEntityProcessingService
 
             for (int[] n : neighbours)
             {
-                if (walkableLayer.getCell(n[0], n[1]) != null && !walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked") && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
+                if (walkableLayer.getCell(n[0], n[1]) != null  && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
                 {
                     Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
                     node.setParent(currentNode);
                     fringe.add(node);
-                } else
-                    System.out.println("Shit is blocked yo");
+                }
             }
         }
 

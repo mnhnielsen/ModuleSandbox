@@ -29,8 +29,8 @@ public class PlayerController implements IEntityProcessingService
     private boolean canMove = true, isMoving;
     private float x, y, radians, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
-    private MapCreation mapCreation = new MapCreation();
-    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
+    //private MapCreation mapCreation = new MapCreation();
+    //private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
 
 
     public void updateTexture(String fname)
@@ -155,40 +155,40 @@ public class PlayerController implements IEntityProcessingService
         }
     }
 
-    private void getTileValue()
-    {
-        int cellValueX = (int) (x / walkableLayer.getTileWidth());
-        int cellValueY = (int) (y / walkableLayer.getTileHeight());
-        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
-
-
-        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
-        {
-            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
-
-
-            try
-            {
-                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
-
-
-                for (int[] n : neighbours)
-                {
-
-                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
-                    {
-
-                    }
-                }
-            } catch (NullPointerException e)
-            {
-                System.out.println("Too close to edge");
-            }
-        }
-    }
+//    private void getTileValue()
+//    {
+//        int cellValueX = (int) (x / walkableLayer.getTileWidth());
+//        int cellValueY = (int) (y / walkableLayer.getTileHeight());
+//        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
+//
+//
+//        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
+//        {
+//            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
+//
+//
+//            try
+//            {
+//                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
+//                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
+//                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
+//                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
+//
+//
+//                for (int[] n : neighbours)
+//                {
+//
+//                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
+//                    {
+//
+//                    }
+//                }
+//            } catch (NullPointerException e)
+//            {
+//                System.out.println("Too close to edge");
+//            }
+//        }
+//    }
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
     {
@@ -211,40 +211,40 @@ public class PlayerController implements IEntityProcessingService
         }
     }
 
-    public boolean collideRight(Entity player)
-    {
-        boolean collides = false;
-        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
-            collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step);
-        return collides;
-    }
-
-    public boolean collideLeft(Entity player)
-    {
-        boolean collides = false;
-        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
-            collides = mapCreation.isCellBlocked(position().x, position().y + step);
-
-        return collides;
-    }
-
-    public boolean collideTop(Entity player)
-    {
-        boolean collides = false;
-        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
-            collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight());
-
-        return collides;
-    }
-
-    public boolean collideBottom(Entity player)
-    {
-        boolean collides = false;
-
-        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
-            collides = mapCreation.isCellBlocked(position().x + step, position().y);
-        return collides;
-    }
+//    public boolean collideRight(Entity player)
+//    {
+//        boolean collides = false;
+//        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
+//            collides = mapCreation.isCellBlocked(position().x + player.getWidth(), position().y + step);
+//        return collides;
+//    }
+//
+//    public boolean collideLeft(Entity player)
+//    {
+//        boolean collides = false;
+//        for (float step = 0; step < player.getHeight(); step += walkableLayer.getTileHeight() / 2)
+//            collides = mapCreation.isCellBlocked(position().x, position().y + step);
+//
+//        return collides;
+//    }
+//
+//    public boolean collideTop(Entity player)
+//    {
+//        boolean collides = false;
+//        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
+//            collides = mapCreation.isCellBlocked(position().x + step, position().y + player.getHeight());
+//
+//        return collides;
+//    }
+//
+//    public boolean collideBottom(Entity player)
+//    {
+//        boolean collides = false;
+//
+//        for (float step = 0; step < player.getWidth(); step += walkableLayer.getTileWidth() / 2)
+//            collides = mapCreation.isCellBlocked(position().x + step, position().y);
+//        return collides;
+//    }
 
 
     @Override
