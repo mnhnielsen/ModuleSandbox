@@ -47,44 +47,45 @@ public class Pathfinding{
 
     }
 
-    public void initPathfinding(){
+/*    public void initPathfinding() {
         currentCell = new GridCell((int) enemy.getX(), (int) enemy.getY());
         targetCell = new GridCell((int) player.getX(), (int) player.getY());
         ArrayList<GridCell> openList = new ArrayList<>();
         ArrayList<GridCell> closedList = new ArrayList<>();
         openList.add(currentCell);
 
-        for(GridCell cell : openList) {
+        for (GridCell cell : openList) {
             currentCell = cell;
             openList.remove(currentCell);
             closedList.add(currentCell);
-             }
-
-
-        if(currentCell.equals(targetCell)) {
-                return;
-            }
-
-        for (GridCell cell : navLayer.getNeighbors(currentCell)){
-            if ( !cell.isWalkable() || closedList.contains(cell)){
-               continue;
-            }
-
-            if(openList.size()) {
-                //todo if pathlist is shorter than openlist and cell is not in openlist
-                currentCell.setF(cell.getF());
-                currentCell.setParent(cell.getParent());
-                if (!openList.contains(cell)){
-                    openList.add(cell);
-                }
         }
 
 
+        if (currentCell.equals(targetCell)) {
+            return;
+        }
 
-    }
+        for (GridCell cell : navLayer.getNeighbors(currentCell)) {
+            if (!cell.isWalkable() || closedList.contains(cell)) {
+                continue;
+            }
+
+            if (navLayer.) {
+                //todo if pathlist is shorter than openlist and cell is not in openlist
+                currentCell.setF(cell.getF());
+                currentCell.setParent(cell.getParent());
+                if (!openList.contains(cell)) {
+                    openList.add(cell);
+
+                }
+            }
+
+
+        }
+    }*/
 
     public void getPathDistance(){
-
+            //todo
     }
 
 }
