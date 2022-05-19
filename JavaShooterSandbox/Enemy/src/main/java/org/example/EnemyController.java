@@ -64,26 +64,22 @@ public class EnemyController implements IEntityProcessingService
                     if (collideTop(enemy))
                     {
                         float spdx = direction.x + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
-                        enemy.getBody().setLinearVelocity(spdx, 0);
-                    }
-                    else if (collideBottom(enemy))
+                        enemy.getBody().setLinearVelocity(spdx, speedY * -1);
+                    } else if (collideBottom(enemy))
                     {
                         float spdx = direction.x + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
                         enemy.getBody().setLinearVelocity(spdx, 0);
-                    }
-                    else if (collideLeft(enemy))
+                    } else if (collideLeft(enemy))
                     {
                         float spdy = direction.y + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
 
                         enemy.getBody().setLinearVelocity(0, spdy);
-                    }
-                    else if (collideRight(enemy))
+                    } else if (collideRight(enemy))
                     {
                         float spdy = direction.y + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
 
                         enemy.getBody().setLinearVelocity(0, spdy);
-                    }
-                    else
+                    } else
                         enemy.getBody().setLinearVelocity(speedX, speedY);
 
                     //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
@@ -115,10 +111,8 @@ public class EnemyController implements IEntityProcessingService
                         {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
                         {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
 
-                int[][] top = {{tile.getTileX(), tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1}};
 
-
-                for (int[] n : top)
+                for (int[] n : neighbours)
                 {
 
                     if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
