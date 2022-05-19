@@ -3,5 +3,10 @@
  <properties>
   <property name="blocked" value="blocked"/>
  </properties>
- <image source="TX Tileset Stone Ground.png" width="256" height="256"/>
+ <image source="../../../Texture/TX Tileset Stone Ground.png" width="256" height="256"/>
+ <tile id="56">
+  <properties>
+   <property name="walkable" value="walkable"/>
+  </properties>
+ </tile>
 </tileset>

@@ -45,9 +45,21 @@
             <artifactId>Services</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.xaguzman/pathfinding-gdx-bridge -->
+        <dependency>
+            <groupId>com.github.xaguzman</groupId>
+            <artifactId>pathfinding-gdx-bridge</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>GameEngine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
