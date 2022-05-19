@@ -8,6 +8,7 @@ public class Node
 {
     private Node parent;
     private TiledMapTileLayer.Cell cell;
+
     private float evalValue;
     private int tileX;
     private int tileY;
@@ -31,6 +32,12 @@ public class Node
     public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY)
     {
         this.cell = cell;
+        this.tileX = tileX;
+        this.tileY = tileY;
+    }
+
+    public Node(int tileX, int tileY)
+    {
         this.tileX = tileX;
         this.tileY = tileY;
     }

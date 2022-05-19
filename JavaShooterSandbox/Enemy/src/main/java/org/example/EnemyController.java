@@ -30,8 +30,9 @@ public class EnemyController implements IEntityProcessingService
     private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
 
 
-
     private int offSet = 85;
+
+    private Node node;
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
@@ -56,7 +57,7 @@ public class EnemyController implements IEntityProcessingService
                     Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
                     Vector2 playerPos = new Vector2(player.position().x, player.position().y);
                     Vector2 direction = new Vector2();
-
+                    node = new Node((int) playerPos.x, (int) playerPos.y);
                     //Difference in position to create vector with direction
                     direction.x = playerPos.x - zombiePos.x;
                     direction.y = playerPos.y - zombiePos.y;
@@ -84,7 +85,7 @@ public class EnemyController implements IEntityProcessingService
 
                         enemy.getBody().setLinearVelocity(0, spdy);
                     } else*/
-                    enemy.getBody().setLinearVelocity(speedX, speedY);
+                    //enemy.getBody().setLinearVelocity(speedX, speedY);
                     aStar(enemy);
 
 
@@ -188,8 +189,8 @@ public class EnemyController implements IEntityProcessingService
     {
         int cellValueX = (int) (enemy.getX() / walkableLayer.getTileWidth());
         int cellValueY = (int) (enemy.getY() / walkableLayer.getTileHeight());
-        int playerCellValueX = (int) (Gdx.graphics.getWidth()/2 / walkableLayer.getTileWidth());
-        int playerCellValueY = (int) (Gdx.graphics.getHeight()/2 / walkableLayer.getTileHeight());
+        int playerCellValueX = (int) (player.position().x / walkableLayer.getTileWidth());
+        int playerCellValueY = (int) (player.position().y / walkableLayer.getTileHeight());
 
 
         TiledMapTileLayer.Cell enemyPosition = walkableLayer.getCell(cellValueX, cellValueY);
@@ -210,9 +211,16 @@ public class EnemyController implements IEntityProcessingService
             if (currentNode.getCell() == targetNode.getCell())
             {
                 ArrayList<Node> path = currentNode.getPath();
+                System.out.println(path.size());
                 if (path.size() > 1)
                 {
-                    //System.out.println("Enemy goooo");
+                    float x = targetNode.getTileX() - path.get(1).getTileX();
+                    float y = targetNode.getTileY() - path.get(1).getTileY();
+                    Vector2 dir = new Vector2(x, y);
+                    dir.nor();
+                    float speedX = dir.x * enemy.getSpeed();
+                    float speedY = dir.y * enemy.getSpeed();
+                    enemy.getBody().setLinearVelocity(speedX, speedY);
                 } else
                 {
                     //System.out.println("Enemy on my tile");
@@ -228,16 +236,17 @@ public class EnemyController implements IEntityProcessingService
 
             for (int[] n : neighbours)
             {
-                if (walkableLayer.getCell(n[0], n[1]) != null  && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
+                if (walkableLayer.getCell(n[0], n[1]) != null && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
                 {
-                    Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
-                    node.setParent(currentNode);
-                    fringe.add(node);
-                }
+                    if (!walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
+                    {
+                        Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
+                        node.setParent(currentNode);
+                        fringe.add(node);
+                    }
+                } else return;
             }
         }
-
-
     }
 
     public double heuristics(Node node, Node targetNode)
@@ -272,52 +281,39 @@ public class EnemyController implements IEntityProcessingService
         return lowNode;
     }
 
-    private ArrayList getAllBlockedCells()
-    {
-        ArrayList<String> cellArrayList = new ArrayList<>();
-        for (Iterator<String> it = walkableLayer.getProperties().getKeys(); it.hasNext(); )
-        {
-            System.out.println("teststetset");
-            String s = it.next();
-            System.out.println(s);
-
-        }
-        return cellArrayList;
-    }
-
-    private boolean getTileValue(Entity entity)
-    {
-        int cellValueX = (int) (entity.getX() / walkableLayer.getTileWidth());
-        int cellValueY = (int) (entity.getY() / walkableLayer.getTileHeight());
-        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
-
-        boolean blocked = false;
-        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
-        {
-            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
-
-
-            try
-            {
-                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
-
-
-                for (int[] n : neighbours)
-                {
-
-                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
-                    {
-                        blocked = true;
-                    }
-                }
-            } catch (NullPointerException e)
-            {
-                System.out.println("Too close to edge");
-            }
-        }
-        return blocked;
-    }
+//    private boolean getTileValue(Entity entity)
+//    {
+//        int cellValueX = (int) (entity.getX() / walkableLayer.getTileWidth());
+//        int cellValueY = (int) (entity.getY() / walkableLayer.getTileHeight());
+//        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
+//
+//        boolean blocked = false;
+//        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
+//        {
+//            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
+//
+//
+//            try
+//            {
+//                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
+//                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
+//                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
+//                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
+//
+//
+//                for (int[] n : neighbours)
+//                {
+//
+//                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
+//                    {
+//                        blocked = true;
+//                    }
+//                }
+//            } catch (NullPointerException e)
+//            {
+//                System.out.println("Too close to edge");
+//            }
+//        }
+//        return blocked;
+//    }
 }

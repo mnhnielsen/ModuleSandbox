@@ -95,7 +95,7 @@ public class Game implements ApplicationListener
 
     private void update()
     {
-        System.out.println("yodf");
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
         for (IEntityProcessingService entityProcessorService : getEntityProcessingServices())
