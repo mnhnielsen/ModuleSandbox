@@ -89,7 +89,7 @@ public class PlayerController implements IEntityProcessingService
             dir.setZero();
             radians = 0;
 
-            if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove)
+            if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove && !collideTop(p))
             {
                 radians = 90;
                 updateTexture("soldierUp.png");
@@ -97,7 +97,7 @@ public class PlayerController implements IEntityProcessingService
                 spawnBullet(0, 1, 50, 70, 30, 5, 10);
                 isMoving = true;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove)
+            if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove && !collideBottom(p))
             {
                 radians = 270;
                 updateTexture("soldierDown.png");
@@ -107,7 +107,7 @@ public class PlayerController implements IEntityProcessingService
                 isMoving = true;
 
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove)
+            if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove && !collideRight(p))
             {
                 radians = 0;
                 updateTexture("soldierRight.png");
@@ -116,7 +116,7 @@ public class PlayerController implements IEntityProcessingService
 
                 isMoving = true;
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove)
+            if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove && !collideLeft(p))
             {
                 radians = 180;
                 updateTexture("soldierLeft.png");
