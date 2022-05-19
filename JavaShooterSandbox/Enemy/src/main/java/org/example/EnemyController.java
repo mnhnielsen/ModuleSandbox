@@ -32,8 +32,11 @@ public class EnemyController implements IEntityProcessingService {
     private GridCell currentCell, targetCell;
 
 
-    TiledMap map;
-    NavigationTiledMapLayer navLayer;
+    NavTmxMapLoader navTmxMapLoader = new NavTmxMapLoader();
+
+    TiledMap map = navTmxMapLoader.load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
+    NavigationTiledMapLayer navLayer = (NavigationTiledMapLayer) map.getLayers().get("navLayer");
+
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
@@ -163,16 +166,10 @@ public class EnemyController implements IEntityProcessingService {
     }
 
     public void initPathfinding(Entity enemy) {
-
-        NavTmxMapLoader navTmxMapLoader = new NavTmxMapLoader();
-        navLayer = (NavigationTiledMapLayer) map.getLayers().get("NavLayer");
-        map = navTmxMapLoader.load(Gdx.files.internal("map.tmx").file().getAbsolutePath());
-        currentCell = new GridCell((int) enemy.getBody().getPosition().x, (int) enemy.getBody().getPosition().y);
+        currentCell = new GridCell((int) enemy.getX(), (int) enemy.getY());
         targetCell = new GridCell((int) player.position().x, (int) player.position().y);
         ArrayList<GridCell> openList = new ArrayList<>();
         ArrayList<GridCell> closedList = new ArrayList<>();
-        openList.add(currentCell);
-        System.out.println(currentCell);
 
         for (GridCell cell : openList) {
             currentCell = cell;
