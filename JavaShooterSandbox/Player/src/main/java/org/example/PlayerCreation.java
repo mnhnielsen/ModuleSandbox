@@ -24,6 +24,7 @@ public class PlayerCreation implements IGamePluginService
 
     }
 
+    //Add player to the world. Is used in the Create method in Game.java
     @Override
     public void start(GameWorld world)
     {
@@ -32,25 +33,26 @@ public class PlayerCreation implements IGamePluginService
 
     protected Player createPlayer()
     {
-        int x = Gdx.graphics.getWidth() / 2;
-        int y = Gdx.graphics.getHeight() / 2;
+        int x = Gdx.graphics.getWidth() / 2; //Spawn position x
+        int y = Gdx.graphics.getHeight() / 2; //Spawn position y
         int speed = 6;
-        int width = 32;
-        int height = 32;
+        int width = 32; // body width
+        int height = 32; // body height
         String fileName = "soldierIdle.png";
 
-        File file = new File(this.getClass().getResource(fileName).getPath());
-        String path = file.getPath().substring(5);
+        File file = new File(this.getClass().getResource(fileName).getPath()); // get path to file
+        String path = file.getPath().substring(5); // Substring the first 5 chars from the filepath.
 
-        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
+        AssetLoader.INSTANCE.getAm().load(path, Texture.class); //Load texture via singleton pattern
         AssetLoader.INSTANCE.getAm().finishLoading();
-        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.PLAYER);
-        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(10000));
+        Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class)); //All bodies need a sprite attached. This is set up here
+        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.PLAYER); //Creation of body with attributes
+        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(10000)); //Setup player
         return p;
     }
 
 
+    //Remove entities from world. Is used when unloading/loading
     @Override
     public void stop(GameWorld world)
     {
@@ -58,12 +60,12 @@ public class PlayerCreation implements IGamePluginService
     }
 
     @Override
-    public void spawnEnemies(int enemies)
+    public void spawnEnemies(int enemies) //not used
     {
     }
 
     public Entity getPlayer()
     {
         return player;
-    }
+    } // not used
 }
