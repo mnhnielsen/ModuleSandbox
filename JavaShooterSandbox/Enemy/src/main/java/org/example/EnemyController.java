@@ -85,8 +85,8 @@ public class EnemyController implements IEntityProcessingService
 
                         enemy.getBody().setLinearVelocity(0, spdy);
                     } else*/
-                    enemy.getBody().setLinearVelocity(speedX, speedY);
-                    //aStar(enemy);
+                    //enemy.getBody().setLinearVelocity(speedX, speedY);
+                    aStar(enemy);
 
 
                     //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
@@ -141,49 +141,6 @@ public class EnemyController implements IEntityProcessingService
         return null;
     }
 
-//    public void initPathfinding(Entity enemy)
-//    {
-//        currentCell = new GridCell((int) enemy.getX(), (int) enemy.getY());
-//        targetCell = new GridCell((int) Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-//        openList.add(currentCell);
-//        if (currentCell == targetCell)
-//        {
-//            System.out.println("Target");
-//            return;
-//        }
-//        int counter = 0;
-//        while (!openList.isEmpty())
-//        {
-//            currentCell = openList.get(counter);
-//            openList.remove(currentCell);
-//            closedList.add(currentCell);
-//            counter++;
-//        }
-//
-//
-//        for (GridCell cell : navLayer.getNeighbors(currentCell))
-//        {
-//            if (!cell.isWalkable() || closedList.contains(cell))
-//            {
-//                continue;
-//            }
-//
-//            if (navLayer.getNeighbors(currentCell).isEmpty() || !closedList.contains(navLayer.getNeighbors(cell)))
-//            {
-//
-//                currentCell.setF(cell.getF());
-//                currentCell.setParent(cell.getParent());
-//                if (!openList.contains(cell))
-//                {
-//                    openList.add(cell);
-//
-//                }
-//            }
-//
-//
-//        }
-//
-//    }
 
     public void aStar(Entity enemy)
     {
@@ -236,15 +193,12 @@ public class EnemyController implements IEntityProcessingService
 
             for (int[] n : neighbours)
             {
-                if (walkableLayer.getCell(n[0], n[1]) != null && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
+                if (!fringe.contains(walkableLayer.getCell(n[0], n[1])) && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
                 {
-                    if (!walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
-                    {
                         Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
                         node.setParent(currentNode);
                         fringe.add(node);
-                    }
-                } else return;
+                }
             }
         }
     }
@@ -280,40 +234,4 @@ public class EnemyController implements IEntityProcessingService
         }
         return lowNode;
     }
-
-//    private boolean getTileValue(Entity entity)
-//    {
-//        int cellValueX = (int) (entity.getX() / walkableLayer.getTileWidth());
-//        int cellValueY = (int) (entity.getY() / walkableLayer.getTileHeight());
-//        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
-//
-//        boolean blocked = false;
-//        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
-//        {
-//            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
-//
-//
-//            try
-//            {
-//                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-//                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-//                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-//                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
-//
-//
-//                for (int[] n : neighbours)
-//                {
-//
-//                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
-//                    {
-//                        blocked = true;
-//                    }
-//                }
-//            } catch (NullPointerException e)
-//            {
-//                System.out.println("Too close to edge");
-//            }
-//        }
-//        return blocked;
-//    }
 }
