@@ -27,7 +27,7 @@ public class EnemyController implements IEntityProcessingService
 {
     private final Lookup lookup = Lookup.getDefault();
     private MapCreation mapCreation = new MapCreation();
-    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(1);
+    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
 
 
     private int offSet = 85;
@@ -85,8 +85,8 @@ public class EnemyController implements IEntityProcessingService
 
                         enemy.getBody().setLinearVelocity(0, spdy);
                     } else*/
-                    //enemy.getBody().setLinearVelocity(speedX, speedY);
-                    aStar(enemy);
+                    enemy.getBody().setLinearVelocity(speedX, speedY);
+                    //aStar(enemy);
 
 
                     //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
@@ -214,13 +214,13 @@ public class EnemyController implements IEntityProcessingService
                 System.out.println(path.size());
                 if (path.size() > 1)
                 {
-//                    float x = targetNode.getTileX() - path.get(1).getTileX();
-//                    float y = targetNode.getTileY() - path.get(1).getTileY();
-//                    Vector2 dir = new Vector2(x, y);
-//                    dir.nor();
-//                    float speedX = dir.x * enemy.getSpeed();
-//                    float speedY = dir.y * enemy.getSpeed();
-//                    enemy.getBody().setLinearVelocity(speedX, speedY);
+                    float x = targetNode.getTileX() - path.get(1).getTileX();
+                    float y = targetNode.getTileY() - path.get(1).getTileY();
+                    Vector2 dir = new Vector2(x, y);
+                    dir.nor();
+                    float speedX = dir.x * enemy.getSpeed();
+                    float speedY = dir.y * enemy.getSpeed();
+                    enemy.getBody().setLinearVelocity(speedX, speedY);
                 } else
                 {
                     //System.out.println("Enemy on my tile");
@@ -238,9 +238,12 @@ public class EnemyController implements IEntityProcessingService
             {
                 if (walkableLayer.getCell(n[0], n[1]) != null && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
                 {
-                    Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
-                    node.setParent(currentNode);
-                    fringe.add(node);
+                    if (!walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
+                    {
+                        Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
+                        node.setParent(currentNode);
+                        fringe.add(node);
+                    }
                 } else return;
             }
         }
