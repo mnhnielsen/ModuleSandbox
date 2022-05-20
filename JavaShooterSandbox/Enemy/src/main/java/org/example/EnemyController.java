@@ -151,14 +151,14 @@ public class EnemyController implements IEntityProcessingService
 
 
         TiledMapTileLayer.Cell enemyPosition = walkableLayer.getCell(cellValueX, cellValueY);
-        Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
+        Node currentNode = new Node(enemyPosition, cellValueX, cellValueY, Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
         TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
 
         ArrayList<Node> fringe = new ArrayList<>();
         ArrayList<Node> rejectedCell = new ArrayList<>();
 
 
-        Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
+        Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY, Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
         fringe.add(currentNode);
         while (!fringe.isEmpty())
         {
@@ -195,9 +195,9 @@ public class EnemyController implements IEntityProcessingService
             {
                 if (!fringe.contains(walkableLayer.getCell(n[0], n[1])) && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
                 {
-                        Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
-                        node.setParent(currentNode);
-                        fringe.add(node);
+                    Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1], Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
+                    node.setParent(currentNode);
+                    fringe.add(node);
                 }
             }
         }
@@ -205,10 +205,10 @@ public class EnemyController implements IEntityProcessingService
 
     public double heuristics(Node node, Node targetNode)
     {
-        float x1 = node.getTileX();
-        float y1 = node.getTileY();
-        float x2 = targetNode.getTileX();
-        float y2 = targetNode.getTileY();
+        float x1 = node.getCost();
+        float y1 = node.getCost();
+        float x2 = targetNode.getCost();
+        float y2 = targetNode.getCost();
 
         return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     }

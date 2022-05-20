@@ -10,9 +10,9 @@ public class Node
     private TiledMapTileLayer.Cell cell;
 
     private float evalValue;
+    private int cost;
     private int tileX;
     private int tileY;
-    private String tileCellType;
 
     public Node getParent()
     {
@@ -29,11 +29,12 @@ public class Node
         return cell;
     }
 
-    public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY)
+    public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY, int cost)
     {
         this.cell = cell;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.cost = cost;
     }
 
     public Node(int tileX, int tileY)
@@ -57,9 +58,14 @@ public class Node
         return tileY;
     }
 
-    public String getTileCellType()
+    public int getCost()
     {
-        return tileCellType;
+        return cost;
+    }
+
+    public void setCost(int cost)
+    {
+        this.cost = cost;
     }
 
     public ArrayList<Node> getPath()
@@ -74,4 +80,5 @@ public class Node
         }
         return path;
     }
+
 }
