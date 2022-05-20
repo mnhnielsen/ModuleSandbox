@@ -85,8 +85,8 @@ public class EnemyController implements IEntityProcessingService
 
                         enemy.getBody().setLinearVelocity(0, spdy);
                     } else*/
-                    //enemy.getBody().setLinearVelocity(speedX, speedY);
-                    aStar(enemy);
+                    enemy.getBody().setLinearVelocity(speedX, speedY);
+                    //aStar(enemy);
 
 
                     //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
