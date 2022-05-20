@@ -3,6 +3,7 @@
  <image source="TX Tileset Stone Ground.png" width="256" height="256"/>
  <tile id="56">
   <properties>
+   <property name="cost" type="int" value="0"/>
    <property name="walkable" value="walkable"/>
   </properties>
  </tile>
