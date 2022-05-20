@@ -178,17 +178,17 @@ public class EnemyController implements IEntityProcessingService
         Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
         TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
 
-        ArrayList<Node> fringe = new ArrayList<>();
-        ArrayList<Node> rejectedCell = new ArrayList<>();
+        ArrayList<Node> openSet = new ArrayList<>();
+        ArrayList<Node> closedSet = new ArrayList<>();
 
 
         Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
-        fringe.add(currentNode);
-        while (!fringe.isEmpty())
+        openSet.add(currentNode);
+        while (!openSet.isEmpty())
         {
-            currentNode = lowestNodeInFringe(fringe, targetNode);
-            fringe.remove(currentNode);
-            rejectedCell.add(currentNode);
+            currentNode = lowestNodeInFringe(openSet, targetNode);
+            openSet.remove(currentNode);
+            closedSet.add(currentNode);
             if (currentNode.getCell() == targetNode.getCell())
             {
                 ArrayList<Node> path = currentNode.previous();
@@ -219,11 +219,11 @@ public class EnemyController implements IEntityProcessingService
                 //neighbour.setBlocked(neighbour.getCell().getTile().getProperties().containsKey("blocked"));
 
 
-                if (!fringe.contains(neighbour) && !rejectedCell.contains(neighbour))
+                if (!openSet.contains(neighbour) && !closedSet.contains(neighbour))
                 {
                     Node node = new Node(neighbour.getCell(), neighbour.getTileX(), neighbour.getTileY());
                     node.setParent(currentNode);
-                    fringe.add(node);
+                    openSet.add(node);
                 } else
                 {
                     return;
