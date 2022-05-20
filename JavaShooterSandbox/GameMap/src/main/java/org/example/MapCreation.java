@@ -23,7 +23,6 @@ public class MapCreation implements IMapService
 
     private TiledMap map;
 
-
     private TiledMapTileLayer layer;
 
 
@@ -50,8 +49,6 @@ public class MapCreation implements IMapService
     {
         TiledMapTileLayer.Cell cell = null;
         boolean blocked = false;
-
-
         try
         {
             cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
@@ -71,10 +68,6 @@ public class MapCreation implements IMapService
         return blocked;
     }
 
-    public TiledMapTileLayer.Cell getCell(int x, int y){
-        TiledMapTileLayer.Cell cell = layer.getCell((int) (x / layer.getTileWidth()), (int) (y / layer.getTileHeight()));
-        return cell;
-    }
 
 
 

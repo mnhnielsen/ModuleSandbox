@@ -2,37 +2,28 @@ package org.example;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import org.example.data.Entity;
 import org.example.data.GameWorld;
 import org.example.helper.Const;
 import org.example.helper.Enemy;
-import org.example.helper.Player;
 import org.example.spi.IEntityProcessingService;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
-import org.xguzm.pathfinding.gdxbridge.NavTmxMapLoader;
-import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
-import org.xguzm.pathfinding.grid.GridCell;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 @ServiceProviders(value = {@ServiceProvider(service = IEntityProcessingService.class)})
 public class EnemyController implements IEntityProcessingService
 {
     private final Lookup lookup = Lookup.getDefault();
     private MapCreation mapCreation = new MapCreation();
-    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
+    private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(3);
 
 
     private int offSet = 85;
-
-    private Node node;
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
@@ -57,7 +48,6 @@ public class EnemyController implements IEntityProcessingService
                     Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
                     Vector2 playerPos = new Vector2(player.position().x, player.position().y);
                     Vector2 direction = new Vector2();
-                    node = new Node((int) playerPos.x, (int) playerPos.y);
                     //Difference in position to create vector with direction
                     direction.x = playerPos.x - zombiePos.x;
                     direction.y = playerPos.y - zombiePos.y;
@@ -70,26 +60,46 @@ public class EnemyController implements IEntityProcessingService
                     float speedX = direction.x * enemy.getSpeed();
                     float speedY = direction.y * enemy.getSpeed();
 
-/*                    if (collideTop(enemy)) {
-                        float spdx = direction.x + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
-                        enemy.getBody().setLinearVelocity(spdx, speedY * -1);
-                    } else if (collideBottom(enemy)) {
-                        float spdx = direction.x + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
-                        enemy.getBody().setLinearVelocity(spdx, 0);
-                    } else if (collideLeft(enemy)) {
-                        float spdy = direction.y + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
+                    if (collideTop(enemy))
+                    {
+                        float spdx = 0;
+                        if (direction.x < 0)
+                            spdx = direction.x + offSet * enemy.getSpeed() * -1;
+                        else
+                            spdx = direction.x + offSet * enemy.getSpeed();
+                        enemy.getBody().setLinearVelocity(spdx * Gdx.graphics.getDeltaTime(), 0);
 
-                        enemy.getBody().setLinearVelocity(0, spdy);
-                    } else if (collideRight(enemy)) {
-                        float spdy = direction.y + offSet * enemy.getSpeed() * Gdx.graphics.getDeltaTime();
+                    } else if (collideBottom(enemy))
+                    {
+                        float spdx = 0;
+                        if (direction.x < 0)
+                            spdx = direction.x + offSet * enemy.getSpeed() * -1;
+                        else
+                            spdx = direction.x + offSet * enemy.getSpeed();
+                        enemy.getBody().setLinearVelocity(spdx * Gdx.graphics.getDeltaTime(), 0);
 
-                        enemy.getBody().setLinearVelocity(0, spdy);
-                    } else*/
-                    //enemy.getBody().setLinearVelocity(speedX, speedY);
-                    aStar(enemy);
+                    } else if (collideLeft(enemy))
+                    {
+                        float spdy = 0;
+                        if (direction.y < 0)
+                            spdy = direction.y + offSet * enemy.getSpeed() * -1;
+                        else
+                            spdy = direction.y + offSet * enemy.getSpeed();
+                        enemy.getBody().setLinearVelocity(0, spdy * Gdx.graphics.getDeltaTime());
+
+                    } else if (collideRight(enemy))
+                    {
+                        float spdy = 0;
+                        if (direction.y < 0)
+                            spdy = direction.y + offSet * enemy.getSpeed() * -1;
+                        else
+                            spdy = direction.y + offSet * enemy.getSpeed();
+                        enemy.getBody().setLinearVelocity(0, spdy * Gdx.graphics.getDeltaTime());
+
+                    } else
+                        aStar(enemy);
 
 
-                    //enemy.getBody().setTransform(enemy.getBody().getPosition(), direction.angleRad()); //This rotates the body but now the sprite. Uncomment debugrendere in Render() in Game.java to see
                     batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
                 }
             }
@@ -141,6 +151,20 @@ public class EnemyController implements IEntityProcessingService
         return null;
     }
 
+    public double h(Node node, Node targetNode)
+    {
+        double x1 = node.getTileX();
+        double y1 = node.getTileY();
+        double x2 = targetNode.getTileX();
+        double y2 = targetNode.getTileY();
+
+        return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    }
+
+    public double f(Node node, Node targetNode)
+    {
+        return node.previous().size() + h(node, targetNode);
+    }
 
     public void aStar(Entity enemy)
     {
@@ -151,40 +175,38 @@ public class EnemyController implements IEntityProcessingService
 
 
         TiledMapTileLayer.Cell enemyPosition = walkableLayer.getCell(cellValueX, cellValueY);
-        Node currentNode = new Node(enemyPosition, cellValueX, cellValueY, Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
+        Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
         TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
 
         ArrayList<Node> fringe = new ArrayList<>();
         ArrayList<Node> rejectedCell = new ArrayList<>();
 
 
-        Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY, Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
+        Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
         fringe.add(currentNode);
         while (!fringe.isEmpty())
         {
-            currentNode = lowestNode(fringe, targetNode);
+            currentNode = lowestNodeInFringe(fringe, targetNode);
             fringe.remove(currentNode);
             rejectedCell.add(currentNode);
             if (currentNode.getCell() == targetNode.getCell())
             {
-                ArrayList<Node> path = currentNode.getPath();
+                ArrayList<Node> path = currentNode.previous();
                 System.out.println(path.size());
                 if (path.size() > 1)
                 {
-                    float x = targetNode.getTileX() - path.get(1).getTileX();
-                    float y = targetNode.getTileY() - path.get(1).getTileY();
+                    float x = targetNode.getTileX() - path.get(0).getTileX();
+                    float y = targetNode.getTileY() - path.get(0).getTileY();
                     Vector2 dir = new Vector2(x, y);
                     dir.nor();
                     float speedX = dir.x * enemy.getSpeed();
                     float speedY = dir.y * enemy.getSpeed();
                     enemy.getBody().setLinearVelocity(speedX, speedY);
-                } else
-                {
-                    //System.out.println("Enemy on my tile");
                 }
                 return;
             }
             Tile tile = new Tile(currentNode.getTileX(), currentNode.getTileY(), currentNode.getCell());
+
 
             int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
                     {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
@@ -193,45 +215,39 @@ public class EnemyController implements IEntityProcessingService
 
             for (int[] n : neighbours)
             {
-                if (!fringe.contains(walkableLayer.getCell(n[0], n[1])) && !rejectedCell.contains(walkableLayer.getCell(n[0], n[1])))
+                Node neighbour = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
+                //neighbour.setBlocked(neighbour.getCell().getTile().getProperties().containsKey("blocked"));
+
+
+                if (!fringe.contains(neighbour) && !rejectedCell.contains(neighbour))
                 {
-                    Node node = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1], Integer.parseInt((String) walkableLayer.getCell(cellValueX, cellValueY).getTile().getProperties().get("cost")));
+                    Node node = new Node(neighbour.getCell(), neighbour.getTileX(), neighbour.getTileY());
                     node.setParent(currentNode);
                     fringe.add(node);
+                } else
+                {
+                    return;
                 }
+
             }
         }
     }
 
-    public double heuristics(Node node, Node targetNode)
+
+    public Node lowestNodeInFringe(ArrayList<Node> fringe, Node targetNode)
     {
-        float x1 = node.getCost();
-        float y1 = node.getCost();
-        float x2 = targetNode.getCost();
-        float y2 = targetNode.getCost();
+        Node n = fringe.get(0);
 
-        return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-    }
-
-    public double valuation(Node node, Node targetNode)
-    {
-        return node.getPath().size() + heuristics(node, targetNode);
-    }
-
-    public Node lowestNode(ArrayList<Node> fringe, Node targetNode)
-    {
-        Node lowNode = fringe.get(0);
-
-        double evalValue = valuation(lowNode, targetNode);
+        double fScore = f(n, targetNode);
         for (Node node : fringe)
         {
-            double valuation = valuation(node, targetNode);
-            if (valuation < evalValue)
+            double tempF = f(node, targetNode);
+            if (tempF < fScore)
             {
-                evalValue = valuation;
-                lowNode = node;
+                fScore = tempF;
+                n = node;
             }
         }
-        return lowNode;
+        return n;
     }
 }

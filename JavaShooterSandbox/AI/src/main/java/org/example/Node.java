@@ -9,8 +9,7 @@ public class Node
     private Node parent;
     private TiledMapTileLayer.Cell cell;
 
-    private float evalValue;
-    private int cost;
+    private boolean isBlocked;
     private int tileX;
     private int tileY;
 
@@ -29,12 +28,11 @@ public class Node
         return cell;
     }
 
-    public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY, int cost)
+    public Node(TiledMapTileLayer.Cell cell, int tileX, int tileY)
     {
         this.cell = cell;
         this.tileX = tileX;
         this.tileY = tileY;
-        this.cost = cost;
     }
 
     public Node(int tileX, int tileY)
@@ -43,9 +41,15 @@ public class Node
         this.tileY = tileY;
     }
 
-    public float getEvalValue()
+
+    public boolean isBlocked()
     {
-        return evalValue;
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked)
+    {
+        isBlocked = blocked;
     }
 
     public int getTileX()
@@ -58,17 +62,8 @@ public class Node
         return tileY;
     }
 
-    public int getCost()
-    {
-        return cost;
-    }
 
-    public void setCost(int cost)
-    {
-        this.cost = cost;
-    }
-
-    public ArrayList<Node> getPath()
+    public ArrayList<Node> previous()
     {
         ArrayList<Node> path = new ArrayList<Node>();
         Node currentNode = this;
