@@ -55,10 +55,7 @@ public class EnemyController implements IEntityProcessingService
 
                     //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
                     direction.nor();
-
-
-                    float speedX = direction.x * enemy.getSpeed();
-                    float speedY = direction.y * enemy.getSpeed();
+                    
 
                     if (collideTop(enemy))
                     {
