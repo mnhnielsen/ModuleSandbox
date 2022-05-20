@@ -55,12 +55,12 @@ public class EnemyController implements IEntityProcessingService
 
                     //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
                     direction.nor();
-                    
+
 
                     if (collideTop(enemy))
                     {
                         float spdx = 0;
-                        if (direction.x < 0)
+                        if (direction.x <= 0)
                             spdx = direction.x + offSet * enemy.getSpeed() * -1;
                         else
                             spdx = direction.x + offSet * enemy.getSpeed();
@@ -69,7 +69,7 @@ public class EnemyController implements IEntityProcessingService
                     } else if (collideBottom(enemy))
                     {
                         float spdx = 0;
-                        if (direction.x < 0)
+                        if (direction.x <= 0)
                             spdx = direction.x + offSet * enemy.getSpeed() * -1;
                         else
                             spdx = direction.x + offSet * enemy.getSpeed();
@@ -78,7 +78,7 @@ public class EnemyController implements IEntityProcessingService
                     } else if (collideLeft(enemy))
                     {
                         float spdy = 0;
-                        if (direction.y < 0)
+                        if (direction.y <= 0)
                             spdy = direction.y + offSet * enemy.getSpeed() * -1;
                         else
                             spdy = direction.y + offSet * enemy.getSpeed();
@@ -87,7 +87,7 @@ public class EnemyController implements IEntityProcessingService
                     } else if (collideRight(enemy))
                     {
                         float spdy = 0;
-                        if (direction.y < 0)
+                        if (direction.y <= 0)
                             spdy = direction.y + offSet * enemy.getSpeed() * -1;
                         else
                             spdy = direction.y + offSet * enemy.getSpeed();
