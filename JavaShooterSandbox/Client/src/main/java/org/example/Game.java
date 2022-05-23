@@ -59,7 +59,7 @@ public class Game implements ApplicationListener
 
         for (IGamePluginService plugin : result.allInstances())
         {
-            plugin.spawnEnemies(0);
+            plugin.spawnEnemies(4);
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }

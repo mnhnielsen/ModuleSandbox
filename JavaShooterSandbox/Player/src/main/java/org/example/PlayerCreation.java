@@ -13,6 +13,7 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.io.File;
+import java.util.Random;
 
 @ServiceProviders(value = {@ServiceProvider(service = IGamePluginService.class)})
 public class PlayerCreation implements IGamePluginService
@@ -32,11 +33,11 @@ public class PlayerCreation implements IGamePluginService
 
     protected Player createPlayer()
     {
-        int x = Gdx.graphics.getWidth() / 2;
-        int y = Gdx.graphics.getHeight() / 2;
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float y = new Random().nextFloat() * Gdx.graphics.getWidth();
         int speed = 6;
-        int width = 32;
-        int height = 32;
+        int width = 64;
+        int height = 64;
         String fileName = "soldierIdle.png";
 
         File file = new File(this.getClass().getResource(fileName).getPath());
@@ -46,7 +47,7 @@ public class PlayerCreation implements IGamePluginService
         AssetLoader.INSTANCE.getAm().finishLoading();
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
         Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.PLAYER);
-        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(10000));
+        Player p = new Player(x, y, speed, width, height, body, sprite, new HealthPart(100));
         return p;
     }
 

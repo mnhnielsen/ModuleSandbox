@@ -9,6 +9,7 @@ import org.example.data.GameWorld;
 import org.example.helper.Const;
 import org.example.helper.Enemy;
 import org.example.spi.IEntityProcessingService;
+import org.example.spi.IPathFindingService;
 import org.openide.util.Lookup;
 import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
@@ -27,6 +28,7 @@ public class EnemyController implements IEntityProcessingService
 
 
     private IEntityProcessingService player = lookup.lookup(IEntityProcessingService.class);
+    private IPathFindingService astar = lookup.lookup(IPathFindingService.class);
 
     @Override
     public void update(GameWorld world, SpriteBatch batch)
@@ -94,7 +96,7 @@ public class EnemyController implements IEntityProcessingService
                         enemy.getBody().setLinearVelocity(0, spdy * Gdx.graphics.getDeltaTime());
 
                     } else
-                        aStar(enemy);
+                        astar.aStar(enemy, player);
 
 
                     batch.draw(enemy.getSprite(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
@@ -146,105 +148,5 @@ public class EnemyController implements IEntityProcessingService
     public Vector2 position()
     {
         return null;
-    }
-
-    public double h(Node node, Node targetNode)
-    {
-        double x1 = node.getTileX();
-        double y1 = node.getTileY();
-        double x2 = targetNode.getTileX();
-        double y2 = targetNode.getTileY();
-
-        return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-    }
-
-    public double f(Node node, Node targetNode)
-    {
-        return node.previous().size() + h(node, targetNode);
-    }
-
-    public void aStar(Entity enemy)
-    {
-        int cellValueX = (int) (enemy.getX() / walkableLayer.getTileWidth());
-        int cellValueY = (int) (enemy.getY() / walkableLayer.getTileHeight());
-        int playerCellValueX = (int) (player.position().x / walkableLayer.getTileWidth());
-        int playerCellValueY = (int) (player.position().y / walkableLayer.getTileHeight());
-
-
-        TiledMapTileLayer.Cell enemyPosition = walkableLayer.getCell(cellValueX, cellValueY);
-        Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
-        TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
-
-        ArrayList<Node> openSet = new ArrayList<>();
-        ArrayList<Node> closedSet = new ArrayList<>();
-
-
-        Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
-        openSet.add(currentNode);
-        while (!openSet.isEmpty())
-        {
-            currentNode = lowestNodeInFringe(openSet, targetNode);
-            openSet.remove(currentNode);
-            closedSet.add(currentNode);
-            if (currentNode.getCell() == targetNode.getCell())
-            {
-                ArrayList<Node> path = currentNode.previous();
-                System.out.println(path.size());
-                if (path.size() > 1)
-                {
-                    float x = targetNode.getTileX() - path.get(0).getTileX();
-                    float y = targetNode.getTileY() - path.get(0).getTileY();
-                    Vector2 dir = new Vector2(x, y);
-                    dir.nor();
-                    float speedX = dir.x * enemy.getSpeed();
-                    float speedY = dir.y * enemy.getSpeed();
-                    enemy.getBody().setLinearVelocity(speedX, speedY);
-                }
-                return;
-            }
-            Tile tile = new Tile(currentNode.getTileX(), currentNode.getTileY(), currentNode.getCell());
-
-
-            int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-                    {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-                    {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-                    {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
-
-            for (int[] n : neighbours)
-            {
-                Node neighbour = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
-                //neighbour.setBlocked(neighbour.getCell().getTile().getProperties().containsKey("blocked"));
-
-
-                if (!openSet.contains(neighbour) && !closedSet.contains(neighbour))
-                {
-                    Node node = new Node(neighbour.getCell(), neighbour.getTileX(), neighbour.getTileY());
-                    node.setParent(currentNode);
-                    openSet.add(node);
-                } else
-                {
-                    return;
-                }
-
-            }
-        }
-    }
-
-
-    public Node lowestNodeInFringe(ArrayList<Node> fringe, Node targetNode)
-    {
-        Node n = fringe.get(0);
-
-        double fScore = f(n, targetNode);
-        for (Node node : fringe)
-        {
-            double tempF = f(node, targetNode);
-            if (tempF < fScore)
-            {
-                fScore = tempF;
-                n = node;
-            }
-        }
-        return n;
     }
 }
