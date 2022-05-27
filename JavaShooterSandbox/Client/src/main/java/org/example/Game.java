@@ -59,7 +59,7 @@ public class Game implements ApplicationListener
 
         for (IGamePluginService plugin : result.allInstances())
         {
-            plugin.spawnEnemies(2,3,"ZombieCube1.png");
+            plugin.spawnEnemies(5,3,"ZombieCube1.png");
             plugin.start(gameWorld);
             gamePlugins.add(plugin);
         }
@@ -72,7 +72,7 @@ public class Game implements ApplicationListener
     {
         camController.INSTANCE.getCam().viewportWidth = width;
         camController.INSTANCE.getCam().viewportHeight = height;
-        camController.INSTANCE.getCam().zoom = 0.75f;
+        camController.INSTANCE.getCam().zoom = 0.85f;
         camController.INSTANCE.getCam().update();
     }
 

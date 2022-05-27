@@ -27,7 +27,7 @@ public class MapHandler implements IMapService
        // System.out.println(world.getEntities(Enemy.class).size());
         if (world.getEntities(Enemy.class).size() == 0 && map1)
         {
-            spawnEnemies(4);
+            spawnEnemies(7);
             map1 = false;
             System.out.println("enemies dead");
         }

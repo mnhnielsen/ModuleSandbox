@@ -37,8 +37,8 @@ public class EnemyCreation implements IGamePluginService
 
     protected Enemy createEnemy(String filename, int maxSpeed)
     {
-        float x = new Random().nextFloat() * Gdx.graphics.getWidth();
-        float y = new Random().nextFloat() * Gdx.graphics.getWidth();
+        float x = new Random().nextFloat() * Gdx.graphics.getWidth() - 50;
+        float y = new Random().nextFloat() * Gdx.graphics.getWidth() - 50;
 
         int speed = new Random().nextInt(maxSpeed - 2) + 2;
         int width = 32;

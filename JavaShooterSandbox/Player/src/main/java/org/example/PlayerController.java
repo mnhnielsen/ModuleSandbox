@@ -86,6 +86,7 @@ public class PlayerController implements IEntityProcessingService
 
             x = p.getBody().getPosition().x * Const.PPM - (p.getWidth() / 2);
             y = p.getBody().getPosition().y * Const.PPM - (p.getHeight() / 2);
+            dir.setZero();
 
             if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove && !collideTop(p))
             {
@@ -148,7 +149,7 @@ public class PlayerController implements IEntityProcessingService
 
         }
     }
-    
+
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
     {

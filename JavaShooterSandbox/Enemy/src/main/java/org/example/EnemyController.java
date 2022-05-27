@@ -33,7 +33,6 @@ public class EnemyController implements IEntityProcessingService
     @Override
     public void update(GameWorld world, SpriteBatch batch)
     {
-
         try
         {
             for (Entity enemy : world.getEntities(Enemy.class))
@@ -45,7 +44,6 @@ public class EnemyController implements IEntityProcessingService
                     enemy.setVelX(0);
                     enemy.setVelY(0);
 
-
                     //Enemy movement with vector
                     Vector2 zombiePos = new Vector2(enemy.getX(), enemy.getY());
                     Vector2 playerPos = new Vector2(player.position().x, player.position().y);
@@ -54,11 +52,11 @@ public class EnemyController implements IEntityProcessingService
                     direction.x = playerPos.x - zombiePos.x;
                     direction.y = playerPos.y - zombiePos.y;
 
-
                     //Normalize vector so the length is always 1, and therefore "speed" decides how fast enemy goes
                     direction.nor();
 
 
+                    //Check collision tiles
                     if (collideTop(enemy))
                     {
                         float spdx = 0;
