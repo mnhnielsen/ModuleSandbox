@@ -27,7 +27,7 @@ import java.util.function.IntUnaryOperator;
 public class PlayerController implements IEntityProcessingService
 {
     private boolean canMove = true, isMoving;
-    private float x, y, radians, fireDelay, fireRate = 1f;
+    private float x, y, fireDelay, fireRate = 1f;
     private Vector2 dir = new Vector2();
     private MapCreation mapCreation = new MapCreation();
     private TiledMapTileLayer walkableLayer = (TiledMapTileLayer) mapCreation.getMap().getLayers().get(2);
@@ -86,12 +86,9 @@ public class PlayerController implements IEntityProcessingService
 
             x = p.getBody().getPosition().x * Const.PPM - (p.getWidth() / 2);
             y = p.getBody().getPosition().y * Const.PPM - (p.getHeight() / 2);
-            dir.setZero();
-            radians = 0;
 
             if (Gdx.input.isKeyPressed(Input.Keys.W) && canMove && !collideTop(p))
             {
-                radians = 90;
                 updateTexture("soldierUp.png");
                 dir.y = 1;
                 spawnBullet(0, 1, 50, 70, 30, 5, 10);
@@ -99,7 +96,6 @@ public class PlayerController implements IEntityProcessingService
             }
             if (Gdx.input.isKeyPressed(Input.Keys.S) && canMove && !collideBottom(p))
             {
-                radians = 270;
                 updateTexture("soldierDown.png");
                 dir.y = -1;
                 spawnBullet(0, -1, 15, 0, 30, 5, 10);
@@ -109,7 +105,6 @@ public class PlayerController implements IEntityProcessingService
             }
             if (Gdx.input.isKeyPressed(Input.Keys.D) && canMove && !collideRight(p))
             {
-                radians = 0;
                 updateTexture("soldierRight.png");
                 dir.x = 1;
                 spawnBullet(1, 0, 60, 15, 30, 10, 5);
@@ -118,7 +113,6 @@ public class PlayerController implements IEntityProcessingService
             }
             if (Gdx.input.isKeyPressed(Input.Keys.A) && canMove && !collideLeft(p))
             {
-                radians = 180;
                 updateTexture("soldierLeft.png");
                 dir.x = -1;
                 spawnBullet(-1, 0, -10, 50, 30, 10, 5);
@@ -151,44 +145,10 @@ public class PlayerController implements IEntityProcessingService
             for (Entity object : world.getEntities(Bullet.class))
                 batch.draw(object.getSprite(), object.getBody().getPosition().x * Const.PPM - (object.getWidth() / 2), object.getBody().getPosition().y * Const.PPM - (object.getHeight() / 2), object.getWidth(), object.getHeight());
 
-            //getTileValue();
+
         }
     }
-
-    private void getTileValue()
-    {
-        int cellValueX = (int) (x / walkableLayer.getTileWidth());
-        int cellValueY = (int) (y / walkableLayer.getTileHeight());
-        TiledMapTileLayer.Cell cell = walkableLayer.getCell(cellValueX, cellValueY);
-
-
-        for (Iterator<Object> it = cell.getTile().getProperties().getValues(); it.hasNext(); )
-        {
-            Tile tile = new Tile(cellValueX, cellValueY, cell, it.next().toString());
-
-
-            try
-            {
-                int[][] neighbours = {{tile.getTileX() - 1, tile.getTileY() + 1}, {tile.getTileX(), tile.getTileY() + 1},
-                        {tile.getTileX() + 1, tile.getTileY() + 1}, {tile.getTileX() - 1, tile.getTileY()},
-                        {tile.getTileX() + 1, tile.getTileY()}, {tile.getTileX() - 1, tile.getTileY() - 1},
-                        {tile.getTileX(), tile.getTileY() - 1}, {tile.getTileX() + 1, tile.getTileY() - 1}};
-
-
-                for (int[] n : neighbours)
-                {
-
-                    if (walkableLayer.getCell(n[0], n[1]).getTile().getProperties().containsKey("blocked"))
-                    {
-
-                    }
-                }
-            } catch (NullPointerException e)
-            {
-                System.out.println("Too close to edge");
-            }
-        }
-    }
+    
 
     private void spawnBullet(float directionX, float directionY, float spawnX, float spawnY, int speed, int width, int height)
     {
