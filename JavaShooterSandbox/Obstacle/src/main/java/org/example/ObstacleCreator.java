@@ -96,8 +96,10 @@ public class ObstacleCreator implements IGamePluginService
     }
 
     @Override
-    public void spawnEnemies(int enemies)
+    public void spawnEnemies(int enemies, int speed, String filename)
     {
 
     }
+
+
 }

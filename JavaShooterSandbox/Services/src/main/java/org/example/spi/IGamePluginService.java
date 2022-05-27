@@ -8,5 +8,5 @@ public interface IGamePluginService
 
     void stop(GameWorld world);
 
-    void spawnEnemies(int enemies);
+    void spawnEnemies(int enemies, int speed, String filename);
 }

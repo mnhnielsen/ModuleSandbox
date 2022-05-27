@@ -59,9 +59,11 @@ public class PlayerCreation implements IGamePluginService
     }
 
     @Override
-    public void spawnEnemies(int enemies)
+    public void spawnEnemies(int enemies, int speed, String filename)
     {
+
     }
+
 
     public Entity getPlayer()
     {

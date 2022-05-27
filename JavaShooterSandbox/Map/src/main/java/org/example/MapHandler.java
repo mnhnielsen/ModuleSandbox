@@ -20,15 +20,6 @@ public class MapHandler implements IMapService
     private EnemyCreation enemyCreation = new EnemyCreation();
     private boolean map1 = true;
 
-    private Sprite updateMapTexture(String fileName)
-    {
-        File file = new File(this.getClass().getResource(fileName).getPath());
-        String path = file.getPath().substring(5);
-
-        AssetLoader.INSTANCE.getAm().load(path, Texture.class);
-        AssetLoader.INSTANCE.getAm().finishLoading();
-        return new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-    }
 
     @Override
     public void mapBackground(GameWorld world, SpriteBatch batch)
@@ -36,9 +27,9 @@ public class MapHandler implements IMapService
        // System.out.println(world.getEntities(Enemy.class).size());
         if (world.getEntities(Enemy.class).size() == 0 && map1)
         {
-            //updateMapTexture("map2.png").draw(batch);
-            spawnEnemies(1);
+            spawnEnemies(4);
             map1 = false;
+            System.out.println("enemies dead");
         }
     }
 
@@ -62,7 +53,7 @@ public class MapHandler implements IMapService
 
     private void spawnEnemies(int numberOfEnemies)
     {
-        enemyCreation.spawnEnemies(numberOfEnemies);
+        enemyCreation.spawnEnemies(numberOfEnemies,5,"ZombieCube1.png");
         enemyCreation.start(GameWorld.INSTANCE);
         //System.out.println("Spawned " + numberOfEnemies + " enemies...");
     }

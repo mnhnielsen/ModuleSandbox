@@ -13,8 +13,8 @@ public class Installer extends ModuleInstall
         game = new Game();
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "GAME";
-        cfg.width = 800;
-        cfg.height = 600;
+        cfg.width = 1000;
+        cfg.height = 800;
         cfg.useGL30 = false;
         cfg.resizable = false;
         new LwjglApplication(game, cfg);

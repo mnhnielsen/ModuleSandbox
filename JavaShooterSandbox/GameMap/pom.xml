@@ -51,6 +51,7 @@
             <artifactId>GameEngine</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>

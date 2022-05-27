@@ -22,12 +22,12 @@ public class EnemyCreation implements IGamePluginService
     protected ArrayList<Enemy> enemies = new ArrayList<>();
 
     @Override
-    public void spawnEnemies(int amountOfEnemies)
+    public void spawnEnemies(int amountOfEnemies, int speed, String filename)
     {
         for (int i = 0; i < amountOfEnemies; i++)
         {
 
-            Enemy e = createEnemy();
+            Enemy e = createEnemy(filename,speed);
             enemies.add(e);
         }
         System.out.println(enemies.size());
@@ -35,16 +35,16 @@ public class EnemyCreation implements IGamePluginService
     }
 
 
-    protected Enemy createEnemy()
+    protected Enemy createEnemy(String filename, int maxSpeed)
     {
         float x = new Random().nextFloat() * Gdx.graphics.getWidth();
         float y = new Random().nextFloat() * Gdx.graphics.getWidth();
 
-        int speed = new Random().nextInt(5 - 2) + 2;
+        int speed = new Random().nextInt(maxSpeed - 2) + 2;
         int width = 32;
         int height = 32;
 
-        File file = new File(this.getClass().getResource("red.png").getPath());
+        File file = new File(this.getClass().getResource(filename).getPath());
         String path = file.getPath().substring(5);
 
         AssetLoader.INSTANCE.getAm().load(path, Texture.class);

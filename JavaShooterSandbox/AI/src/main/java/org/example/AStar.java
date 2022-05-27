@@ -9,6 +9,8 @@ import org.openide.util.lookup.ServiceProvider;
 import org.openide.util.lookup.ServiceProviders;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 @ServiceProviders(value = {@ServiceProvider(service = IPathFindingService.class)})
 public class AStar implements IPathFindingService
@@ -34,7 +36,7 @@ public class AStar implements IPathFindingService
         return node.previous().size() + h(node, targetNode);
     }
 
-    public Node lowestNodeInFringe(ArrayList<Node> fringe, Node targetNode)
+    public Node lowestNodeInFringe(LinkedList<Node> fringe, Node targetNode)
     {
         Node n = fringe.get(0);
 
@@ -63,11 +65,15 @@ public class AStar implements IPathFindingService
         Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
         TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
 
-        ArrayList<Node> openSet = new ArrayList<>();
-        ArrayList<Node> closedSet = new ArrayList<>();
+        //ArrayList<Node> openSet = new ArrayList<>();
+        //ArrayList<Node> closedSet = new ArrayList<>();
+        LinkedList<Node> openSet = new LinkedList<>();
+        LinkedList<Node> closedSet = new LinkedList<>();
+
 
 
         Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
+       // openSet.add(currentNode);
         openSet.add(currentNode);
         while (!openSet.isEmpty())
         {
