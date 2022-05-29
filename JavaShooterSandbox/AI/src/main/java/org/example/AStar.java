@@ -65,15 +65,13 @@ public class AStar implements IPathFindingService
         Node currentNode = new Node(enemyPosition, cellValueX, cellValueY);
         TiledMapTileLayer.Cell playerPosition = walkableLayer.getCell(playerCellValueX, playerCellValueY);
 
-        //ArrayList<Node> openSet = new ArrayList<>();
-        //ArrayList<Node> closedSet = new ArrayList<>();
+
         LinkedList<Node> openSet = new LinkedList<>();
         LinkedList<Node> closedSet = new LinkedList<>();
 
 
 
         Node targetNode = new Node(playerPosition, playerCellValueX, playerCellValueY);
-       // openSet.add(currentNode);
         openSet.add(currentNode);
         while (!openSet.isEmpty())
         {
@@ -82,7 +80,7 @@ public class AStar implements IPathFindingService
             closedSet.add(currentNode);
             if (currentNode.getCell() == targetNode.getCell())
             {
-                ArrayList<Node> path = currentNode.previous();
+                LinkedList<Node> path = currentNode.previous();
                 System.out.println(path.size());
                 if (path.size() > 1)
                 {
@@ -107,8 +105,6 @@ public class AStar implements IPathFindingService
             for (int[] n : neighbours)
             {
                 Node neighbour = new Node(walkableLayer.getCell(n[0], n[1]), n[0], n[1]);
-                //neighbour.setBlocked(neighbour.getCell().getTile().getProperties().containsKey("blocked"));
-
 
                 if (!openSet.contains(neighbour) && !closedSet.contains(neighbour))
                 {

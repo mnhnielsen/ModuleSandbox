@@ -3,6 +3,7 @@ package org.example;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Node
 {
@@ -63,9 +64,9 @@ public class Node
     }
 
 
-    public ArrayList<Node> previous()
+    public LinkedList<Node> previous()
     {
-        ArrayList<Node> path = new ArrayList<Node>();
+        LinkedList<Node> path = new LinkedList<>();
         Node currentNode = this;
         path.add(currentNode);
         while (currentNode.getParent() != null)

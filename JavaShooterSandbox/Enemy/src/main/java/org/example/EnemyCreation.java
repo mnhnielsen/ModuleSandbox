@@ -51,8 +51,8 @@ public class EnemyCreation implements IGamePluginService
         AssetLoader.INSTANCE.getAm().finishLoading();
 
         Sprite sprite = new Sprite(AssetLoader.INSTANCE.getAm().get(path, Texture.class));
-        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.ENEMY);
 
+        Body body = BodyHelper.createBody(x, y, width, height, false, 10000, LibWorld.INSTANCE.getWorld(), ContactType.ENEMY);
         Enemy p = new Enemy(x, y, speed, width, height, body, sprite, new HealthPart(100));
         return p;
     }
